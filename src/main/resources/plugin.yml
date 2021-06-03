@@ -1,0 +1,5 @@
+name: EconomyPlus
+version: ${project.version}
+main: me.itswagpvp.economyplus.EconomyPlus
+api-version: 1.13
+authors: [ _ItsWagPvP ]
