@@ -61,6 +61,7 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§f-> §7Online players: §3" + Bukkit.getServer().getOnlinePlayers().size());
                 sender.sendMessage("§f-> §7Players saved: §3" + EconomyPlus.getInstance().getRDatabase().getList().size());
                 sender.sendMessage("§a");
+                sender.sendMessage("§f-> §7Vault Version: §d" + Bukkit.getServer().getPluginManager().getPlugin("Vault").getDescription().getVersion());
                 sender.sendMessage("§f-> §7PlaceholderAPI: §a" + Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"));
                 sender.sendMessage("§8+------------------------------------+");
 
@@ -70,7 +71,7 @@ public class Main implements CommandExecutor {
             if (args[0].equalsIgnoreCase("help")) {
                 sender.sendMessage("§d§lEconomyPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
                 sender.sendMessage("§7If you need support, join the discord server!");
-                sender.sendMessage("§f-> §9https://discord.gg/ScbUAvTTKE");
+                sender.sendMessage("§f-> §9https://discord.gg/vVM5SyKc8z");
 
                 return true;
             }

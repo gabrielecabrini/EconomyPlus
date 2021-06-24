@@ -1,15 +1,12 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.commands.Eco;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class Utils {
 

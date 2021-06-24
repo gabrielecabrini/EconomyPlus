@@ -13,6 +13,8 @@ public class UpdateMessage {
             return;
         }
 
+
+
         long before = System.currentTimeMillis();
 
         new UpdateChecker(plugin, resourceId).getVersion(version -> {

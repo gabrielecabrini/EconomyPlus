@@ -15,6 +15,10 @@ public class Join implements Listener {
     @EventHandler
     public void updateMessage (PlayerJoinEvent event) {
 
+        if (EconomyPlus.ver < 12) {
+            return;
+        }
+
         if (!plugin.getConfig().getBoolean("Updater.Player")) {
             return;
         }

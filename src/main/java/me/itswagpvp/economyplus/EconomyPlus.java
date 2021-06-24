@@ -37,6 +37,9 @@ public final class EconomyPlus extends JavaPlugin {
     // plugin instance
     public static EconomyPlus plugin;
 
+    public static String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
+    public static int ver = Integer.parseInt(split[1]);
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -76,9 +79,16 @@ public final class EconomyPlus extends JavaPlugin {
 
         loadPlaceholders();
 
+        if (ver < 12) {
+            Bukkit.getConsoleSender().sendMessage("§f-> §cThe updater won't work under 1.12!");
+        }
+
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
 
-        new UpdateMessage().updater(92975);
+        if (ver > 12) {
+            new UpdateMessage().updater(92975);
+        }
+
     }
 
     @Override
@@ -239,5 +249,4 @@ public final class EconomyPlus extends JavaPlugin {
 
         return ChatColor.translateAlternateColorCodes('&', getMessagesFile().getString(path));
     }
-
 }
