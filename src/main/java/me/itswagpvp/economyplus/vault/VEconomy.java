@@ -5,11 +5,13 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class VEconomy implements Economy {
 
-    public EconomyPlus plugin = EconomyPlus.getInstance();
+    public EconomyPlus plugin;
 
     public VEconomy (EconomyPlus plugin) {
         this.plugin = plugin;
@@ -37,117 +39,151 @@ public class VEconomy implements Economy {
 
     @Override
     public String format(double amount) {
-        return null;
+        NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+        format.setMaximumFractionDigits(2);
+        format.setMinimumFractionDigits(0);
+        return format.format(amount);
     }
 
     @Override
     public String currencyNamePlural() {
-        return null;
+        return "$";
     }
 
     @Override
     public String currencyNameSingular() {
-        return null;
+        return "$";
     }
 
     @Override
     public boolean hasAccount(String playerName) {
-        return false;
+        return EconomyPlus.getInstance().getRDatabase().getList().contains(playerName);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return false;
+        return hasAccount(player.getName());
     }
 
     @Override
     public boolean hasAccount(String playerName, String worldName) {
-        return false;
+        return hasAccount(playerName);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return false;
+        return hasAccount(player.getName());
     }
 
     @Override
     public double getBalance(String playerName) {
-        return 0;
+        return EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return 0;
+        return getBalance(player.getName());
     }
 
     @Override
     public double getBalance(String playerName, String world) {
-        return 0;
+        return getBalance(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer player, String world) {
-        return 0;
+        return getBalance(player.getName());
     }
 
     @Override
     public boolean has(String playerName, double amount) {
-        return false;
+
+        double playerMoney = EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
+        double detracting = amount;
+
+        return (playerMoney - detracting) >= 0;
     }
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return false;
+        return has(player.getName(), amount);
     }
 
     @Override
     public boolean has(String playerName, String worldName, double amount) {
-        return false;
+        return has(playerName, amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, String worldName, double amount) {
-        return false;
+        return has(player.getName(), amount);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        return null;
+        double tokens = getBalance(playerName) - amount;
+
+        EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+        return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        return null;
+        double tokens = getBalance(player) - amount;
+
+        EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
+        return new EconomyResponse(amount, getBalance(player), EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
-        return null;
+
+        double tokens = getBalance(playerName) - amount;
+
+        EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+        return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
-        return null;
+        double tokens = getBalance(player) - amount;
+
+        EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
+        return new EconomyResponse(amount, getBalance(player.getName()), EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        return null;
+        double tokens = getBalance(playerName) + amount;
+        EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+
+        return new EconomyResponse(amount, getBalance(playerName),EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        return null;
+        double tokens = getBalance(player) + amount;
+        EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
+
+        return new EconomyResponse(amount, getBalance(player.getName()),EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
-        return null;
+
+        double tokens = getBalance(playerName) + amount;
+        EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+
+        return new EconomyResponse(amount, getBalance(playerName),EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
-        return null;
+
+        double tokens = getBalance(player) + amount;
+        EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
+
+        return new EconomyResponse(amount, getBalance(player.getName()),EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override

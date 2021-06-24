@@ -40,44 +40,36 @@ public abstract class Database {
         }
     }
 
-    public Long getTokens(String player) {
-        CompletableFuture<Long> token = CompletableFuture.supplyAsync(() -> {
-            Connection conn = getSQLConnection();
-            try (
-                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
-                    ResultSet rs = ps.executeQuery();
-            ) {
-                while(rs.next()){
-                    if(rs.getString("player").equalsIgnoreCase(player)){ // Tell database to search for the player you sent into the method. e.g getTokens(sam) It will look for sam.
-                        return rs.getLong("moneys"); // Return the players amount of moneys. If you wanted to get total (just a random number for an example for you guys) You would change this to total!
-                    }
+    public double getTokens(String player) {
+        Connection conn = getSQLConnection();
+        try (
+                PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                ResultSet rs = ps.executeQuery()
+        ) {
+            while(rs.next()){
+                if(rs.getString("player").equalsIgnoreCase(player)){ // Tell database to search for the player you sent into the method. e.g getTokens(sam) It will look for sam.
+                    return rs.getDouble("moneys"); // Return the players amount of moneys. If you wanted to get total (just a random number for an example for you guys) You would change this to total!
                 }
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
             }
-            return 0L;
-        });
-
-        try {
-            return token.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
         }
-        return 0L;
+        return 0;
+
     }
 
     // Now we need methods to save things to the database
-    public void setTokens(String player, Long tokens) {
+    public void setTokens(String player, double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
             Connection conn = getSQLConnection();
             try (
-                    PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys) VALUES(?,?)");
+                    PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys) VALUES(?,?)")
             ){
 
                 ps.setString(1, player);
 
 
-                ps.setLong(2, tokens);
+                ps.setDouble(2, tokens);
 
                 ps.executeUpdate();
             } catch (SQLException ex) {
@@ -93,7 +85,7 @@ public abstract class Database {
             List<String> list = new ArrayList<>();
             try (
                     PreparedStatement ps = conn.prepareStatement("SELECT player FROM 'data'");
-                    ResultSet rs = ps.executeQuery();
+                    ResultSet rs = ps.executeQuery()
             ) {
 
                 while (rs.next()) {

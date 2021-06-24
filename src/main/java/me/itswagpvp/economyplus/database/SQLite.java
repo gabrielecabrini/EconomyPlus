@@ -14,13 +14,13 @@ public class SQLite extends Database {
     String dbname;
     public SQLite(EconomyPlus instance) {
         super(instance);
-        dbname = "plugin"; // Set the table name here e.g player_kills
+        dbname = "database"; // Set the table name here e.g player_kills
     }
 
     // SQL Query
     public String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS data (" +
             "`player` varchar(32) NOT NULL," +
-            "`moneys` long(32) NOT NULL," +
+            "`moneys` double(32) NOT NULL," +
             "PRIMARY KEY (`player`)" +
             ");";
 
@@ -31,7 +31,7 @@ public class SQLite extends Database {
             try {
                 dataFolder.createNewFile();
             } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE, "File write error: "+dbname+".db");
+                plugin.getLogger().log(Level.SEVERE, "File write error: " + dbname + ".db");
             }
         }
         try {

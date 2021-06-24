@@ -1,0 +1,32 @@
+# Messages file for EconomyPlus
+#
+# General messages
+NoConsole: "&cYou can't do this from console!"
+NoPlayer: "&cYou can't do this from game!"
+NoPerms: "&cYou don't have enough permissions!"
+Reload: "&aPlugin reloaded in %time%ms!"
+PlayerNotFound: "&cPlayer not found!"
+
+# Messages for the invalid args
+InvalidArgs:
+  Main: "&cInvalid args! /economyplus <debug/help/reload>"
+  Eco: "&cInvalid args! /eco <player> <set/give/take> <money>"
+  Balance: "&cInvalid args! /bal <player>"
+  Pay: "&cInvalid args! /pay <player> <money>"
+
+# Moneys refreshed
+Money:
+  Done: "&aAction executed with success!"
+  Refreshed: "&eYour money has been refreshed! Now you have %money%$!"
+
+# /bal
+Balance:
+  Self: "&aYou have %money%$!"
+  Others: "&a%player% has %money%$!"
+
+# /pay
+Pay:
+  NoSelf: "&cYou can't send money to yourself!"
+  NoMoney: "&CYou do not have enough moneys!"
+  Self: "&7You have sent &c%money%$ &7to &c%player%&7!"
+  Target: "&7You have received &a%money%$ &7from &a%player%&7!"

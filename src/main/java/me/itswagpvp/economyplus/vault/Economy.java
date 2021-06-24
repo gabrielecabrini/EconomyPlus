@@ -21,27 +21,27 @@ public class Economy extends VEconomy {
     }
 
     // Returns the money of a player
-    public long getBalance() {
+    public double getBalance() {
         return plugin.getRDatabase().getTokens(this.p.getName());
     }
 
     // Set the money for a player
     public void setBalance() {
-        plugin.getRDatabase().setTokens(this.p.getName(), Long.parseLong(toLong(this.money)));
+        plugin.getRDatabase().setTokens(this.p.getName(), this.money);
     }
 
     // Add moneys to a player account
     public void addBalance() {
         super.depositPlayer(this.p.getName(), money);
-        long x = getBalance();
-        plugin.getRDatabase().setTokens(this.p.getName(), Long.parseLong(toLong(this.money + x)));
+        double result = getBalance() + this.money;
+        plugin.getRDatabase().setTokens(this.p.getName(), result);
     }
 
     // Remove moneys from a player's account
     public void takeBalance() {
         super.withdrawPlayer(this.p.getName(), this.money);
-        long x = getBalance();
-        plugin.getRDatabase().setTokens(this.p.getName(), Long.parseLong(toLong(Math.max(x - this.money, 0))));
+        double result = this.money - getBalance();
+        plugin.getRDatabase().setTokens(this.p.getName(), result);
     }
 
     // Controls if the player has enough moneys

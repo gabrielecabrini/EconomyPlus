@@ -1,13 +1,20 @@
 package me.itswagpvp.economyplus;
 
+import me.itswagpvp.economyplus.metrics.bStats;
+import me.itswagpvp.economyplus.commands.Bal;
+import me.itswagpvp.economyplus.commands.Eco;
+import me.itswagpvp.economyplus.commands.Main;
+import me.itswagpvp.economyplus.commands.Pay;
 import me.itswagpvp.economyplus.database.Database;
 import me.itswagpvp.economyplus.database.SQLite;
-import me.itswagpvp.economyplus.misc.UpdateChecker;
-import me.itswagpvp.economyplus.misc.UpdateMessage;
+import me.itswagpvp.economyplus.events.Join;
+import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
+import me.itswagpvp.economyplus.misc.updater.UpdateMessage;
+import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,15 +25,12 @@ import java.io.IOException;
 
 public final class EconomyPlus extends JavaPlugin {
 
-    // Messages file
-    private File messagesConfigFile;
     private FileConfiguration messagesConfig;
 
     // Database
     private Database db;
 
     // Economy
-    public static Economy econ;
     public static VEconomy veco;
     public static VHook hook;
 
@@ -60,21 +64,21 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("              §aEnabling");
         Bukkit.getConsoleSender().sendMessage("§8");
 
-        // Load database
         loadDatabase();
 
-        // Load Economy and send the message
         loadEconomy();
 
-        // Load Commands and send the message
         loadEvents();
 
-        // Load Events and send the message
         loadCommands();
 
-        new UpdateMessage().updater(92975);
+        loadMetrics();
+
+        loadPlaceholders();
 
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
+
+        new UpdateMessage().updater(92975);
     }
 
     @Override
@@ -104,6 +108,7 @@ public final class EconomyPlus extends JavaPlugin {
         }
     }
 
+    // Loads the SQLite database
     public void loadDatabase() {
         try {
             this.db = new SQLite(this);
@@ -112,20 +117,84 @@ public final class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
         } finally {
-            Bukkit.getConsoleSender().sendMessage("§f-> §bLoaded database!");
+            Bukkit.getConsoleSender().sendMessage("§f-> §bDatabase loaded! (database.db)");
         }
     }
 
     public void loadEvents() {
-
+        try {
+            Bukkit.getPluginManager().registerEvents(new Join(), this);
+        }catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage("§f-> §cError loading the events!");
+            Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            return;
+        } finally {
+            Bukkit.getConsoleSender().sendMessage("§f-> §aEvents loaded");
+        }
     }
 
     public void loadCommands() {
+        try {
 
+            getCommand("economyplus").setExecutor(new Main());
+            getCommand("economyplus").setTabCompleter(new ConstructorTabCompleter());
+
+            getCommand("bal").setExecutor(new Bal());
+            getCommand("bal").setTabCompleter(new ConstructorTabCompleter());
+
+            getCommand("pay").setExecutor(new Pay());
+            getCommand("pay").setTabCompleter(new ConstructorTabCompleter());
+
+            getCommand("eco").setExecutor(new Eco());
+            getCommand("eco").setTabCompleter(new ConstructorTabCompleter());
+
+        }catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage("§f-> §cError loading the commands!");
+            Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            return;
+        } finally {
+            Bukkit.getConsoleSender().sendMessage("§f-> §aCommands loaded");
+        }
     }
 
+    // Loads the bStats metrics
     public void loadMetrics() {
 
+        if (!getConfig().getBoolean("Metrics")) {
+            return;
+        }
+
+        try {
+            new bStats(this, 11565);
+        }catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage("§f-> §cError on loading the metrics:");
+            Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            return;
+        } finally {
+            Bukkit.getConsoleSender().sendMessage("§f-> §aMetrics loaded!");
+        }
+    }
+
+    // Hooks with placeholderapi
+    public void loadPlaceholders() {
+        if (!getConfig().getBoolean("Hooks.PlaceholderAPI")) {
+            return;
+        }
+
+        if (!Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            Bukkit.getConsoleSender().sendMessage("§f-> §cCould not find PlaceholderAPI! Install it to use placeholders!");
+            return;
+        }
+
+        try {
+            new PlaceholderAPI(this).register();
+        }catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage("§f-> §cError on hooking with PlaceholderAPI!");
+            Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            return;
+        }finally {
+            Bukkit.getConsoleSender().sendMessage("§f-> §aHooked with PlaceholderAPI!");
+        }
     }
 
     // Returns plugin instance
@@ -143,20 +212,13 @@ public final class EconomyPlus extends JavaPlugin {
         return getServer().getPluginManager().isPluginEnabled("Vault");
     }
 
-    // Vault economy instance
-    public static Economy getEconomy() {
-        if (econ == null) {
-            return null;
-        }
-        return econ;
-    }
-
-    public FileConfiguration getMessages() {
+    public FileConfiguration getMessagesFile() {
         return this.messagesConfig;
     }
 
-    private void createMessagesConfig() {
-        messagesConfigFile = new File(getDataFolder(), "messages.yml");
+    public void createMessagesConfig() {
+        // Messages file
+        File messagesConfigFile = new File(getDataFolder(), "messages.yml");
         if (!messagesConfigFile.exists()) {
             messagesConfigFile.getParentFile().mkdirs();
             saveResource("messages.yml", false);
@@ -168,6 +230,14 @@ public final class EconomyPlus extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getMessage(String path) {
+        if (!getMessagesFile().isString(path)) {
+            return path;
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', getMessagesFile().getString(path));
     }
 
 }

@@ -3,3 +3,21 @@ version: ${project.version}
 main: me.itswagpvp.economyplus.EconomyPlus
 api-version: 1.13
 authors: [ _ItsWagPvP ]
+load: POSTWORLD
+softdepend:
+  - PlaceholderAPI
+  - Vault
+commands:
+  economyplus:
+    aliases:
+      - ep
+    usage: /<command>
+  eco:
+    usage: /<command>
+  bal:
+    aliases:
+      - balance
+      - money
+    usage: /<command>
+  pay:
+    usage: /<command>

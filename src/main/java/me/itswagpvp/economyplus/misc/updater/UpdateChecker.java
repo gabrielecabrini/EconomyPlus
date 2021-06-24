@@ -1,4 +1,4 @@
-package me.itswagpvp.economyplus.misc;
+package me.itswagpvp.economyplus.misc.updater;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

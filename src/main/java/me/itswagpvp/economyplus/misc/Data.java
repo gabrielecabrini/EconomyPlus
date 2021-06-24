@@ -18,7 +18,7 @@ public class Data {
     }
 
     // Save data and save data for the baltop
-    public void saveData(OfflinePlayer p, long money) {
+    public void saveData(OfflinePlayer p, double money) {
 
         EconomyPlus.getInstance().getRDatabase().setTokens(p.getName(), money);
 
@@ -47,7 +47,7 @@ public class Data {
         return EconomyPlus.getInstance().getRDatabase().getList().contains(s);
     }
 
-    public long getValue(OfflinePlayer p) {
+    public double getValue(OfflinePlayer p) {
         return EconomyPlus.getInstance().getRDatabase().getTokens(p.getName());
     }
 

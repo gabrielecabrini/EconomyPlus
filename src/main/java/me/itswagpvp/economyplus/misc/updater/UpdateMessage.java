@@ -1,4 +1,4 @@
-package me.itswagpvp.economyplus.misc;
+package me.itswagpvp.economyplus.misc.updater;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
@@ -9,19 +9,11 @@ public class UpdateMessage {
 
     public void updater(int resourceId) {
 
-        long before = System.currentTimeMillis();
-
         if (!plugin.getConfig().getBoolean("Updater.Console")) {
             return;
         }
 
-        /*if (!Bukkit.getVersion().contains("1.12")
-                || !Bukkit.getVersion().contains("1.13")
-                || !Bukkit.getVersion().contains("1.14")
-                || !Bukkit.getVersion().contains("1.15")
-                || !Bukkit.getVersion().contains("1.16")) {
-            return;
-        }*/
+        long before = System.currentTimeMillis();
 
         new UpdateChecker(plugin, resourceId).getVersion(version -> {
 
@@ -38,7 +30,7 @@ public class UpdateMessage {
                 Bukkit.getConsoleSender().sendMessage("§f-> You have §cv" + plugin.getDescription().getVersion());
                 Bukkit.getConsoleSender().sendMessage("§f-> §eDownload it at https://www.spigotmc.org/resources/" + resourceId);
                 Bukkit.getConsoleSender().sendMessage("§8");
-                Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before - 4000) + "ms §8]-------------+");
+                Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
             }, 40);
         });
     }

@@ -1,12 +1,10 @@
-package me.itswagpvp.economyplus.placeholders;
+package me.itswagpvp.economyplus.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.entity.Player;
-
-import java.text.NumberFormat;
-import java.util.Locale;
 
 /**
  * This class will be registered through the register-method in the
@@ -109,55 +107,21 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             return "";
         }
 
+        Utils utilities = new Utils();
+
         // %economyplus_money%
         if(identifier.equals("money")){
             Economy eco = new Economy(player, 0);
-            return toLong(eco.getBalance());
+            return String.format("%.2f", eco.getBalance());
         }
 
         //%economyplus_money_formatted%
         if (identifier.equals("money_formatted")) {
             Economy eco = new Economy(player, 0);
-            return fixMoney(eco.getBalance());
+            return String.valueOf(utilities.fixMoney(eco.getBalance()));
         }
 
         return "Invalid placeholder!";
     }
-
-    private String toLong(double amt) {
-        return String.valueOf((long) amt);
-    }
-
-    private String format(double d) {
-        NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
-        format.setMaximumFractionDigits(2);
-        format.setMinimumFractionDigits(0);
-        return format.format(d);
-    }
-
-    public String fixMoney(double d) {
-
-        if (d < 1000L) {
-            return format(d);
-        }
-        if (d < 1000000L) {
-            return format(d / 1000L) + EconomyPlus.getInstance().getConfig().getString("Format.k");
-        }
-        if (d < 1000000000L) {
-            return format(d / 1000000L) + EconomyPlus.getInstance().getConfig().getString("Format.M");
-        }
-        if (d < 1000000000000L) {
-            return format(d / 1000000000L) + EconomyPlus.getInstance().getConfig().getString("Format.B");
-        }
-        if (d < 1000000000000000L) {
-            return format(d / 1000000000000L) + EconomyPlus.getInstance().getConfig().getString("Format.T");
-        }
-        if (d < 1000000000000000000L) {
-            return format(d / 1000000000000000L) + EconomyPlus.getInstance().getConfig().getString("Format.Q");
-        }
-
-        return toLong(d);
-    }
-
 }
 

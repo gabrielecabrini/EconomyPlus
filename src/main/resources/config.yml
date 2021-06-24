@@ -13,9 +13,24 @@
 # Do not change this
 Version: ${project.version}
 
+# bStats system (https://bstats.org/plugin/bukkit/EconomyPlus/11565)
+Metrics: true
+
+# Controls if EconomyPlus need to connect to another plugin for more features
+Hooks:
+  # Placeholders
+  PlaceholderAPI: true
+
+# Check for updates
 Updater:
   Console: true
   Player: true
+
+# Play to the player the sounds in front of success / error
+Sounds:
+  Use: true
+  Success: ENTITY_PLAYER_LEVELUP
+  Error: ENTITY_VILLAGER_NO
 
 # Used to format the %economyplus_money_formatted% placeholder
 # 1000 = 1k
