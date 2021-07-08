@@ -124,7 +124,7 @@ public class VEconomy implements Economy {
         double tokens = getBalance(playerName) - amount;
 
         EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
-        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
@@ -132,7 +132,7 @@ public class VEconomy implements Economy {
         double tokens = getBalance(player) - amount;
 
         EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
-        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, getBalance(player), EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
@@ -141,7 +141,7 @@ public class VEconomy implements Economy {
         double tokens = getBalance(playerName) - amount;
 
         EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
-        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
@@ -149,7 +149,7 @@ public class VEconomy implements Economy {
         double tokens = getBalance(player) - amount;
 
         EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
-        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, getBalance(player.getName()), EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
@@ -157,7 +157,7 @@ public class VEconomy implements Economy {
         double tokens = getBalance(playerName) + amount;
         EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
 
-        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, getBalance(playerName),EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
@@ -165,7 +165,7 @@ public class VEconomy implements Economy {
         double tokens = getBalance(player) + amount;
         EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
 
-        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, getBalance(player.getName()),EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
@@ -174,7 +174,7 @@ public class VEconomy implements Economy {
         double tokens = getBalance(playerName) + amount;
         EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
 
-        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, getBalance(playerName),EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
@@ -183,7 +183,7 @@ public class VEconomy implements Economy {
         double tokens = getBalance(player) + amount;
         EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
 
-        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, getBalance(player.getName()),EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
