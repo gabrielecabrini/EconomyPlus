@@ -5,7 +5,6 @@ https://www.spigotmc.org/resources/economyplus.92975/
 
 To-Do list:
 - MySQL Support
-- /baltop
 
-If you find any issue please create a ticket on the support discord.
+If you find any issue please create a ticket on the support discord or report it on the GitHub issues page.
 
