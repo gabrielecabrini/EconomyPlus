@@ -71,7 +71,7 @@ public class Main implements CommandExecutor {
             if (args[0].equalsIgnoreCase("help")) {
                 sender.sendMessage("§d§lEconomyPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
                 sender.sendMessage("§7If you need support, join the discord server!");
-                sender.sendMessage("§f-> §9https://discord.gg/vVM5SyKc8z");
+                sender.sendMessage("§f-> §9https://discord.io/wagsupport");
 
                 return true;
             }

@@ -18,16 +18,17 @@ public class ConstructorTabCompleter implements TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
         List<String> listDefault = Arrays.asList("");
+        // Online Player List
+        List<String> playerNames = Bukkit.getOnlinePlayers()
+                .stream()
+                .map(Player::getName)
+                .collect(Collectors.toList());
 
         // /eco
         if (command.getName().equalsIgnoreCase("eco")) {
             int i = (args.length);
             switch (i) {
                 case 1: {
-                    List<String> playerNames = Bukkit.getOnlinePlayers()
-                            .stream()
-                            .map(Player::getName)
-                            .collect(Collectors.toList());
                     return playerNames;
                 }
                 case 2: {
@@ -43,7 +44,7 @@ public class ConstructorTabCompleter implements TabCompleter {
             }
         }
 
-        // EconomyPlus main command TabCompleter
+        // /ep
         if (command.getName().equalsIgnoreCase("economyplus")) {
             int i = (args.length);
             switch (i) {
@@ -61,10 +62,6 @@ public class ConstructorTabCompleter implements TabCompleter {
             int i = (args.length);
             switch (i) {
                 case 1: {
-                    List<String> playerNames = Bukkit.getOnlinePlayers()
-                            .stream()
-                            .map(Player::getName)
-                            .collect(Collectors.toList());
                     return playerNames;
                 }
                 default:
@@ -77,10 +74,6 @@ public class ConstructorTabCompleter implements TabCompleter {
             int i = (args.length);
             switch (i) {
                 case 1: {
-                    List<String> playerNames = Bukkit.getOnlinePlayers()
-                            .stream()
-                            .map(Player::getName)
-                            .collect(Collectors.toList());
                     return playerNames;
                 }
 
@@ -89,6 +82,19 @@ public class ConstructorTabCompleter implements TabCompleter {
                     return numbers;
                 }
 
+                default:
+                    return listDefault;
+            }
+        }
+
+        // /baltop
+        if (command.getName().equalsIgnoreCase("baltop")) {
+            int i = (args.length);
+            switch (i) {
+                case 1: {
+                    List<String> numbers = Arrays.asList("1", "2", "3");
+                    return numbers;
+                }
                 default:
                     return listDefault;
             }

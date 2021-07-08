@@ -27,7 +27,7 @@ public class Eco implements CommandExecutor {
                 return true;
             }
 
-            if (!NumberUtils.isNumber(args[2])) {
+            if (args[2].startsWith("-")) {
                 sender.sendMessage(plugin.getMessage("InvalidArgs.Eco"));
                 Utils.playErrorSound(sender);
                 return true;
@@ -65,10 +65,13 @@ public class Eco implements CommandExecutor {
                 }
 
                 double res = money.getBalance() - value;
-
-                money.takeBalance();
-
-
+                if (res < 0D) {
+                    res = 0D;
+                    Economy eco = new Economy(p, 0D);
+                    eco.setBalance();
+                } else {
+                    money.takeBalance();
+                }
 
                 sender.sendMessage(plugin.getMessage("Money.Done"));
                 p.sendMessage(plugin.getMessage("Money.Refreshed")

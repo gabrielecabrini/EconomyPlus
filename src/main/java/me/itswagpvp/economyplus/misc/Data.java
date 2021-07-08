@@ -17,46 +17,13 @@ public class Data {
         loadFromData();
     }
 
-    // Save data and save data for the baltop
-    public void saveData(OfflinePlayer p, double money) {
-
-        EconomyPlus.getInstance().getRDatabase().setTokens(p.getName(), money);
-
-
-        if ( getBalTopName().containsKey( p.getName() ) ) {
-            // update the stored money:
-            getBalTopName().get( p.getName() ).setMoney( money );
-        }
-        else {
-            // New payer data: Update both collections:
-            PlayerData pData = new PlayerData(p.getName(), money);
-            getBalTop().add( pData );
-            getBalTopName().put( pData.getName(), pData );
-        }
-
-        // Sort the getBalTop() List:
-        Collections.sort(getBalTop(), new PlayerComparator() );
-
-    }
-
-    public boolean hasBalance(OfflinePlayer p) {
-        return EconomyPlus.getInstance().getRDatabase().getList().contains(p.getName());
-    }
-
-    public boolean hasBalance(String s) {
-        return EconomyPlus.getInstance().getRDatabase().getList().contains(s);
-    }
-
-    public double getValue(OfflinePlayer p) {
-        return EconomyPlus.getInstance().getRDatabase().getTokens(p.getName());
-    }
 
     private void loadFromData() {
         getBalTop().clear();
 
         for ( String playerName : EconomyPlus.getInstance().getRDatabase().getList()) {
 
-            Double money = Double.valueOf(EconomyPlus.getInstance().getRDatabase().getTokens(playerName));
+            Double money = EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
 
             PlayerData pData = new PlayerData(playerName, money);
             getBalTop().add( pData );
@@ -65,12 +32,14 @@ public class Data {
         }
 
         Collections.sort( getBalTop(), new PlayerComparator() );
+
     }
 
 
     public List<PlayerData> getBalTop() {
         return balTop;
     }
+
     public Map<String, PlayerData> getBalTopName() {
         return balTopName;
     }
@@ -108,10 +77,6 @@ public class Data {
 
         public double getMoney() {
             return money;
-        }
-
-        public void setMoney(double money) {
-            this.money = money;
         }
 
     }

@@ -44,3 +44,16 @@ Format:
   B: "B"
   T: "T"
   Q: "Q"
+
+# Set a user balance on join
+Starting-Balance: 0.00
+
+# Baltop configuration
+Baltop:
+  # Like 1) _ItsWagPvP: 100$
+  Player-Format: "&6%number%) &f%player%: &c%money%$"
+  # The header of /baltop
+  Header:
+    - '&8&m-----------------'
+    - '&d&lBalTop (Page %page%)'
+    - '&8&m-----------------'

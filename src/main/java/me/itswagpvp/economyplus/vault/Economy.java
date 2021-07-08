@@ -15,11 +15,6 @@ public class Economy extends VEconomy {
         this.money = money;
     }
 
-    // Transforms a Double to a Long
-    private String toLong(double amt) {
-        return String.valueOf((long) amt);
-    }
-
     // Returns the money of a player
     public double getBalance() {
         return plugin.getRDatabase().getTokens(this.p.getName());

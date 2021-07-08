@@ -1,6 +1,7 @@
-package me.itswagpvp.economyplus.database;
+package me.itswagpvp.economyplus.database.local;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.local.Database;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,9 +36,10 @@ public class SQLite extends Database {
             }
         }
         try {
-            if(connection!=null&&!connection.isClosed()){
+            if(connection != null && !connection.isClosed()){
                 return connection;
             }
+
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
             return connection;

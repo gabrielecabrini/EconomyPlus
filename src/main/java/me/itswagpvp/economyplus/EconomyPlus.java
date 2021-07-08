@@ -1,14 +1,12 @@
 package me.itswagpvp.economyplus;
 
+import me.itswagpvp.economyplus.commands.*;
 import me.itswagpvp.economyplus.metrics.bStats;
-import me.itswagpvp.economyplus.commands.Bal;
-import me.itswagpvp.economyplus.commands.Eco;
-import me.itswagpvp.economyplus.commands.Main;
-import me.itswagpvp.economyplus.commands.Pay;
-import me.itswagpvp.economyplus.database.Database;
-import me.itswagpvp.economyplus.database.SQLite;
+import me.itswagpvp.economyplus.database.local.Database;
+import me.itswagpvp.economyplus.database.local.SQLite;
 import me.itswagpvp.economyplus.events.Join;
 import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
+import me.itswagpvp.economyplus.misc.Data;
 import me.itswagpvp.economyplus.misc.updater.UpdateMessage;
 import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
 import me.itswagpvp.economyplus.vault.VEconomy;
@@ -22,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public final class EconomyPlus extends JavaPlugin {
 
@@ -36,6 +35,7 @@ public final class EconomyPlus extends JavaPlugin {
 
     // plugin instance
     public static EconomyPlus plugin;
+    public static Data data;
 
     public static String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
     public static int ver = Integer.parseInt(split[1]);
@@ -85,7 +85,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
 
-        if (ver > 12) {
+        if (ver >= 12) {
             new UpdateMessage().updater(92975);
         }
 
@@ -98,9 +98,24 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
         Bukkit.getConsoleSender().sendMessage("             §dEconomyPlus");
         Bukkit.getConsoleSender().sendMessage("              §cDisabling");
-        Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
+        Bukkit.getConsoleSender().sendMessage("");
+        Bukkit.getConsoleSender().sendMessage("§f-> §cUnhooking from Vault");
 
         hook.offHook();
+
+        Bukkit.getConsoleSender().sendMessage("§f-> §cClosing database connection");
+
+        try {
+            getRDatabase().getSQLConnection().close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
+
+
+
+
     }
 
     public void loadEconomy () {
@@ -145,6 +160,8 @@ public final class EconomyPlus extends JavaPlugin {
 
     public void loadCommands() {
         try {
+            getCommand("baltop").setExecutor(new BalTop());
+            getCommand("baltop").setTabCompleter(new ConstructorTabCompleter());
 
             getCommand("economyplus").setExecutor(new Main());
             getCommand("economyplus").setTabCompleter(new ConstructorTabCompleter());
@@ -249,4 +266,14 @@ public final class EconomyPlus extends JavaPlugin {
 
         return ChatColor.translateAlternateColorCodes('&', getMessagesFile().getString(path));
     }
+
+    public Data getData() {
+
+        if (data == null) {
+            data = new Data();
+            new Data();
+        }
+        return data;
+    }
+
 }

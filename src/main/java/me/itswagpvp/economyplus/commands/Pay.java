@@ -50,6 +50,12 @@ public class Pay implements CommandExecutor {
             return true;
         }
 
+        if (args[1].startsWith("-")) {
+            p.sendMessage(plugin.getMessage("InvalidArgs.Pay"));
+            Utils.playErrorSound(p);
+            return true;
+        }
+
         double money;
         try {
             money = Double.parseDouble(args[1]);

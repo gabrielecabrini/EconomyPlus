@@ -21,3 +21,7 @@ commands:
     usage: /<command>
   pay:
     usage: /<command>
+  baltop:
+    aliases:
+      - balancetop
+    usage: /<command>

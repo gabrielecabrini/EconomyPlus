@@ -65,9 +65,11 @@ public class Utils {
 
             EconomyPlus.plugin.createMessagesConfig();
 
+            EconomyPlus.data = new Data();
+            new Data();
+
         }catch (Exception e) {
-            p.sendMessage("§cError on reloading the plugin!");
-            p.sendMessage(e.getMessage());
+            p.sendMessage("§cError on reloading the plugin! (" + e.getMessage() + ")");
             return;
         } finally {
             p.sendMessage(EconomyPlus.plugin.getMessage("Reload")
@@ -75,10 +77,6 @@ public class Utils {
             return;
         }
 
-    }
-
-    public String toLong(double amt) {
-        return String.valueOf((long) amt);
     }
 
     public String format(double d) {

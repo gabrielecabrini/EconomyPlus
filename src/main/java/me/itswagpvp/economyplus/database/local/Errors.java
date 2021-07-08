@@ -1,4 +1,4 @@
-package me.itswagpvp.economyplus.database;
+package me.itswagpvp.economyplus.database.local;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 

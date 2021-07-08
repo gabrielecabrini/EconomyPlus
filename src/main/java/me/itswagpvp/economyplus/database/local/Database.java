@@ -1,4 +1,4 @@
-package me.itswagpvp.economyplus.database;
+package me.itswagpvp.economyplus.database.local;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
@@ -9,8 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 
 public abstract class Database {
@@ -41,21 +40,31 @@ public abstract class Database {
     }
 
     public double getTokens(String player) {
-        Connection conn = getSQLConnection();
-        try (
-                PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
-                ResultSet rs = ps.executeQuery()
-        ) {
-            while(rs.next()){
-                if(rs.getString("player").equalsIgnoreCase(player)){ // Tell database to search for the player you sent into the method. e.g getTokens(sam) It will look for sam.
-                    return rs.getDouble("moneys"); // Return the players amount of moneys. If you wanted to get total (just a random number for an example for you guys) You would change this to total!
-                }
-            }
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
-        }
-        return 0;
 
+        CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
+            Connection conn = getSQLConnection();
+            try (
+                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    ResultSet rs = ps.executeQuery()
+            ) {
+                while(rs.next()){
+                    if(rs.getString("player").equalsIgnoreCase(player)){ // Tell database to search for the player you sent into the method. e.g getTokens(sam) It will look for sam.
+                        return rs.getDouble("moneys"); // Return the players amount of moneys. If you wanted to get total (just a random number for an example for you guys) You would change this to total!
+                    }
+                }
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+            }
+            return 0.00;
+                });
+
+        try {
+            return getDouble.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return 0.00;
     }
 
     // Now we need methods to save things to the database
