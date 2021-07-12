@@ -15,7 +15,7 @@ public class Main implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("§d§lEconomyPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
+            sender.sendMessage("§d§lEconomy§5§lPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
             sender.sendMessage("§7For help do /economyplus help");
             return true;
         }
@@ -48,7 +48,7 @@ public class Main implements CommandExecutor {
                 }
 
                 sender.sendMessage("§8+------------------------------------+");
-                sender.sendMessage("             §dEconomyPlus");
+                sender.sendMessage("             §dEconomy§5Plus");
                 sender.sendMessage("                §4Debug");
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7MC-Version of the server: §c" + Bukkit.getBukkitVersion());
@@ -63,13 +63,14 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Vault Version: §d" + Bukkit.getServer().getPluginManager().getPlugin("Vault").getDescription().getVersion());
                 sender.sendMessage("§f-> §7PlaceholderAPI: §a" + Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"));
+                sender.sendMessage("§f-> §7MVdWPlaceholderAPI: §a" + Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI"));
                 sender.sendMessage("§8+------------------------------------+");
 
                 return true;
             }
 
             if (args[0].equalsIgnoreCase("help")) {
-                sender.sendMessage("§d§lEconomyPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
+                sender.sendMessage("§d§lEconomy§5§lPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
                 sender.sendMessage("§7If you need support, join the discord server!");
                 sender.sendMessage("§f-> §9https://discord.io/wagsupport");
 

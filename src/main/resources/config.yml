@@ -20,6 +20,7 @@ Metrics: true
 Hooks:
   # Placeholders
   PlaceholderAPI: true
+  MVdWPlaceholderAPI: true
 
 # Check for updates
 Updater:

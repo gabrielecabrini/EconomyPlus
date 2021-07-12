@@ -25,7 +25,7 @@ public class UpdateMessage {
 
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EconomyPlus.plugin, () -> {
                 Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
-                Bukkit.getConsoleSender().sendMessage("            §dEconomyPlus");
+                Bukkit.getConsoleSender().sendMessage("            §dEconomy§5Plus");
                 Bukkit.getConsoleSender().sendMessage("              §eUpdater");
                 Bukkit.getConsoleSender().sendMessage("§8");
                 Bukkit.getConsoleSender().sendMessage("§f-> New version available! §av" + version);

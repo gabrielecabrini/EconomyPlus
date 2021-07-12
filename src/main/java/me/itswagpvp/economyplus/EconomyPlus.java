@@ -8,7 +8,6 @@ import me.itswagpvp.economyplus.events.Join;
 import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
 import me.itswagpvp.economyplus.misc.Data;
 import me.itswagpvp.economyplus.misc.updater.UpdateMessage;
-import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
 import org.bukkit.Bukkit;
@@ -53,7 +52,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         if (!setupEconomy()) {
             Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
-            Bukkit.getConsoleSender().sendMessage("             §dEconomyPlus");
+            Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
             Bukkit.getConsoleSender().sendMessage("              §cDisabling");
             Bukkit.getConsoleSender().sendMessage("§8");
             Bukkit.getConsoleSender().sendMessage("§f-> §cCan't find Vault!");
@@ -63,13 +62,18 @@ public final class EconomyPlus extends JavaPlugin {
         }
 
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
-        Bukkit.getConsoleSender().sendMessage("             §dEconomyPlus");
+        Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
         Bukkit.getConsoleSender().sendMessage("              §aEnabling");
         Bukkit.getConsoleSender().sendMessage("§8");
+
+        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core!");
 
         loadDatabase();
 
         loadEconomy();
+
+        Bukkit.getConsoleSender().sendMessage("§8");
+        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading miscellaneous!");
 
         loadEvents();
 
@@ -96,7 +100,7 @@ public final class EconomyPlus extends JavaPlugin {
         // Plugin shutdown logic
 
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
-        Bukkit.getConsoleSender().sendMessage("             §dEconomyPlus");
+        Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
         Bukkit.getConsoleSender().sendMessage("              §cDisabling");
         Bukkit.getConsoleSender().sendMessage("");
         Bukkit.getConsoleSender().sendMessage("§f-> §cUnhooking from Vault");
@@ -125,11 +129,11 @@ public final class EconomyPlus extends JavaPlugin {
 
             hook.onHook();
         }catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("§f-> §cError on hooking with Vault!");
+            Bukkit.getConsoleSender().sendMessage("   - §fVault: §CError");
             plugin.getServer().getPluginManager().disablePlugin(this);
             return;
         } finally {
-            Bukkit.getConsoleSender().sendMessage("§f-> §aHooked with Vault!");
+            Bukkit.getConsoleSender().sendMessage("   - §fVault: §6Hooked");
         }
     }
 
@@ -142,7 +146,7 @@ public final class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
         } finally {
-            Bukkit.getConsoleSender().sendMessage("§f-> §bDatabase loaded! (database.db)");
+            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (SQLite)");
         }
     }
 
@@ -150,11 +154,11 @@ public final class EconomyPlus extends JavaPlugin {
         try {
             Bukkit.getPluginManager().registerEvents(new Join(), this);
         }catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("§f-> §cError loading the events!");
+            Bukkit.getConsoleSender().sendMessage("   - §fEvents: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
         } finally {
-            Bukkit.getConsoleSender().sendMessage("§f-> §aEvents loaded");
+            Bukkit.getConsoleSender().sendMessage("   - §fEvents: §aLoaded");
         }
     }
 
@@ -176,11 +180,11 @@ public final class EconomyPlus extends JavaPlugin {
             getCommand("eco").setTabCompleter(new ConstructorTabCompleter());
 
         }catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("§f-> §cError loading the commands!");
+            Bukkit.getConsoleSender().sendMessage("   - §fCommands: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
         } finally {
-            Bukkit.getConsoleSender().sendMessage("§f-> §aCommands loaded");
+            Bukkit.getConsoleSender().sendMessage("   - §fCommands: §aLoaded");
         }
     }
 
@@ -194,34 +198,28 @@ public final class EconomyPlus extends JavaPlugin {
         try {
             new bStats(this, 11565);
         }catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("§f-> §cError on loading the metrics:");
+            Bukkit.getConsoleSender().sendMessage("   - §fMetrics: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
         } finally {
-            Bukkit.getConsoleSender().sendMessage("§f-> §aMetrics loaded!");
+            Bukkit.getConsoleSender().sendMessage("   - §fMetrics: §aLoaded");
         }
     }
 
-    // Hooks with placeholderapi
     public void loadPlaceholders() {
-        if (!getConfig().getBoolean("Hooks.PlaceholderAPI")) {
-            return;
-        }
 
-        if (!Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            Bukkit.getConsoleSender().sendMessage("§f-> §cCould not find PlaceholderAPI! Install it to use placeholders!");
-            return;
-        }
+        // Messages
 
-        try {
-            new PlaceholderAPI(this).register();
-        }catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("§f-> §cError on hooking with PlaceholderAPI!");
-            Bukkit.getConsoleSender().sendMessage(e.getMessage());
-            return;
-        }finally {
-            Bukkit.getConsoleSender().sendMessage("§f-> §aHooked with PlaceholderAPI!");
-        }
+        Bukkit.getConsoleSender().sendMessage("§f");
+        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading placeholders:");
+
+        // MVdWPlaceholderAPI
+        new Utils().loadMVdWPlaceholderAPI();
+
+        // PlaceholderAPI
+
+        new Utils().loadPlaceholderAPI();
+        Bukkit.getConsoleSender().sendMessage("§f");
     }
 
     // Returns plugin instance
