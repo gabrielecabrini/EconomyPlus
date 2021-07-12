@@ -35,7 +35,7 @@ public class Economy extends VEconomy {
     // Remove moneys from a player's account
     public void takeBalance() {
         super.withdrawPlayer(this.p.getName(), this.money);
-        double result = this.money - getBalance();
+        double result = getBalance() - this.money;
         plugin.getRDatabase().setTokens(this.p.getName(), result);
     }
 
