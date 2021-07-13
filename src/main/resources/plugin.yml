@@ -5,9 +5,9 @@ api-version: 1.13
 authors: [ _ItsWagPvP ]
 load: POSTWORLD
 softdepend:
+  - Vault
   - PlaceholderAPI
   - MVdWPlaceholderAPI
-  - Vault
 commands:
   economyplus:
     aliases:
@@ -23,6 +23,7 @@ commands:
   pay:
     usage: /<command>
   baltop:
+    usage: /<command>
     aliases:
       - balancetop
     usage: /<command>

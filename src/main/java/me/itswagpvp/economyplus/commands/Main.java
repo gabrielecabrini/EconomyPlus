@@ -2,6 +2,7 @@ package me.itswagpvp.economyplus.commands;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Utils;
+import me.itswagpvp.economyplus.storage.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -58,8 +59,11 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§f-> §7Server software: §6" + Bukkit.getName());
                 sender.sendMessage("§f-> §7Software version: §6" + Bukkit.getVersion());
                 sender.sendMessage("§a");
+                sender.sendMessage("§f-> §7Database: §b" + plugin.getConfig().getString("Database.Type"));
+                sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Online players: §3" + Bukkit.getServer().getOnlinePlayers().size());
-                sender.sendMessage("§f-> §7Players saved: §3" + EconomyPlus.getInstance().getRDatabase().getList().size());
+                sender.sendMessage("§f-> §7Players saved (SQLite): §3" + EconomyPlus.getInstance().getRDatabase().getList().size());
+                sender.sendMessage("§f-> §7Players saved (MySQL): §3" + new MySQL().getList().size());
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Vault Version: §d" + Bukkit.getServer().getPluginManager().getPlugin("Vault").getDescription().getVersion());
                 sender.sendMessage("§f-> §7PlaceholderAPI: §a" + Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"));

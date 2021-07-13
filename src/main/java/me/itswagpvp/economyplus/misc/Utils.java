@@ -66,6 +66,9 @@ public class Utils {
             plugin.saveDefaultConfig();
             plugin.reloadConfig();
 
+            EconomyPlus.data = new Data();
+            new Data();
+
             plugin.createMessagesConfig();
 
             EconomyPlus.data = new Data();
@@ -77,7 +80,6 @@ public class Utils {
         } finally {
             p.sendMessage(plugin.getMessage("Reload")
                     .replaceAll("%time%", "" + (System.currentTimeMillis() - before)));
-            return;
         }
 
     }

@@ -2,6 +2,7 @@ package me.itswagpvp.economyplus.events;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.updater.UpdateChecker;
+import me.itswagpvp.economyplus.storage.mysql.MySQL;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -58,12 +59,31 @@ public class Join implements Listener {
                 //
 
                 p.sendMessage("§d[EconomyPlus] §7Found an update: v" + version + " §e(You have v" + currentVersion + ")");
-                TextComponent message = new TextComponent("§Click this message to download the newer version!");
+                TextComponent message = new TextComponent("§cClick this message to download the newer version!");
                 message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/92975/"));
                 message.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( "§dOpen the spigot page!" ).create() ) );
                 p.spigot().sendMessage(message);
 
             }, 0);
         });
+    }
+
+    @EventHandler
+    public void setStartBalance (PlayerJoinEvent event) {
+
+        if (event.getPlayer().hasPlayedBefore()) {
+            return;
+        }
+
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            plugin.getRDatabase().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Balance"));
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Balance"));
+        }
+
     }
 }

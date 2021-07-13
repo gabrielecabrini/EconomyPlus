@@ -1,7 +1,6 @@
-package me.itswagpvp.economyplus.database.local;
+package me.itswagpvp.economyplus.storage.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.local.Database;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +14,7 @@ public class SQLite extends Database {
     String dbname;
     public SQLite(EconomyPlus instance) {
         super(instance);
-        dbname = "database"; // Set the table name here e.g player_kills
+        dbname = "database";
     }
 
     // SQL Query
@@ -26,7 +25,7 @@ public class SQLite extends Database {
             ");";
 
     // Creates the SQL database file
-    public Connection getSQLConnection() {
+    public Connection getSQLiteConnection() {
         File dataFolder = new File(plugin.getDataFolder(), dbname+".db");
         if (!dataFolder.exists()){
             try {
@@ -36,10 +35,9 @@ public class SQLite extends Database {
             }
         }
         try {
-            if(connection != null && !connection.isClosed()){
+            if(connection!=null&&!connection.isClosed()){
                 return connection;
             }
-
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
             return connection;
@@ -54,7 +52,7 @@ public class SQLite extends Database {
     // Creates the table and tokens
     @Override
     public void load() {
-        connection = getSQLConnection();
+        connection = getSQLiteConnection();
         try {
             Statement s = connection.createStatement();
             s.executeUpdate(SQLiteCreateTokensTable);

@@ -5,6 +5,7 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class will be registered through the register-method in the
@@ -51,12 +52,12 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
     /**
      * The name of the person who created this expansion should go here.
-     * <br>For convienience do we return the author from the plugin.yml
+     * <br>For convenience do we return the author from the plugin.yml
      *
      * @return The name of the author as a String.
      */
     @Override
-    public String getAuthor(){
+    public @NotNull String getAuthor(){
         return plugin.getDescription().getAuthors().toString();
     }
 
@@ -70,7 +71,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return The identifier in {@code %<identifier>_<value>%} as String.
      */
     @Override
-    public String getIdentifier(){
+    public @NotNull String getIdentifier(){
         return "economyplus";
     }
 
@@ -78,12 +79,12 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * This is the version of the expansion.
      * <br>You don't have to use numbers, since it is set as a String.
      *
-     * For convienience do we return the version from the plugin.yml
+     * For convenience do we return the version from the plugin.yml
      *
      * @return The version as a String.
      */
     @Override
-    public String getVersion(){
+    public @NotNull String getVersion(){
         return plugin.getDescription().getVersion();
     }
 
@@ -101,7 +102,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return possibly-null String of the requested identifier.
      */
 
-    public String onPlaceholderRequest(Player player, String identifier){
+    public String onPlaceholderRequest(Player player, @NotNull String identifier){
 
         if(player == null){
             return "";

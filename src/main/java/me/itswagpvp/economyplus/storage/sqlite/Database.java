@@ -1,4 +1,4 @@
-package me.itswagpvp.economyplus.database.local;
+package me.itswagpvp.economyplus.storage.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
 public abstract class Database {
@@ -23,40 +24,41 @@ public abstract class Database {
         plugin = instance;
     }
 
-    public abstract Connection getSQLConnection();
+    public abstract Connection getSQLiteConnection();
 
     public abstract void load();
 
-    public void initialize(){
-        connection = getSQLConnection();
-        try{
+    public void initialize () {
+        connection = getSQLiteConnection();
+        try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
             ResultSet rs = ps.executeQuery();
             close(ps,rs);
 
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Unable to retreive connection", ex);
+            plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
         }
     }
 
+    // Retrieve the balance of the player
     public double getTokens(String player) {
 
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
-            Connection conn = getSQLConnection();
+            Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
                     ResultSet rs = ps.executeQuery()
             ) {
                 while(rs.next()){
-                    if(rs.getString("player").equalsIgnoreCase(player)){ // Tell database to search for the player you sent into the method. e.g getTokens(sam) It will look for sam.
-                        return rs.getDouble("moneys"); // Return the players amount of moneys. If you wanted to get total (just a random number for an example for you guys) You would change this to total!
+                    if(rs.getString("player").equalsIgnoreCase(player)){
+                        return rs.getDouble("moneys");
                     }
                 }
             } catch (SQLException ex) {
                 plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
             }
             return 0.00;
-                });
+        });
 
         try {
             return getDouble.get();
@@ -67,10 +69,10 @@ public abstract class Database {
         return 0.00;
     }
 
-    // Now we need methods to save things to the database
-    public void setTokens(String player, double tokens) {
+    // Save the balance to the player's database
+    public void setTokens (String player, double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
-            Connection conn = getSQLConnection();
+            Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys) VALUES(?,?)")
             ){
@@ -90,7 +92,7 @@ public abstract class Database {
     // Gets the list of the players in the database
     public List<String> getList () {
         CompletableFuture<List<String>> getList = CompletableFuture.supplyAsync(() -> {
-            Connection conn = getSQLConnection();
+            Connection conn = getSQLiteConnection();
             List<String> list = new ArrayList<>();
             try (
                     PreparedStatement ps = conn.prepareStatement("SELECT player FROM 'data'");

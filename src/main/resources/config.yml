@@ -58,3 +58,22 @@ Baltop:
     - '&8&m-----------------'
     - '&d&lBalTop (Page %page%)'
     - '&8&m-----------------'
+
+# Select how to storage the data
+Database:
+  # H2 (database.db file)
+  # MySQL
+  Type: H2
+  # If you have set Type to H2 you have to ignore this section
+  # Localhost connection
+  Host: localhost
+  # Default is 3306
+  Port: 3306
+  # The user for use MySQL connection
+  User: root
+  # Password of the user
+  Password: qwerty
+  # Database name
+  Database: EconomyPlus
+  # If you have not set up the table the plugin will create it for you!
+  Table: economy

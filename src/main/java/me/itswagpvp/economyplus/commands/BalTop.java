@@ -3,12 +3,10 @@ package me.itswagpvp.economyplus.commands;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Data;
 import me.itswagpvp.economyplus.misc.Utils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.List;
 

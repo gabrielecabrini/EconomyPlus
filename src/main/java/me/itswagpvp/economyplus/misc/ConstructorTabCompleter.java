@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,12 +33,10 @@ public class ConstructorTabCompleter implements TabCompleter {
                     return playerNames;
                 }
                 case 2: {
-                    List<String> listUse = Arrays.asList("set", "give", "take");
-                    return listUse;
+                    return Arrays.asList("give", "set", "take");
                 }
                 case 3: {
-                    List<String> listMoney = Arrays.asList("0", "100", "1000");
-                    return listMoney;
+                    return Arrays.asList("0", "100", "1000");
                 }
                 default:
                     return listDefault;
@@ -49,8 +48,7 @@ public class ConstructorTabCompleter implements TabCompleter {
             int i = (args.length);
             switch (i) {
                 case 1: {
-                    List<String> listUse = Arrays.asList("help", "debug", "reload");
-                    return listUse;
+                    return Arrays.asList("help", "debug", "reload");
                 }
                 default:
                     return listDefault;
@@ -78,8 +76,7 @@ public class ConstructorTabCompleter implements TabCompleter {
                 }
 
                 case 2: {
-                    List<String> numbers = Arrays.asList("10", "100", "1000");
-                    return numbers;
+                    return Arrays.asList("10", "100", "1000");
                 }
 
                 default:
@@ -94,6 +91,18 @@ public class ConstructorTabCompleter implements TabCompleter {
                 case 1: {
                     List<String> numbers = Arrays.asList("1", "2", "3");
                     return numbers;
+                }
+                default:
+                    return listDefault;
+            }
+        }
+
+        // /baltop
+        if (command.getName().equalsIgnoreCase("baltop")) {
+            int i = (args.length);
+            switch (i) {
+                case 1: {
+                    return Arrays.asList("1", "2", "3");
                 }
                 default:
                     return listDefault;

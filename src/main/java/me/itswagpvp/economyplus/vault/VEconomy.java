@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.storage.mysql.MySQL;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -12,6 +13,7 @@ import java.util.Locale;
 public class VEconomy implements Economy {
 
     public EconomyPlus plugin;
+
 
     public VEconomy (EconomyPlus plugin) {
         this.plugin = plugin;
@@ -57,7 +59,22 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return EconomyPlus.getInstance().getRDatabase().getList().contains(playerName);
+
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+
+            return EconomyPlus.getInstance().getRDatabase().getList().contains(playerName);
+
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+
+            return new MySQL().getList().contains(playerName);
+
+        }
+
+        return false;
     }
 
     @Override
@@ -77,7 +94,18 @@ public class VEconomy implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
+
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            return EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            return new MySQL().getTokens(playerName);
+        }
+
+        return 0D;
     }
 
     @Override
@@ -97,11 +125,19 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
+        String type = plugin.getConfig().getString("Database.Type");
 
-        double playerMoney = EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
-        double detracting = amount;
+        double playerMoney = 0;
 
-        return (playerMoney - detracting) >= 0;
+        if (type.equalsIgnoreCase("H2")) {
+            playerMoney = EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            playerMoney = new MySQL().getTokens(playerName);
+        }
+
+        return (playerMoney - amount) >= 0;
     }
 
     @Override
@@ -123,16 +159,33 @@ public class VEconomy implements Economy {
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         double tokens = getBalance(playerName) - amount;
 
-        EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
-        return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "Done");
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(playerName, tokens);
+        }
+
+        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
         double tokens = getBalance(player) - amount;
 
-        EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
-        return new EconomyResponse(amount, getBalance(player), EconomyResponse.ResponseType.SUCCESS, "Done");
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(player.getName(), tokens);
+        }
+        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
@@ -140,50 +193,104 @@ public class VEconomy implements Economy {
 
         double tokens = getBalance(playerName) - amount;
 
-        EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
-        return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "Done");
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(playerName, tokens);
+        }
+
+        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
         double tokens = getBalance(player) - amount;
 
-        EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
-        return new EconomyResponse(amount, getBalance(player.getName()), EconomyResponse.ResponseType.SUCCESS, "Done");
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(player.getName(), tokens);
+        }
+
+        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
         double tokens = getBalance(playerName) + amount;
-        EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
 
-        return new EconomyResponse(amount, getBalance(playerName),EconomyResponse.ResponseType.SUCCESS, "Done");
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(playerName, tokens);
+        }
+
+        return new EconomyResponse(amount, tokens,EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
         double tokens = getBalance(player) + amount;
-        EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
 
-        return new EconomyResponse(amount, getBalance(player.getName()),EconomyResponse.ResponseType.SUCCESS, "Done");
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(player.getName(), tokens);
+        }
+
+        return new EconomyResponse(amount, tokens,EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
 
         double tokens = getBalance(playerName) + amount;
-        EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
 
-        return new EconomyResponse(amount, getBalance(playerName),EconomyResponse.ResponseType.SUCCESS, "Done");
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(playerName, tokens);
+        }
+
+        return new EconomyResponse(amount, tokens,EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
 
         double tokens = getBalance(player) + amount;
-        EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
 
-        return new EconomyResponse(amount, getBalance(player.getName()),EconomyResponse.ResponseType.SUCCESS, "Done");
+        String type = plugin.getConfig().getString("Database.Type");
+
+        if (type.equalsIgnoreCase("H2")) {
+            EconomyPlus.getInstance().getRDatabase().setTokens(player.getName(), tokens);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setTokens(player.getName(), tokens);
+        }
+
+        return new EconomyResponse(amount, tokens,EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override

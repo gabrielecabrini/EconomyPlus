@@ -1,7 +1,8 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import org.bukkit.OfflinePlayer;
+import me.itswagpvp.economyplus.storage.mysql.MySQL;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 
@@ -9,12 +10,20 @@ public class Data {
 
     public List<PlayerData> balTop;
     public Map<String,PlayerData> balTopName;
+    private final String type = EconomyPlus.getInstance().getConfig().getString("Database.Type");
 
     public Data() {
         this.balTop = new ArrayList<>();
         this.balTopName = new TreeMap<>();
 
-        loadFromData();
+        if (type.equalsIgnoreCase("H2")) {
+            loadFromH2Data();
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            loadFromSQLData();
+        }
+
     }
 
 
@@ -35,6 +44,23 @@ public class Data {
 
     }
 
+    private void loadFromSQLData() {
+        getBalTop().clear();
+
+        for ( String playerName : new MySQL().getList()) {
+
+            Double money = new MySQL().getTokens(playerName);
+
+            PlayerData pData = new PlayerData(playerName, money);
+            getBalTop().add( pData );
+            getBalTopName().put( pData.getName(), pData );
+
+        }
+
+        Collections.sort( getBalTop(), new PlayerComparator() );
+
+    }
+
 
     public List<PlayerData> getBalTop() {
         return balTop;
@@ -44,7 +70,7 @@ public class Data {
         return balTopName;
     }
 
-    public class PlayerComparator
+    public static class PlayerComparator
             implements Comparator<PlayerData> {
 
         @Override
@@ -58,10 +84,10 @@ public class Data {
         }
     }
 
-    public class PlayerData {
+    public static class PlayerData {
 
         private final String name;
-        private double money;
+        private final double money;
 
         public PlayerData(String name, double money) {
             super();

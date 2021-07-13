@@ -32,6 +32,8 @@ public final class EconomyPlus extends JavaPlugin {
     public static VEconomy veco;
     public static VHook hook;
 
+    public static Data data;
+
     // plugin instance
     public static EconomyPlus plugin;
     public static Data data;
@@ -110,7 +112,17 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§f-> §cClosing database connection");
 
         try {
-            getRDatabase().getSQLConnection().close();
+
+            String type = plugin.getConfig().getString("Database.Type");
+
+            if (type.equalsIgnoreCase("H2")) {
+                getRDatabase().getSQLiteConnection().close();
+            }
+
+            if (type.equalsIgnoreCase("MySQL")) {
+                new MySQL().closeConnection();
+            }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -130,22 +142,38 @@ public final class EconomyPlus extends JavaPlugin {
             hook.onHook();
         }catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fVault: §CError");
-            plugin.getServer().getPluginManager().disablePlugin(this);
+            e.printStackTrace();
             return;
-        } finally {
-            Bukkit.getConsoleSender().sendMessage("   - §fVault: §6Hooked");
         }
+
+        Bukkit.getConsoleSender().sendMessage("   - §fVault: §6Hooked");
     }
 
     // Loads the SQLite database
     public void loadDatabase() {
-        try {
-            this.db = new SQLite(this);
-            this.db.load();
-        }catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage(e.getMessage());
-            return;
-        } finally {
+        if (getConfig().getString("Database.Type").equalsIgnoreCase("MySQL")) {
+            try {
+                new MySQL().connect();
+                new MySQL().createTable();
+            } catch (Exception e) {
+                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (MySQL)");
+                Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                return;
+            }
+
+            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (MySQL)");
+        }
+
+        if (getConfig().getString("Database.Type").equalsIgnoreCase("H2")) {
+            try {
+                this.db = new SQLite(this);
+                this.db.load();
+            }catch (Exception e) {
+                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (SQLite)");
+                Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                return;
+            }
+
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (SQLite)");
         }
     }
@@ -153,13 +181,13 @@ public final class EconomyPlus extends JavaPlugin {
     public void loadEvents() {
         try {
             Bukkit.getPluginManager().registerEvents(new Join(), this);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fEvents: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
-        } finally {
-            Bukkit.getConsoleSender().sendMessage("   - §fEvents: §aLoaded");
         }
+
+        Bukkit.getConsoleSender().sendMessage("   - §fEvents: §aLoaded");
     }
 
     public void loadCommands() {
@@ -183,9 +211,8 @@ public final class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("   - §fCommands: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
-        } finally {
-            Bukkit.getConsoleSender().sendMessage("   - §fCommands: §aLoaded");
         }
+        Bukkit.getConsoleSender().sendMessage("   - §fCommands: §aLoaded");
     }
 
     // Loads the bStats metrics
@@ -201,9 +228,8 @@ public final class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("   - §fMetrics: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
-        } finally {
-            Bukkit.getConsoleSender().sendMessage("   - §fMetrics: §aLoaded");
         }
+        Bukkit.getConsoleSender().sendMessage("   - §fMetrics: §aLoaded");
     }
 
     public void loadPlaceholders() {
@@ -225,6 +251,15 @@ public final class EconomyPlus extends JavaPlugin {
     // Returns plugin instance
     public static EconomyPlus getInstance() {
         return plugin;
+    }
+
+    public Data getData() {
+
+        if (data == null) {
+            data = new Data();
+            new Data();
+        }
+        return data;
     }
 
     // Returns the database
