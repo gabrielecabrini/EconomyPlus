@@ -1,4 +1,4 @@
-EconomyPlus 1.0
+EconomyPlus 1.4
 
 Minecraft plugin (Economy) for 1.8 to 1.17.1
 https://www.spigotmc.org/resources/economyplus.92975/
