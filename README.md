@@ -5,6 +5,6 @@ https://www.spigotmc.org/resources/economyplus.92975/
 
 To-Do list:
 - HolographicDisplays hook for the BalTop
+- Add an option to disable the decimal like 0 in front of 0.00
 
 If you find any issue please create a ticket on the support discord or report it on the GitHub issues page.
-
