@@ -1,7 +1,7 @@
 name: EconomyPlus
 on: [push]
 jobs:
-  check-bats-version:
+  check-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
