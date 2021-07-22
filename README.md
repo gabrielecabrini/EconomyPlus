@@ -1,5 +1,7 @@
 EconomyPlus 1.5
 
+![Downloads](https://img.shields.io/spiget/downloads/92975?style=for-the-badge) ![Rating](https://img.shields.io/spiget/stars/92975?style=for-the-badge)
+
 Minecraft plugin (Economy) for 1.8 to 1.17.1
 https://www.spigotmc.org/resources/economyplus.92975/
 
