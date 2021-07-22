@@ -24,7 +24,7 @@ public class BalTop implements CommandExecutor {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            List<String> header = plugin.getConfig().getStringList("Baltop.Header");
+            List<String> header = plugin.getConfig().getStringList("Baltop.Chat.Header");
 
             EconomyPlus.data = new Data();
             new Data();
@@ -54,7 +54,7 @@ public class BalTop implements CommandExecutor {
                 String name = pData.getName();
                 double money = pData.getMoney();
 
-                sender.sendMessage(plugin.getConfig().getString("Baltop.Player-Format")
+                sender.sendMessage(plugin.getConfig().getString("Baltop.Chat.Player-Format")
                         .replaceAll("&", "§")
                         .replaceAll("%number%", "" + (i + 1))
                         .replaceAll("%player%", "" + name)

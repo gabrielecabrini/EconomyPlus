@@ -8,6 +8,7 @@ softdepend:
   - Vault
   - PlaceholderAPI
   - MVdWPlaceholderAPI
+  - HolographicDisplays
 commands:
   economyplus:
     aliases:

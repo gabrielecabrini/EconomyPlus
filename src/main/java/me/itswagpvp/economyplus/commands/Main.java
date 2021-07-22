@@ -1,13 +1,16 @@
 package me.itswagpvp.economyplus.commands;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.storage.mysql.MySQL;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 public class Main implements CommandExecutor {
 
@@ -77,6 +80,32 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§d§lEconomy§5§lPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
                 sender.sendMessage("§7If you need support, join the discord server!");
                 sender.sendMessage("§f-> §9https://discord.io/wagsupport");
+
+                return true;
+            }
+
+            if (args[0].equalsIgnoreCase("hologram")) {
+
+                if (sender instanceof ConsoleCommandSender) {
+                    sender.sendMessage(plugin.getMessage("NoConsole"));
+                    return true;
+                }
+
+                Player p = (Player) sender;
+
+                if (!p.hasPermission("economyplus.hologram")) {
+                    p.sendMessage(plugin.getMessage("NoPerms"));
+                }
+
+                Location loc = p.getLocation();
+
+                plugin.getConfig().set("Hologram.World", loc.getWorld().getName());
+                plugin.getConfig().set("Hologram.X", loc.getX());
+                plugin.getConfig().set("Hologram.Y", loc.getY());
+                plugin.getConfig().set("Hologram.Z", loc.getZ());
+                plugin.saveConfig();
+
+                new HolographicDisplays().createHologram();
 
                 return true;
             }

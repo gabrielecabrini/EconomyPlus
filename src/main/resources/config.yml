@@ -21,6 +21,7 @@ Hooks:
   # Placeholders
   PlaceholderAPI: true
   MVdWPlaceholderAPI: true
+  HolographicDisplays: true
 
 # Check for updates
 Updater:
@@ -51,14 +52,21 @@ Starting-Balance: 0.00
 
 # Baltop configuration
 Baltop:
-  # Like 1) _ItsWagPvP: 100$
-  Player-Format: "&6%number%) &f%player%: &c%money%$"
-  # The header of /baltop
-  Header:
-    - '&8&m-----------------'
-    - '&d&lBalTop (Page %page%)'
-    - '&8&m-----------------'
-
+  Chat:
+    # Like 1) _ItsWagPvP: 100$
+    Player-Format: "&6%number%) &f%player%: &c%money%$"
+    # The header of /baltop
+    Header:
+      - '&8&m-----------------'
+      - '&d&lBalTop (Page %page%)'
+      - '&8&m-----------------'
+  # This is for the hologram! (/ep hologram)
+  Hologram:
+    Player-Format: "&6%number%) &f%player%: &c%money%$"
+    Header:
+      - '&8&m-----------------'
+      - '&d&lBalTop'
+      - '&8&m-----------------'
 # Select how to storage the data
 Database:
   # H2 (database.db file)
@@ -77,3 +85,4 @@ Database:
   Database: EconomyPlus
   # If you have not set up the table the plugin will create it for you!
   Table: economy
+

@@ -23,6 +23,8 @@ import java.sql.SQLException;
 
 public final class EconomyPlus extends JavaPlugin {
 
+    public boolean useHolographicDisplays;
+
     private FileConfiguration messagesConfig;
 
     // Database
@@ -50,6 +52,9 @@ public final class EconomyPlus extends JavaPlugin {
         long before = System.currentTimeMillis();
 
         saveDefaultConfig();
+
+        plugin.getConfig().options().copyDefaults(true);
+
         createMessagesConfig();
 
         if (!setupEconomy()) {
@@ -74,14 +79,19 @@ public final class EconomyPlus extends JavaPlugin {
 
         loadEconomy();
 
-        Bukkit.getConsoleSender().sendMessage("§8");
-        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading miscellaneous!");
-
         loadEvents();
 
         loadCommands();
 
+        Bukkit.getConsoleSender().sendMessage("§8");
+        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks!");
+
         loadMetrics();
+
+        loadHolograms();
+
+        Bukkit.getConsoleSender().sendMessage("§f");
+        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading placeholders:");
 
         loadPlaceholders();
 
@@ -225,19 +235,42 @@ public final class EconomyPlus extends JavaPlugin {
         try {
             new bStats(this, 11565);
         }catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("   - §fMetrics: §cError");
+            Bukkit.getConsoleSender().sendMessage("   - §fbStats: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
         }
-        Bukkit.getConsoleSender().sendMessage("   - §fMetrics: §aLoaded");
+        Bukkit.getConsoleSender().sendMessage("   - §fbStats: §aLoaded");
     }
 
+    public void loadHolograms () {
+        if (!plugin.getConfig().getBoolean("Hooks.HolographicDisplays")) {
+            return;
+        }
+
+        useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+
+        if (useHolographicDisplays) {
+            Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §aFound");
+
+            if (plugin.getConfig().getString("Hologram.World") != null) {
+                Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+
+                    for (Hologram hologram : HologramsAPI.getHolograms(plugin)) {
+                        hologram.delete();
+                    }
+
+                    new HolographicDisplays().refreshHologram();
+                }, 0L, 1200L);
+            }
+
+        } else {
+            Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §cCan't find the jar!");
+        }
+
+    }
+
+    // Loads the placeholder for PlaceholderAPI or MVdWPlaceholderAPI
     public void loadPlaceholders() {
-
-        // Messages
-
-        Bukkit.getConsoleSender().sendMessage("§f");
-        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading placeholders:");
 
         // MVdWPlaceholderAPI
         new Utils().loadMVdWPlaceholderAPI();
