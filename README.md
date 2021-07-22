@@ -1,8 +1,12 @@
-EconomyPlus 1.5
+**EconomyPlus 1.5** 
 
-![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge)
+![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge) 
+
+Spigot infos:
+
 ![Downloads](https://img.shields.io/spiget/downloads/92975?style=for-the-badge)
 ![Rating](https://img.shields.io/spiget/stars/92975?style=for-the-badge)
+![Size](https://img.shields.io/spiget/download-size/92975?style=for-the-badge)
 
 Discord support server: [![Discord](https://discordapp.com/api/guilds/850369119568134206/widget.png)](https://discord.gg/vVM5SyKc8z)
 
