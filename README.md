@@ -1,8 +1,10 @@
-EconomyPlus 1.5 ![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge)
+EconomyPlus 1.5
 
-![Downloads](https://img.shields.io/spiget/downloads/92975?style=for-the-badge) ![Rating](https://img.shields.io/spiget/stars/92975?style=for-the-badge)
+![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge)
+![Downloads](https://img.shields.io/spiget/downloads/92975?style=for-the-badge)
+![Rating](https://img.shields.io/spiget/stars/92975?style=for-the-badge)
 
-[![Discord](https://discordapp.com/api/guilds/850369119568134206/widget.png)](https://discord.gg/vVM5SyKc8z)
+Discord support server: [![Discord](https://discordapp.com/api/guilds/850369119568134206/widget.png)](https://discord.gg/vVM5SyKc8z)
 
 Minecraft plugin (Economy) for 1.8 to 1.17.1
 https://www.spigotmc.org/resources/economyplus.92975/
