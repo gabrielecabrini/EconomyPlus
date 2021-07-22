@@ -1,6 +1,6 @@
 **EconomyPlus 1.5** 
 
-![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge) 
+![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge) ![License](https://img.shields.io/github/license/ItsWagPvP/EconomyPlus?style=for-the-badge)
 
 Spigot infos:
 
