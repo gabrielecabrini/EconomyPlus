@@ -32,6 +32,12 @@ public class Eco implements CommandExecutor {
                 return true;
             }
 
+            if (args[2].contains(",")) {
+                sender.sendMessage(plugin.getMessage("InvalidArgs.Eco"));
+                Utils.playErrorSound(sender);
+                return true;
+            }
+
             double value = Double.parseDouble(args[2]);
 
             Economy money = new Economy(p, value);

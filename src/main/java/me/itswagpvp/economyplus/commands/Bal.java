@@ -64,7 +64,7 @@ public class Bal implements CommandExecutor {
             Economy selfEco = new Economy(p, 0);
 
             p.sendMessage(plugin.getMessage("Balance.Self")
-            .replaceAll("%money%", String.format("%.2f", selfEco.getBalance())));
+            .replaceAll("%money%", "" + new Utils().format(selfEco.getBalance())));
 
             Utils.playSuccessSound(sender);
 
@@ -94,7 +94,7 @@ public class Bal implements CommandExecutor {
                 Economy selfEco = new Economy(p, 0);
 
                 sender.sendMessage(plugin.getMessage("Balance.Self")
-                        .replaceAll("%money%", "" + String.format("%.2f", selfEco.getBalance())));
+                        .replaceAll("%money%", "" + new Utils().format(selfEco.getBalance())));
 
                 Utils.playSuccessSound(sender);
 
@@ -104,7 +104,7 @@ public class Bal implements CommandExecutor {
             Economy otherEco = new Economy(p2, 0);
 
             sender.sendMessage(plugin.getMessage("Balance.Others")
-                    .replaceAll("%money%", "" + String.format("%.2f", otherEco.getBalance()))
+                    .replaceAll("%money%", "" + new Utils().format(otherEco.getBalance()))
                     .replaceAll("%player%", ""+ p2.getName()));
 
             Utils.playSuccessSound(sender);

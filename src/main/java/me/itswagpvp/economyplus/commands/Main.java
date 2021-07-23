@@ -12,6 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
+
 public class Main implements CommandExecutor {
 
     public EconomyPlus plugin = EconomyPlus.getInstance();
@@ -58,19 +60,15 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§f-> §7MC-Version of the server: §c" + Bukkit.getBukkitVersion());
                 sender.sendMessage("§f-> §7Version of the plugin: §e" + EconomyPlus.plugin.getDescription().getVersion());
                 sender.sendMessage("§f-> §7Version of the config: §e" + EconomyPlus.getInstance().getConfig().getString("Version"));
+                sender.sendMessage("§f-> §7Database: §b" + plugin.getConfig().getString("Database.Type"));
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Server software: §6" + Bukkit.getName());
                 sender.sendMessage("§f-> §7Software version: §6" + Bukkit.getVersion());
-                sender.sendMessage("§a");
-                sender.sendMessage("§f-> §7Database: §b" + plugin.getConfig().getString("Database.Type"));
-                sender.sendMessage("§a");
-                sender.sendMessage("§f-> §7Online players: §3" + Bukkit.getServer().getOnlinePlayers().size());
-                sender.sendMessage("§f-> §7Players saved (SQLite): §3" + EconomyPlus.getInstance().getRDatabase().getList().size());
-                sender.sendMessage("§f-> §7Players saved (MySQL): §3" + new MySQL().getList().size());
-                sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Vault Version: §d" + Bukkit.getServer().getPluginManager().getPlugin("Vault").getDescription().getVersion());
+                sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7PlaceholderAPI: §a" + Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"));
                 sender.sendMessage("§f-> §7MVdWPlaceholderAPI: §a" + Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI"));
+                sender.sendMessage("§f-> §7HolographicDisplays: §a" + Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays"));
                 sender.sendMessage("§8+------------------------------------+");
 
                 return true;
@@ -99,11 +97,11 @@ public class Main implements CommandExecutor {
 
                 Location loc = p.getLocation();
 
-                plugin.getConfig().set("Hologram.World", loc.getWorld().getName());
-                plugin.getConfig().set("Hologram.X", loc.getX());
-                plugin.getConfig().set("Hologram.Y", loc.getY());
-                plugin.getConfig().set("Hologram.Z", loc.getZ());
-                plugin.saveConfig();
+                plugin.getHologramConfig().set("Hologram.BalTop.World", loc.getWorld().getName());
+                plugin.getHologramConfig().set("Hologram.BalTop.X", loc.getX());
+                plugin.getHologramConfig().set("Hologram.BalTop.Y", loc.getY());
+                plugin.getHologramConfig().set("Hologram.BalTop.Z", loc.getZ());
+                plugin.saveHologramConfig();
 
                 new HolographicDisplays().createHologram();
 

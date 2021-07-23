@@ -30,6 +30,10 @@ public final class EconomyPlus extends JavaPlugin {
     // Database
     private Database db;
 
+    // holograms file
+    private File hologramFile;
+    private FileConfiguration hologramConfig;
+
     // Economy
     public static VEconomy veco;
     public static VHook hook;
@@ -56,6 +60,7 @@ public final class EconomyPlus extends JavaPlugin {
         plugin.getConfig().options().copyDefaults(true);
 
         createMessagesConfig();
+        createHologramConfig();
 
         if (!setupEconomy()) {
             Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
@@ -243,6 +248,7 @@ public final class EconomyPlus extends JavaPlugin {
     }
 
     public void loadHolograms () {
+
         if (!plugin.getConfig().getBoolean("Hooks.HolographicDisplays")) {
             return;
         }
@@ -250,9 +256,13 @@ public final class EconomyPlus extends JavaPlugin {
         useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 
         if (useHolographicDisplays) {
+
             Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §aFound");
 
-            if (plugin.getConfig().getString("Hologram.World") != null) {
+            if (getHologramConfig().getString("Hologram.BalTop.World") != null) {
+
+                long refreshRate = plugin.getConfig().getLong("Baltop.Hologram.Refresh-Rate", 60) * 20L;
+
                 Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 
                     for (Hologram hologram : HologramsAPI.getHolograms(plugin)) {
@@ -260,7 +270,7 @@ public final class EconomyPlus extends JavaPlugin {
                     }
 
                     new HolographicDisplays().refreshHologram();
-                }, 0L, 1200L);
+                }, 0L, refreshRate);
             }
 
         } else {
@@ -276,7 +286,6 @@ public final class EconomyPlus extends JavaPlugin {
         new Utils().loadMVdWPlaceholderAPI();
 
         // PlaceholderAPI
-
         new Utils().loadPlaceholderAPI();
         Bukkit.getConsoleSender().sendMessage("§f");
     }
@@ -309,8 +318,8 @@ public final class EconomyPlus extends JavaPlugin {
         return this.messagesConfig;
     }
 
+    // Messages file
     public void createMessagesConfig() {
-        // Messages file
         File messagesConfigFile = new File(getDataFolder(), "messages.yml");
         if (!messagesConfigFile.exists()) {
             messagesConfigFile.getParentFile().mkdirs();

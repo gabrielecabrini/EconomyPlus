@@ -15,16 +15,16 @@ public class HolographicDisplays {
 
     public static EconomyPlus plugin = EconomyPlus.getInstance();
 
-    World w = Bukkit.getWorld(plugin.getConfig().getString("Hologram.World"));
-    int x = plugin.getConfig().getInt("Hologram.X");
-    int y = plugin.getConfig().getInt("Hologram.Y");
-    int z = plugin.getConfig().getInt("Hologram.Z");
+    World w = Bukkit.getWorld(plugin.getHologramConfig().getString("Hologram.BalTop.World"));
+    int x = plugin.getHologramConfig().getInt("Hologram.BalTop.X");
+    int y = plugin.getHologramConfig().getInt("Hologram.BalTop.Y");
+    int z = plugin.getHologramConfig().getInt("Hologram.BalTop.Z");
 
     Location loc = new Location(w, x, y, z);
 
-    Hologram hologram = HologramsAPI.createHologram(plugin, loc);
-
     public void createHologram () {
+
+        Hologram hologram = HologramsAPI.createHologram(plugin, loc);
 
         List<String> header = plugin.getConfig().getStringList("Baltop.Hologram.Header");
 
@@ -57,18 +57,22 @@ public class HolographicDisplays {
                     .replaceAll("%money%", "" + utilities.fixMoney(money)));
         }
 
+        long refreshRate = plugin.getConfig().getLong("Baltop.Hologram.Refresh-Rate", 60) * 20L;
+
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 
-            for (Hologram hologram : HologramsAPI.getHolograms(plugin)) {
-                hologram.delete();
+            for (Hologram holograms : HologramsAPI.getHolograms(plugin)) {
+                holograms.delete();
             }
 
             new HolographicDisplays().refreshHologram();
-        }, 0L, 1200L);
+        }, 0L, refreshRate);
     }
 
     public void refreshHologram () {
 
+        Hologram hologram = HologramsAPI.createHologram(plugin, loc);
+
         List<String> header = plugin.getConfig().getStringList("Baltop.Hologram.Header");
 
         EconomyPlus.data = new Data();
@@ -100,5 +104,4 @@ public class HolographicDisplays {
                     .replaceAll("%money%", "" + utilities.fixMoney(money)));
         }
     }
-
 }

@@ -2,10 +2,13 @@ package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.storage.mysql.MySQL;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 
 public class Data {
+
+    public static EconomyPlus plugin = EconomyPlus.getInstance();
 
     public List<PlayerData> balTop;
     public Map<String,PlayerData> balTopName;
@@ -57,7 +60,6 @@ public class Data {
         }
 
         Collections.sort( getBalTop(), new PlayerComparator() );
-
     }
 
 

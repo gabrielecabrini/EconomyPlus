@@ -50,6 +50,10 @@ Format:
 # Set a user balance on join
 Starting-Balance: 0.00
 
+# Use the decimal
+# If true it's 0.00, if false is 0
+Decimals: true
+
 # Baltop configuration
 Baltop:
   Chat:
@@ -62,11 +66,14 @@ Baltop:
       - '&8&m-----------------'
   # This is for the hologram! (/ep hologram)
   Hologram:
+    # Refresh rate in seconds!
+    Refresh-Rate: 60
     Player-Format: "&6%number%) &f%player%: &c%money%$"
     Header:
       - '&8&m-----------------'
       - '&d&lBalTop'
       - '&8&m-----------------'
+
 # Select how to storage the data
 Database:
   # H2 (database.db file)

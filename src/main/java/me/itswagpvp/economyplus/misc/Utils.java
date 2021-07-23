@@ -70,6 +70,7 @@ public class Utils {
             new Data();
 
             plugin.createMessagesConfig();
+            plugin.createHologramConfig();
 
             EconomyPlus.data = new Data();
             new Data();
@@ -85,7 +86,12 @@ public class Utils {
     }
 
     public String format(double d) {
-        return String.format("%.2f", d);
+        if (plugin.getConfig().getBoolean("Decimals")) {
+            return String.format("%.2f", d);
+        } else {
+            return String.format("%.0f", d);
+        }
+
     }
 
     public String fixMoney(double d) {
@@ -109,7 +115,7 @@ public class Utils {
             return format(d / 1000000000000000D) + EconomyPlus.getInstance().getConfig().getString("Format.Q");
         }
 
-        return String.format("%.2f", d);
+        return format(d);
     }
 
     // Load MVdWPlaceholders
@@ -129,11 +135,11 @@ public class Utils {
         try {
             MVdWPlaceholderAPI MvdWPlaceholderAPI = new MVdWPlaceholderAPI();
             MvdWPlaceholderAPI.loadMVdWPlaceholders();
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - MVdWPlaceholderAPI: §cError!");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
-        }finally {
+        } finally {
             Bukkit.getConsoleSender().sendMessage("   - MVdWPlaceholderAPI: §aDone!");
         }
 
