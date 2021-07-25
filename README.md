@@ -20,5 +20,6 @@ https://www.spigotmc.org/resources/economyplus.92975/
 
 To-Do list:
 - Add minimum-balance option
+- Add selectors for /eco (@a or @s)
 
 If you find any issue please create a ticket on the support discord or report it on the GitHub issues page.
