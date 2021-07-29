@@ -21,7 +21,7 @@ public class MVdWPlaceholderAPI {
                 placeholderReplaceEvent -> {
 
                     Economy eco = new Economy(placeholderReplaceEvent.getPlayer(), 0);
-                    return String.format("%.2f", eco.getBalance());
+                    return new Utils().format(eco.getBalance());
                 });
 
         // {economyplus_money_formatted}

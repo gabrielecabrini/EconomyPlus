@@ -2,7 +2,6 @@ package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.storage.mysql.MySQL;
-import org.bukkit.Bukkit;
 
 import java.util.*;
 

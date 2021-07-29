@@ -113,7 +113,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         // %economyplus_money%
         if(identifier.equals("money")){
             Economy eco = new Economy(player, 0);
-            return String.format("%.2f", eco.getBalance());
+            return new Utils().format(eco.getBalance());
         }
 
         //%economyplus_money_formatted%
