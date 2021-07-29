@@ -1,4 +1,4 @@
-**EconomyPlus V1.5** 
+**EconomyPlus V1.6** 
 
 ![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge) ![License](https://img.shields.io/github/license/ItsWagPvP/EconomyPlus?style=for-the-badge)
 
@@ -19,7 +19,7 @@ Minecraft plugin (Economy) for 1.8 to 1.17.1
 https://www.spigotmc.org/resources/economyplus.92975/
 
 To-Do list:
-- Add an option to disable the decimal like 0 in front of 0.00
 - Add minimum-balance option
+- Add selectors for /eco (@a or @s)
 
 If you find any issue please create a ticket on the support discord or report it on the GitHub issues page.
