@@ -27,8 +27,7 @@ public class Data {
 
     }
 
-
-    private void loadFromData() {
+    private void loadFromH2Data() {
         getBalTop().clear();
 
         for ( String playerName : EconomyPlus.getInstance().getRDatabase().getList()) {
@@ -42,7 +41,6 @@ public class Data {
         }
 
         Collections.sort( getBalTop(), new PlayerComparator() );
-
     }
 
     private void loadFromSQLData() {
@@ -65,7 +63,6 @@ public class Data {
     public List<PlayerData> getBalTop() {
         return balTop;
     }
-
     public Map<String, PlayerData> getBalTopName() {
         return balTopName;
     }
