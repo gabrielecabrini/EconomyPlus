@@ -1,4 +1,4 @@
-**EconomyPlus V1.6** 
+**EconomyPlus V1.7** 
 
 ![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge) ![License](https://img.shields.io/github/license/ItsWagPvP/EconomyPlus?style=for-the-badge)
 
