@@ -6,7 +6,6 @@ Spigot infos:
 
 ![Downloads](https://img.shields.io/spiget/downloads/92975?style=for-the-badge)
 ![Rating](https://img.shields.io/spiget/stars/92975?style=for-the-badge)
-![Size](https://img.shields.io/spiget/download-size/92975?style=for-the-badge)
 
 Metrics:
 
