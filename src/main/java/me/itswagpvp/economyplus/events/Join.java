@@ -81,7 +81,7 @@ public class Join implements Listener {
             plugin.getRDatabase().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Balance"));
         }
 
-        if (type.equalsIgnoreCase("MySQL")) {
+        else if (type.equalsIgnoreCase("MySQL")) {
             new MySQL().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Balance"));
         }
 

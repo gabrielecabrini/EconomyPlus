@@ -81,8 +81,8 @@ public class MySQL {
                     ResultSet rs = ps.executeQuery()
             ) {
                 while(rs.next()){
-                    if(rs.getString("player").equalsIgnoreCase(player)){ // Tell database to search for the player you sent into the method. e.g getTokens(sam) It will look for sam.
-                        return rs.getDouble("moneys"); // Return the players amount of moneys. If you wanted to get total (just a random number for an example for you guys) You would change this to total!
+                    if(rs.getString("player").equalsIgnoreCase(player)){
+                        return rs.getDouble("moneys"); 
                     }
                 }
             } catch (SQLException ex) {
