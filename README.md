@@ -1,4 +1,4 @@
-**EconomyPlus V1.7** 
+**EconomyPlus V1.8** 
 
 ![Build](https://img.shields.io/github/workflow/status/ItsWagPvP/EconomyPlus/EconomyPlus?style=for-the-badge) ![License](https://img.shields.io/github/license/ItsWagPvP/EconomyPlus?style=for-the-badge)
 
@@ -6,7 +6,6 @@ Spigot infos:
 
 ![Downloads](https://img.shields.io/spiget/downloads/92975?style=for-the-badge)
 ![Rating](https://img.shields.io/spiget/stars/92975?style=for-the-badge)
-![Size](https://img.shields.io/spiget/download-size/92975?style=for-the-badge)
 
 Metrics:
 
