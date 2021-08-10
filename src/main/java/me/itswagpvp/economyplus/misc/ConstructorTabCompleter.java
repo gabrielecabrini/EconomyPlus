@@ -18,8 +18,7 @@ public class ConstructorTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        List<String> listDefault = Arrays.asList("");
-        // Online Player List
+        List<String> listDefault = Collections.singletonList("");
         List<String> playerNames = Bukkit.getOnlinePlayers()
                 .stream()
                 .map(Player::getName)
@@ -43,7 +42,7 @@ public class ConstructorTabCompleter implements TabCompleter {
             }
         }
 
-        // /ep
+        // EconomyPlus main command TabCompleter
         if (command.getName().equalsIgnoreCase("economyplus")) {
             int i = (args.length);
             switch (i) {
@@ -79,19 +78,6 @@ public class ConstructorTabCompleter implements TabCompleter {
                     return Arrays.asList("10", "100", "1000");
                 }
 
-                default:
-                    return listDefault;
-            }
-        }
-
-        // /baltop
-        if (command.getName().equalsIgnoreCase("baltop")) {
-            int i = (args.length);
-            switch (i) {
-                case 1: {
-                    List<String> numbers = Arrays.asList("1", "2", "3");
-                    return numbers;
-                }
                 default:
                     return listDefault;
             }

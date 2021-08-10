@@ -1,5 +1,6 @@
 package me.itswagpvp.economyplus.misc;
 
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.hooks.MVdWPlaceholderAPI;
 import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
@@ -71,9 +72,6 @@ public class Utils {
 
             plugin.createMessagesConfig();
             plugin.createHologramConfig();
-
-            EconomyPlus.data = new Data();
-            new Data();
 
         }catch (Exception e) {
             p.sendMessage("§cError on reloading the plugin! (" + e.getMessage() + ")");
@@ -159,6 +157,11 @@ public class Utils {
         }
 
         try {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                while (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+
+                }
+            });
             new PlaceholderAPI(plugin).register();
         }catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - PlaceholderAPI: §cError!");

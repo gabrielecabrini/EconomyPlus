@@ -1,12 +1,17 @@
 package me.itswagpvp.economyplus;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.commands.*;
+import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.metrics.bStats;
-import me.itswagpvp.economyplus.database.local.Database;
-import me.itswagpvp.economyplus.database.local.SQLite;
+import me.itswagpvp.economyplus.misc.Data;
+import me.itswagpvp.economyplus.storage.mysql.MySQL;
+import me.itswagpvp.economyplus.storage.sqlite.Database;
+import me.itswagpvp.economyplus.storage.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
 import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
-import me.itswagpvp.economyplus.misc.Data;
+import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.misc.updater.UpdateMessage;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
@@ -42,7 +47,6 @@ public final class EconomyPlus extends JavaPlugin {
 
     // plugin instance
     public static EconomyPlus plugin;
-    public static Data data;
 
     public static String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
     public static int ver = Integer.parseInt(split[1]);
@@ -144,9 +148,6 @@ public final class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
 
-
-
-
     }
 
     public void loadEconomy () {
@@ -207,6 +208,7 @@ public final class EconomyPlus extends JavaPlugin {
 
     public void loadCommands() {
         try {
+
             getCommand("baltop").setExecutor(new BalTop());
             getCommand("baltop").setTabCompleter(new ConstructorTabCompleter());
 
@@ -342,13 +344,30 @@ public final class EconomyPlus extends JavaPlugin {
         return ChatColor.translateAlternateColorCodes('&', getMessagesFile().getString(path));
     }
 
-    public Data getData() {
-
-        if (data == null) {
-            data = new Data();
-            new Data();
-        }
-        return data;
+    public FileConfiguration getHologramConfig() {
+        return this.hologramConfig;
     }
 
+    public void saveHologramConfig() {
+        try {
+            hologramConfig.save(hologramFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createHologramConfig() {
+        hologramFile = new File(plugin.getDataFolder(), "holograms.yml");
+        if (!hologramFile.exists()) {
+            hologramFile.getParentFile().mkdirs();
+            plugin.saveResource("holograms.yml", false);
+        }
+
+        hologramConfig = new YamlConfiguration();
+        try {
+            hologramConfig.load(hologramFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
 }

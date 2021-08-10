@@ -71,6 +71,7 @@ public class Eco implements CommandExecutor {
                 }
 
                 double res = money.getBalance() - value;
+
                 if (res < 0D) {
                     res = 0D;
                     Economy eco = new Economy(p, 0D);

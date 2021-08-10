@@ -18,17 +18,6 @@ public class Join implements Listener {
     public EconomyPlus plugin = EconomyPlus.getInstance();
 
     @EventHandler
-    public void setStartBalance (PlayerJoinEvent event) {
-
-        if (event.getPlayer().hasPlayedBefore()) {
-            return;
-        }
-
-        plugin.getRDatabase().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Balance"));
-
-    }
-
-    @EventHandler
     public void updateMessage (PlayerJoinEvent event) {
 
         if (EconomyPlus.ver < 12) {
@@ -55,8 +44,6 @@ public class Join implements Listener {
             String currentVersion = plugin.getDescription().getVersion();
 
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EconomyPlus.plugin, () -> {
-
-                //
 
                 p.sendMessage("§d[EconomyPlus] §7Found an update: v" + version + " §e(You have v" + currentVersion + ")");
                 TextComponent message = new TextComponent("§cClick this message to download the newer version!");
