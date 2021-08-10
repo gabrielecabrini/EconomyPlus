@@ -2,6 +2,8 @@ package me.itswagpvp.economyplus;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import me.itswagpvp.economyplus.bank.commands.Bank;
+import me.itswagpvp.economyplus.bank.menu.MenuListener;
 import me.itswagpvp.economyplus.commands.*;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.metrics.bStats;
@@ -197,6 +199,7 @@ public final class EconomyPlus extends JavaPlugin {
     public void loadEvents() {
         try {
             Bukkit.getPluginManager().registerEvents(new Join(), this);
+            Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fEvents: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
@@ -223,6 +226,9 @@ public final class EconomyPlus extends JavaPlugin {
 
             getCommand("eco").setExecutor(new Eco());
             getCommand("eco").setTabCompleter(new ConstructorTabCompleter());
+
+            getCommand("bank").setExecutor(new Bank());
+            getCommand("bank").setTabCompleter(new ConstructorTabCompleter());
 
         }catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fCommands: §cError");

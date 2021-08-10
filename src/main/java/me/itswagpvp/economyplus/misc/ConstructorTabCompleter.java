@@ -95,6 +95,18 @@ public class ConstructorTabCompleter implements TabCompleter {
             }
         }
 
+        // /bank
+        if (command.getName().equalsIgnoreCase("bank")) {
+            int i = (args.length);
+            switch (i) {
+                case 1: {
+                    return Arrays.asList("deposit", "withdraw");
+                }
+                default:
+                    return listDefault;
+            }
+        }
+
         return listDefault;
     }
 }

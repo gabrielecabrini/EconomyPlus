@@ -27,3 +27,5 @@ commands:
     usage: /<command>
     aliases:
       - balancetop
+  bank:
+    usage: /<command>
