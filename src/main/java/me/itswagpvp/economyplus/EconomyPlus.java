@@ -8,13 +8,13 @@ import me.itswagpvp.economyplus.commands.*;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.Data;
+import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.storage.mysql.MySQL;
 import me.itswagpvp.economyplus.storage.sqlite.Database;
 import me.itswagpvp.economyplus.storage.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
 import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
 import me.itswagpvp.economyplus.misc.Utils;
-import me.itswagpvp.economyplus.misc.updater.UpdateMessage;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
 import org.bukkit.Bukkit;
@@ -52,6 +52,8 @@ public final class EconomyPlus extends JavaPlugin {
 
     public static String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
     public static int ver = Integer.parseInt(split[1]);
+
+    Updater updater;
 
     @Override
     public void onEnable() {
@@ -106,15 +108,9 @@ public final class EconomyPlus extends JavaPlugin {
 
         loadPlaceholders();
 
-        if (ver < 12) {
-            Bukkit.getConsoleSender().sendMessage("§f-> §cThe updater won't work under 1.12!");
-        }
+        updater = Updater.getInstance(this);
 
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
-
-        if (ver >= 12) {
-            new UpdateMessage().updater(92975);
-        }
 
     }
 
@@ -199,6 +195,7 @@ public final class EconomyPlus extends JavaPlugin {
     public void loadEvents() {
         try {
             Bukkit.getPluginManager().registerEvents(new Join(), this);
+            Bukkit.getPluginManager().registerEvents(new Updater(this), this);
             Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fEvents: §cError");

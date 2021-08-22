@@ -71,6 +71,27 @@ public class Economy extends VEconomy {
         }
     }
 
+    public void setBank () {
+        if (type.equalsIgnoreCase("H2")) {
+            plugin.getRDatabase().setBank(this.p.getName(), this.money);
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            new MySQL().setBank(this.p.getName(), this.money);
+        }
+    }
+
+    public double getBank () {
+        if (type.equalsIgnoreCase("H2")) {
+            return plugin.getRDatabase().getBank(this.p.getName());
+        }
+
+        if (type.equalsIgnoreCase("MySQL")) {
+            return new MySQL().getBank(this.p.getName());
+        }
+        return 0D;
+    }
+
     // Controls if the player has enough moneys
     public boolean detractable() {
         return getBalance() - this.money >= 0;

@@ -54,7 +54,8 @@ public class HolographicDisplays {
                     .replaceAll("&", "§")
                     .replaceAll("%number%", "" + (i + 1))
                     .replaceAll("%player%", "" + name)
-                    .replaceAll("%money%", "" + utilities.fixMoney(money)));
+                    .replaceAll("%money%", "" + utilities.format(money))
+                    .replaceAll("%money_formatted%","" + utilities.fixMoney(money)));
         }
 
         long refreshRate = plugin.getConfig().getLong("Baltop.Hologram.Refresh-Rate", 60) * 20L;
@@ -101,7 +102,8 @@ public class HolographicDisplays {
                     .replaceAll("&", "§")
                     .replaceAll("%number%", "" + (i + 1))
                     .replaceAll("%player%", "" + name)
-                    .replaceAll("%money%", "" + utilities.fixMoney(money)));
+                    .replaceAll("%money%", "" + utilities.format(money))
+                    .replaceAll("%money_formatted%","" + utilities.fixMoney(money)));
         }
     }
 }

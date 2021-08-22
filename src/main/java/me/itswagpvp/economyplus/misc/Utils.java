@@ -89,7 +89,6 @@ public class Utils {
         } else {
             return String.format("%.0f", d);
         }
-
     }
 
     public String fixMoney(double d) {

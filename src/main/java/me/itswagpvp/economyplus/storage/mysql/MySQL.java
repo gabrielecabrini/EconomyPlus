@@ -56,6 +56,7 @@ public class MySQL {
         String sql = "CREATE TABLE " + table + " ("
                 + "player VARCHAR(45) NOT NULL,"
                 + "moneys DOUBLE NOT NULL,"
+                + "bank DOUBLE NOT NULL,"
                 + "PRIMARY KEY (player))";
 
         try {
@@ -105,13 +106,65 @@ public class MySQL {
         Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
 
             try (
-                    PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys) VALUES(?,?)")
+                    PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
             ){
 
                 ps.setString(1, player);
 
 
                 ps.setDouble(2, tokens);
+
+                ps.setDouble(3, getBank(player));
+
+                ps.executeUpdate();
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+            }
+        });
+    }
+
+    // Retrieve the bank of the player
+    public double getBank (String player) {
+
+        CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
+
+            try (
+                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    ResultSet rs = ps.executeQuery()
+            ) {
+                while(rs.next()){
+                    if(rs.getString("player").equalsIgnoreCase(player)){
+                        return rs.getDouble("bank");
+                    }
+                }
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+            }
+            return 0.00;
+        });
+
+        try {
+            return getDouble.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return 0.00;
+    }
+
+    // Save the balance to the player's database
+    public void setBank (String player, double tokens) {
+        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
+
+            try (
+                    PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+            ){
+
+                ps.setString(1, player);
+
+                ps.setDouble(2, getTokens(player));
+
+                ps.setDouble(3, tokens);
 
                 ps.executeUpdate();
             } catch (SQLException ex) {

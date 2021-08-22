@@ -55,7 +55,8 @@ public class Eco implements CommandExecutor {
 
                 sender.sendMessage(plugin.getMessage("Money.Done"));
                 p.sendMessage(plugin.getMessage("Money.Refreshed")
-                .replaceAll("%money%", "" + utility.fixMoney(Double.parseDouble(args[2]))));
+                .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
+                        .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
 
                 Utils.playSuccessSound(sender);
                 Utils.playSuccessSound(p);
@@ -103,7 +104,8 @@ public class Eco implements CommandExecutor {
 
                 sender.sendMessage(plugin.getMessage("Money.Done"));
                 p.sendMessage(plugin.getMessage("Money.Refreshed")
-                        .replaceAll("%money%", "" + utility.fixMoney(res)));
+                        .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
+                        .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
 
                 Utils.playSuccessSound(sender);
                 Utils.playSuccessSound(p);

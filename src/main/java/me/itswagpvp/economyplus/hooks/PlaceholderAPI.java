@@ -122,6 +122,18 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             return String.valueOf(utilities.fixMoney(eco.getBalance()));
         }
 
+        // %economyplus_bank%
+        if(identifier.equals("bank")){
+            Economy eco = new Economy(player, 0);
+            return new Utils().format(eco.getBank());
+        }
+
+        //%economyplus_money_formatted%
+        if (identifier.equals("bank_formatted")) {
+            Economy eco = new Economy(player, 0);
+            return String.valueOf(utilities.fixMoney(eco.getBank()));
+        }
+
         return "Invalid placeholder!";
     }
 }

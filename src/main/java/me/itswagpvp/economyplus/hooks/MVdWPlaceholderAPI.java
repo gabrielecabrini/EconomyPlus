@@ -1,8 +1,6 @@
 package me.itswagpvp.economyplus.hooks;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
-import be.maximvdw.placeholderapi.PlaceholderReplacer;
-import be.maximvdw.placeholderapi.PlaceholderReplaceEvent;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
@@ -31,6 +29,24 @@ public class MVdWPlaceholderAPI {
 
                     Economy eco = new Economy(placeholderReplaceEvent.getPlayer(), 0);
                     return String.valueOf(utilities.fixMoney(eco.getBalance()));
+                });
+
+        // {economyplus_bank}
+
+        PlaceholderAPI.registerPlaceholder(plugin, "economyplus_bank",
+                placeholderReplaceEvent -> {
+
+                    Economy eco = new Economy(placeholderReplaceEvent.getPlayer(), 0);
+                    return new Utils().format(eco.getBank());
+                });
+
+        // {economyplus_bank_formatted}
+
+        PlaceholderAPI.registerPlaceholder(plugin, "economyplus_bank_formatted",
+                placeholderReplaceEvent -> {
+
+                    Economy eco = new Economy(placeholderReplaceEvent.getPlayer(), 0);
+                    return String.valueOf(utilities.fixMoney(eco.getBank()));
                 });
     }
 

@@ -84,11 +84,13 @@ public class Pay implements CommandExecutor {
         Utils.playSuccessSound(target);
 
         p.sendMessage(plugin.getMessage("Pay.Self")
-        .replaceAll("%money%", "" + utilities.fixMoney(money))
-        .replaceAll("%player%", "" + target.getName()));
+                .replaceAll("%money_formatted%", "" + utilities.fixMoney(money))
+                .replaceAll("%money%", "" + utilities.format(money))
+                .replaceAll("%player%", "" + target.getName()));
 
         target.sendMessage(plugin.getMessage("Pay.Target")
-                .replaceAll("%money%", "" + utilities.fixMoney(money))
+                .replaceAll("%money_formatted%", "" + utilities.fixMoney(money))
+                .replaceAll("%money%", "" + utilities.format(money))
                 .replaceAll("%player%", "" + p.getName()));
 
         return true;

@@ -23,10 +23,8 @@ Hooks:
   MVdWPlaceholderAPI: true
   HolographicDisplays: true
 
-# Check for updates
-Updater:
-  Console: true
-  Player: true
+# You want to enable the updater?
+Updater: true
 
 # Play to the player the sounds in front of success / error
 Sounds:
@@ -93,3 +91,15 @@ Database:
   # If you have not set up the table the plugin will create it for you!
   Table: economy
 
+# This is the section where you can customize the /bank command
+Bank:
+  # You want to use the bank feature?
+  Enabled: true
+  # /bank <withdraw/deposit> section
+  GUI:
+    # /bank withdraw
+    Withdraw:
+      # The title of the GUI
+      Title: "&6&lBank &8> &aWithdraw"
+    Deposit:
+      Title: "&6&lBank &8> &cDeposit"

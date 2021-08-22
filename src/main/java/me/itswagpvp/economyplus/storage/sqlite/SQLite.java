@@ -21,6 +21,7 @@ public class SQLite extends Database {
     public String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS data (" +
             "`player` varchar(32) NOT NULL," +
             "`moneys` double(32) NOT NULL," +
+            "`bank` double(32) NOT NULL," +
             "PRIMARY KEY (`player`)" +
             ");";
 

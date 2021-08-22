@@ -47,7 +47,7 @@ public class ConstructorTabCompleter implements TabCompleter {
             int i = (args.length);
             switch (i) {
                 case 1: {
-                    return Arrays.asList("help", "debug", "reload", "hologram");
+                    return Arrays.asList("help", "debug", "reload", "hologram", "update");
                 }
                 default:
                     return listDefault;

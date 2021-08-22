@@ -2,8 +2,8 @@ package me.itswagpvp.economyplus.commands;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
+import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.misc.Utils;
-import me.itswagpvp.economyplus.storage.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -11,8 +11,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-
-import java.io.IOException;
 
 public class Main implements CommandExecutor {
 
@@ -104,6 +102,19 @@ public class Main implements CommandExecutor {
                 plugin.saveHologramConfig();
 
                 new HolographicDisplays().createHologram();
+
+                return true;
+            }
+
+            if (args[0].equalsIgnoreCase("update")) {
+
+                if (!sender.hasPermission("economyplus.update")) {
+                    sender.sendMessage(plugin.getMessage("NoPerms"));
+                    Utils.playErrorSound(sender);
+                    return true;
+                }
+
+                Updater.getInstance().downloadUpdate(sender);
 
                 return true;
             }

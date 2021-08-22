@@ -1,5 +1,7 @@
 # Messages file for EconomyPlus
 #
+# You can use %money% and %money_formatted% (Where you see %money%)!
+#
 # General messages
 NoConsole: "&cYou can't do this from console!"
 NoPlayer: "&cYou can't do this from game!"
@@ -13,6 +15,7 @@ InvalidArgs:
   Eco: "&cInvalid args! /eco <player> <set/give/take> <money>"
   Balance: "&cInvalid args! /bal <player>"
   Pay: "&cInvalid args! /pay <player> <money>"
+  Bank: "&cInvalid args! /bank <withdraw/deposit>"
 
 # Moneys refreshed
 Money:
@@ -30,3 +33,10 @@ Pay:
   NoMoney: "&CYou do not have enough moneys!"
   Self: "&7You have sent &c%money%$ &7to &c%player%&7!"
   Target: "&7You have received &a%money%$ &7from &a%player%&7!"
+
+# /bank
+Bank:
+  Disabled: "&cThe bank is disabled!"
+  NoMoney: "&cYou don't have enough money in the bank!"
+  Deposit: "&eYou have deposited %money%$!"
+  Withdraw: "&eYou have withdrawn %money%$!"
