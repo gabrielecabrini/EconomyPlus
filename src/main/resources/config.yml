@@ -90,6 +90,8 @@ Database:
   Database: EconomyPlus
   # If you have not set up the table the plugin will create it for you!
   Table: economy
+  # If the plugin loses connection it will auto-reconnect to the database
+  AutoReconnect: true
 
 # This is the section where you can customize the /bank command
 Bank:
