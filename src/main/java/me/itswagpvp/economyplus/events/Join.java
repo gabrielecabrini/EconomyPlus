@@ -21,10 +21,12 @@ public class Join implements Listener {
 
         if (type.equalsIgnoreCase("H2")) {
             plugin.getRDatabase().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Balance"));
+            plugin.getRDatabase().setBank(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00));
         }
 
         else if (type.equalsIgnoreCase("MySQL")) {
             new MySQL().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Balance"));
+            new MySQL().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00));
         }
 
     }

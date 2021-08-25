@@ -48,6 +48,9 @@ Format:
 # Set a user balance on join
 Starting-Balance: 0.00
 
+# Set a user bank on join
+Starting-Bank-Balance: 0.00
+
 # Use the decimal
 # If true it's 0.00, if false is 0
 Decimals: true

@@ -73,6 +73,22 @@ public class MySQL {
         }
     }
 
+    public void updateTable() {
+        String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            if (e.toString().contains("Duplicate column name 'bank'")) {
+                return;
+            }
+            e.printStackTrace();
+        }
+    }
+
     // Retrieve the balance of the player
     public double getTokens(String player) {
 

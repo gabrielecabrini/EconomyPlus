@@ -169,6 +169,7 @@ public final class EconomyPlus extends JavaPlugin {
             try {
                 new MySQL().connect();
                 new MySQL().createTable();
+                new MySQL().updateTable();
             } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (MySQL)");
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());

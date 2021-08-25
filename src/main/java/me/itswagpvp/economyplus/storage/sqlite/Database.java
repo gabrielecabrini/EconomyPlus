@@ -33,10 +33,29 @@ public abstract class Database {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
             ResultSet rs = ps.executeQuery();
+
+            updateTable();
+
             close(ps,rs);
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
+        }
+    }
+
+    public void updateTable() {
+        String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            if (e.toString().contains("Duplicate column name 'bank'")) {
+                return;
+            }
+            e.printStackTrace();
         }
     }
 
