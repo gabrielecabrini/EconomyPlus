@@ -16,6 +16,7 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -76,10 +77,11 @@ public class Updater implements Listener {
                 }
 
                 if (updateAvailable && !ready) {
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] An update is available! §d(" + latestVersion + ")");
+                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] An update is available! §d(v" + latestVersion + ")");
+                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You have §cv" + plugin.getDescription().getVersion());
                     Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Download it with /ep update!");
                 } else if (!ready) {
-                    Bukkit.getLogger().info("[EconomyPlus] You are up to date! §d(" + latestVersion + ")");
+                    Bukkit.getLogger().info("[EconomyPlus] You are up to date! §d(v" + latestVersion + ")");
                 }
 
                 ready = true;
@@ -105,11 +107,11 @@ public class Updater implements Listener {
         if (!enabled || alreadyDownloaded) return;
         if (ready && updateAvailable && plugin.getConfig().getBoolean("Updater", true)) {
             if (!e.getPlayer().hasPermission("economyplus.update")) return;
-            Bukkit.getScheduler().runTaskLater(plugin, () -> e.getPlayer().sendMessage("" +
+            e.getPlayer().sendMessage("" +
                     "§7An update is available for §dEconomyPlus§7! " +
-                    "\n §7You can download it with §5/ep update"), 20);
+                    "\n§7You can download it with §5/ep update");
+            return;
         }
-        return;
     }
 
     public void downloadUpdate(CommandSender p) {

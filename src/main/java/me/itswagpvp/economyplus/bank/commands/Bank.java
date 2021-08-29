@@ -2,7 +2,7 @@ package me.itswagpvp.economyplus.bank.commands;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.bank.menu.Deposit;
-import menu.Withdraw;
+import me.itswagpvp.economyplus.bank.menu.Withdraw;
 import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

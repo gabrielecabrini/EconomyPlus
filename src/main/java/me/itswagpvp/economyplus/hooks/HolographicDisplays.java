@@ -16,9 +16,9 @@ public class HolographicDisplays {
     public static EconomyPlus plugin = EconomyPlus.getInstance();
 
     World w = Bukkit.getWorld(plugin.getHologramConfig().getString("Hologram.BalTop.World"));
-    int x = plugin.getHologramConfig().getInt("Hologram.BalTop.X");
-    int y = plugin.getHologramConfig().getInt("Hologram.BalTop.Y");
-    int z = plugin.getHologramConfig().getInt("Hologram.BalTop.Z");
+    double x = plugin.getHologramConfig().getDouble("Hologram.BalTop.X");
+    double y = plugin.getHologramConfig().getDouble("Hologram.BalTop.Y");
+    double z = plugin.getHologramConfig().getDouble("Hologram.BalTop.Z");
 
     Location loc = new Location(w, x, y, z);
 

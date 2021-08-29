@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class MenuListener implements Listener {
@@ -18,21 +17,27 @@ public class MenuListener implements Listener {
     int amount = 10;
 
     @EventHandler
-    public void onMenuClose(InventoryCloseEvent e) {
-        if (e.getView().getTitle().equalsIgnoreCase("Withdraw") || e.getView().getTitle().equalsIgnoreCase("Deposit")) {
-            amount = 10;
-        }
-    }
-
-    @EventHandler
     public void onMenuClick(InventoryClickEvent e) {
 
-        Player player = (Player) e.getWhoClicked();
+        if (e.getCurrentItem() == null) {
+            return;
+        }
 
-        //Check withdraw inventory
+        if (e.getCurrentItem().getType() == Material.BLACK_STAINED_GLASS_PANE) {
+            e.setCancelled(true);
+        }
+
+        String withdrawTitle = plugin.getConfig().getString("Bank.GUI.Withdraw.Title")
+                .replaceAll("&", "§");
 
         String depositTitle = plugin.getConfig().getString("Bank.GUI.Deposit.Title")
                 .replaceAll("&", "§");
+
+        if (e.getView().getTitle().equals(withdrawTitle) || e.getView().getTitle().equals(depositTitle)) {
+            e.setCancelled(true);
+        }
+
+        Player player = (Player) e.getWhoClicked();
 
         // Check deposit inventory
         if (e.getView().getTitle().equals(depositTitle)) {
@@ -46,38 +51,38 @@ public class MenuListener implements Listener {
 
             if (e.getCurrentItem().getType() == Material.RED_WOOL) {
 
-                if ("-1".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                if ("§c-1".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount -= 1;
-                else if ("-10".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§c-10".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount -= 10;
-                else if ("-100".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§c-100".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount -= 100;
-                else if ("-1000".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§c-1000".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount -= 1000;
                 if (amount < 1) {
                     amount = 1;
                 }
 
-                paperItem_meta.setDisplayName(String.valueOf(amount));
+                paperItem_meta.setDisplayName("§e" + amount);
                 e.getView().getItem(22).setItemMeta(paperItem_meta);
 
                 e.setCancelled(true);
 
             } else if (e.getCurrentItem().getType() == Material.GREEN_WOOL) {
 
-                if ("+1".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                if ("§a+1".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount += 1;
-                else if ("+10".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§a+10".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount += 10;
-                else if ("+100".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§a+100".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount += 100;
-                else if ("+1000".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§a+1000".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount += 1000;
                 if (amount < 1) {
                     amount = 1;
                 }
 
-                paperItem_meta.setDisplayName(String.valueOf(amount));
+                paperItem_meta.setDisplayName("§e" + amount);
                 e.getView().getItem(22).setItemMeta(paperItem_meta);
 
                 e.setCancelled(true);
@@ -113,10 +118,7 @@ public class MenuListener implements Listener {
             }
         }
 
-        String withdrawTitle = plugin.getConfig().getString("Bank.GUI.Withdraw.Title")
-                .replaceAll("&", "§");
-
-        // Check deposit inventory
+        // Check withdraw inventory
         if (e.getView().getTitle().equals(withdrawTitle)) {
 
             ItemMeta paperItem_meta = e.getView().getItem(4).getItemMeta();
@@ -129,38 +131,38 @@ public class MenuListener implements Listener {
 
             if (e.getCurrentItem().getType() == Material.RED_WOOL) {
 
-                if ("-1".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                if ("§c-1".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount -= 1;
-                else if ("-10".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§c-10".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount -= 10;
-                else if ("-100".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§c-100".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount -= 100;
-                else if ("-1000".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§c-1000".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount -= 1000;
                 if (amount < 1) {
                     amount = 1;
                 }
 
-                paperItem_meta.setDisplayName(String.valueOf(amount));
+                paperItem_meta.setDisplayName("§e" + amount);
                 e.getView().getItem(22).setItemMeta(paperItem_meta);
 
                 e.setCancelled(true);
 
             } else if (e.getCurrentItem().getType() == Material.GREEN_WOOL) {
 
-                if ("+1".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                if ("§a+1".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount += 1;
-                else if ("+10".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§a+10".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount += 10;
-                else if ("+100".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§a+100".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount += 100;
-                else if ("+1000".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
+                else if ("§a+1000".equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()))
                     amount += 1000;
                 if (amount < 1) {
                     amount = 1;
                 }
 
-                paperItem_meta.setDisplayName(String.valueOf(amount));
+                paperItem_meta.setDisplayName("§e" + amount);
                 e.getView().getItem(22).setItemMeta(paperItem_meta);
 
                 e.setCancelled(true);
@@ -168,7 +170,6 @@ public class MenuListener implements Listener {
             } else if (e.getCurrentItem().getType() == Material.PAPER) {
 
                 e.setCancelled(true);
-
 
             } else if (e.getCurrentItem().getType() == Material.GREEN_STAINED_GLASS_PANE) {
 

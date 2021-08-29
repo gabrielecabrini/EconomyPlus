@@ -1,4 +1,4 @@
-package menu;
+package me.itswagpvp.economyplus.bank.menu;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
@@ -18,32 +18,16 @@ public class Withdraw {
                 .replaceAll("&", "§");
 
         Inventory gui = Bukkit.getServer().createInventory(p, Size, title);
-        gui.setItem(0, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(1, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(2, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(3, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(4, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(5, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(6, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(7, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(8, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(17, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(26, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(35, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(44, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(53, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(52, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(51, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(50, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(49, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(48, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(47, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(46, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(45, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(36, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(27, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(18, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-        gui.setItem(9, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
+
+        int[] cornerNumbers = {0,1,2,3,4,5,6,7,8,17,26,35,44,53,52,51,50,49,48,47,46,45,36,27,18,9};
+        ItemStack pane = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta paneMeta = pane.getItemMeta();
+        paneMeta.setDisplayName("§a  ");
+        pane.setItemMeta(paneMeta);
+
+        for (int index = 0; index < cornerNumbers.length; index++) {
+            gui.setItem(cornerNumbers[index], pane);
+        }
 
         ItemStack RemoveItem = new ItemStack(Material.RED_WOOL);
         ItemMeta RemoveItem_meta = RemoveItem.getItemMeta();
@@ -56,50 +40,50 @@ public class Withdraw {
 
         //-------
 
-        RemoveItem_meta.setDisplayName("-1000");
+        RemoveItem_meta.setDisplayName("§c-1000");
 
         RemoveItem.setItemMeta(RemoveItem_meta);
         gui.setItem(10, RemoveItem);
 
-        RemoveItem_meta.setDisplayName("-100");
+        RemoveItem_meta.setDisplayName("§c-100");
         RemoveItem.setItemMeta(RemoveItem_meta);
         gui.setItem(19, RemoveItem);
 
-        RemoveItem_meta.setDisplayName("-10");
+        RemoveItem_meta.setDisplayName("§c-10");
         RemoveItem.setItemMeta(RemoveItem_meta);
         gui.setItem(28, RemoveItem);
 
-        RemoveItem_meta.setDisplayName("-1");
+        RemoveItem_meta.setDisplayName("§c-1");
         RemoveItem.setItemMeta(RemoveItem_meta);
         gui.setItem(37, RemoveItem);
 
         //-------
 
-        AmountItem_meta.setDisplayName(String.valueOf(10));
+        AmountItem_meta.setDisplayName("§e10");
         AmountItem.setItemMeta(AmountItem_meta);
         gui.setItem(22, AmountItem);
 
         //-------
 
-        AddItem_meta.setDisplayName("+1");
+        AddItem_meta.setDisplayName("§a+1");
         AddItem.setItemMeta(AddItem_meta);
         gui.setItem(16, AddItem);
 
-        AddItem_meta.setDisplayName("+10");
+        AddItem_meta.setDisplayName("§a+10");
         AddItem.setItemMeta(AddItem_meta);
         gui.setItem(25, AddItem);
 
-        AddItem_meta.setDisplayName("+100");
+        AddItem_meta.setDisplayName("§a+100");
         AddItem.setItemMeta(AddItem_meta);
         gui.setItem(34, AddItem);
 
-        AddItem_meta.setDisplayName("+1000");
+        AddItem_meta.setDisplayName("§a+1000");
         AddItem.setItemMeta(AddItem_meta);
         gui.setItem(43, AddItem);
 
         //--------
 
-        ConfirmItem_meta.setDisplayName("Conferma");
+        ConfirmItem_meta.setDisplayName("§aConfirm");
         ConfirmItem.setItemMeta(ConfirmItem_meta);
         gui.setItem(31, ConfirmItem);
 
