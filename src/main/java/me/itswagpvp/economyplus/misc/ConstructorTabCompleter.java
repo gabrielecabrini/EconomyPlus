@@ -32,9 +32,14 @@ public class ConstructorTabCompleter implements TabCompleter {
                     return playerNames;
                 }
                 case 2: {
-                    return Arrays.asList("give", "set", "take");
+                    return Arrays.asList("give", "set", "take", "reset");
                 }
                 case 3: {
+
+                    if (args[1].equals("reset")) {
+                        return listDefault;
+                    }
+
                     return Arrays.asList("0", "100", "1000");
                 }
                 default:
@@ -100,8 +105,46 @@ public class ConstructorTabCompleter implements TabCompleter {
             int i = (args.length);
             switch (i) {
                 case 1: {
-                    return Arrays.asList("deposit", "withdraw");
+                    return Arrays.asList("deposit", "withdraw", "admin");
                 }
+                case 2: {
+                    if (args[0].equalsIgnoreCase("admin")) {
+                        return Arrays.asList("set", "get");
+                    }
+
+                    return Arrays.asList("10", "100", "1000");
+                }
+
+                case 3: {
+                    if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("get")) {
+                        return playerNames;
+                    }
+
+                    return listDefault;
+                }
+
+                case 4: {
+                    if (args[1].equalsIgnoreCase("set")) {
+                        return Arrays.asList("0", "10", "100");
+                    }
+
+                    return listDefault;
+                }
+
+                case 5: {
+                    if (args[1].equalsIgnoreCase("set")) {
+                        return playerNames;
+                    }
+
+                    return listDefault;
+                }
+
+                case 6: {
+                    if (args[1].equalsIgnoreCase("set")) {
+                        return Arrays.asList("0", "10", "100");
+                    }
+                }
+
                 default:
                     return listDefault;
             }

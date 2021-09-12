@@ -12,15 +12,16 @@ PlayerNotFound: "&cPlayer not found!"
 # Messages for the invalid args
 InvalidArgs:
   Main: "&cInvalid args! /economyplus <debug/help/reload>"
-  Eco: "&cInvalid args! /eco <player> <set/give/take> <money>"
+  Eco: "&cInvalid args! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cInvalid args! /bal <player>"
   Pay: "&cInvalid args! /pay <player> <money>"
-  Bank: "&cInvalid args! /bank <withdraw/deposit>"
+  Bank: "&cInvalid args! /bank <withdraw/deposit/admin> <set/get> <player> <moneys>"
 
 # Moneys refreshed
 Money:
   Done: "&aAction executed with success!"
   Refreshed: "&eYour money has been refreshed! Now you have %money%$!"
+  Reset: "&cYour money has been restored to the starting balance!"
 
 # /bal
 Balance:
@@ -40,3 +41,8 @@ Bank:
   NoMoney: "&cYou don't have enough money in the bank!"
   Deposit: "&eYou have deposited %money%$!"
   Withdraw: "&eYou have withdrawn %money%$!"
+  Self: "&aYou have %money%$ in your bank!"
+  Admin:
+    Get: "&a%player% has %money% in bank!"
+    Set: "&eYou have set %player%'s bank to %money%"
+    Refreshed: "&eYour bank has been refreshed to %money%"

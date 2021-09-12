@@ -55,6 +55,10 @@ public abstract class Database {
             if (e.toString().contains("Duplicate column name 'bank'")) {
                 return;
             }
+
+            if (e.toString().contains("duplicate column name: bank")) {
+                return;
+            }
             e.printStackTrace();
         }
     }

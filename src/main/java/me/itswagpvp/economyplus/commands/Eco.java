@@ -117,6 +117,32 @@ public class Eco implements CommandExecutor {
 
         }
 
+        if (args.length == 2) {
+            Player p = Bukkit.getServer().getPlayer(args[0]);
+
+            if (p == null) {
+
+                sender.sendMessage(plugin.getMessage("PlayerNotFound"));
+                Utils.playErrorSound(sender);
+
+                return true;
+            }
+
+            if (!args[0].equalsIgnoreCase("reset")) {
+
+                Economy eco = new Economy(p, plugin.getConfig().getDouble("Starting-Balance"));
+                eco.setBalance();
+
+                sender.sendMessage(plugin.getMessage("Money.Done"));
+                p.sendMessage(plugin.getMessage("Money.Reset"));
+
+                Utils.playSuccessSound(sender);
+                Utils.playErrorSound(p);
+
+                return true;
+            }
+        }
+
         sender.sendMessage(plugin.getMessage("InvalidArgs.Eco"));
         Utils.playErrorSound(sender);
         return true;

@@ -102,6 +102,7 @@ Bank:
   Enabled: true
   # /bank <withdraw/deposit> section
   GUI:
+    Borders: BLACK_STAINED_GLASS_PANE
     # /bank withdraw
     Withdraw:
       # The title of the GUI

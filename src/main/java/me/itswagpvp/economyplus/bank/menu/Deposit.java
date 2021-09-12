@@ -20,7 +20,7 @@ public class Deposit {
         Inventory gui = Bukkit.getServer().createInventory(p, size, title);
 
         int[] cornerNumbers = {0,1,2,3,4,5,6,7,8,17,26,35,44,53,52,51,50,49,48,47,46,45,36,27,18,9};
-        ItemStack pane = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemStack pane = new ItemStack(Material.getMaterial(plugin.getConfig().getString("Bank.GUI.Borders")));
         ItemMeta paneMeta = pane.getItemMeta();
         paneMeta.setDisplayName("§a  ");
         pane.setItemMeta(paneMeta);

@@ -91,7 +91,6 @@ public class MenuListener implements Listener {
 
                 e.setCancelled(true);
 
-
             } else if (e.getCurrentItem().getType() == Material.GREEN_STAINED_GLASS_PANE) {
                 double balance = new Economy(player, amount).getBalance();
                 if ((balance - amount) < 0) {
