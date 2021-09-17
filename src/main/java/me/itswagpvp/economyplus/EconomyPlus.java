@@ -7,13 +7,14 @@ import me.itswagpvp.economyplus.bank.menu.MenuListener;
 import me.itswagpvp.economyplus.commands.*;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.metrics.bStats;
-import me.itswagpvp.economyplus.misc.Data;
-import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
 import me.itswagpvp.economyplus.dbStorage.sqlite.Database;
 import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
 import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
+import me.itswagpvp.economyplus.misc.Data;
+import me.itswagpvp.economyplus.misc.DatabaseType;
+import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
@@ -30,16 +31,20 @@ import java.sql.SQLException;
 
 public final class EconomyPlus extends JavaPlugin {
 
-    public boolean useHolographicDisplays;
-
     private FileConfiguration messagesConfig;
 
     // Database
     private Database db;
+    private DatabaseType dbType = DatabaseType.Undefined;
 
     // holograms file
     private File hologramFile;
     private FileConfiguration hologramConfig;
+
+    /*
+     */
+    private File ymlFile;
+    private FileConfiguration ymlConfig;
 
     // Economy
     public static VEconomy veco;
@@ -126,17 +131,7 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§f-> §cClosing database connection");
 
         try {
-
-            String type = plugin.getConfig().getString("Database.Type");
-
-            if (type.equalsIgnoreCase("H2")) {
-                getRDatabase().getSQLiteConnection().close();
-            }
-
-            if (type.equalsIgnoreCase("MySQL")) {
-                new MySQL().closeConnection();
-            }
-
+            dbType.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -145,13 +140,13 @@ public final class EconomyPlus extends JavaPlugin {
 
     }
 
-    public void loadEconomy () {
+    public void loadEconomy() {
         try {
             veco = new VEconomy(plugin);
             hook = new VHook();
 
             hook.onHook();
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fVault: §CError");
             e.printStackTrace();
             return;
@@ -172,7 +167,7 @@ public final class EconomyPlus extends JavaPlugin {
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
                 return;
             }
-
+            dbType = DatabaseType.MySQL;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (MySQL)");
         }
 
@@ -180,13 +175,27 @@ public final class EconomyPlus extends JavaPlugin {
             try {
                 this.db = new SQLite(this);
                 this.db.load();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (SQLite)");
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
                 return;
             }
 
+            dbType = DatabaseType.H2;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (SQLite)");
+        }
+
+        if (getConfig().getString("Database.Type").equalsIgnoreCase("YAML")) {
+            try {
+                createYMLStorage();
+            } catch (Exception e) {
+                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (YAML)");
+                Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                return;
+            }
+
+            dbType = DatabaseType.YAML;
+            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (YAML)");
         }
     }
 
@@ -225,7 +234,7 @@ public final class EconomyPlus extends JavaPlugin {
             getCommand("bank").setExecutor(new Bank());
             getCommand("bank").setTabCompleter(new ConstructorTabCompleter());
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fCommands: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
@@ -242,7 +251,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         try {
             new bStats(this, 11565);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fbStats: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
@@ -250,13 +259,13 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("   - §fbStats: §aLoaded");
     }
 
-    public void loadHolograms () {
+    public void loadHolograms() {
 
         if (!plugin.getConfig().getBoolean("Hooks.HolographicDisplays")) {
             return;
         }
 
-        useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+        boolean useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 
         if (useHolographicDisplays) {
 
@@ -370,5 +379,40 @@ public final class EconomyPlus extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
+
+    public FileConfiguration getYMLData() {
+        return this.ymlConfig;
+    }
+
+    public void saveYMLConfig() {
+        try {
+            ymlConfig.save(ymlFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createYMLStorage() {
+        ymlFile = new File(plugin.getDataFolder(), "data.yml");
+        if (!ymlFile.exists()) {
+            hologramFile.getParentFile().mkdirs();
+            plugin.saveResource("data.yml", false);
+        }
+
+        loadYML();
+    }
+
+    public void loadYML() {
+        ymlConfig = new YamlConfiguration();
+        try {
+            ymlConfig.load(ymlFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static DatabaseType getDBType() {
+        return getInstance().dbType;
     }
 }

@@ -117,10 +117,10 @@ public enum DatabaseType {
             throw new NotImplementedException();
         }
     },
-    Yaml{
+    YAML{
         @Override
         public boolean contains(String playerName) {
-            return false;
+            return new YMLManager().contains(playerName);
         }
 
         @Override
@@ -149,9 +149,7 @@ public enum DatabaseType {
         }
 
         @Override
-        public void close() {
-            throw new NotImplementedException();
-        }
+        public void close() {}
     },
     Undefined{
         @Override
