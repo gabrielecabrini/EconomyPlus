@@ -1,7 +1,6 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.storage.mysql.MySQL;
 import org.bukkit.entity.Player;
 
 public class Economy extends VEconomy {
@@ -16,80 +15,36 @@ public class Economy extends VEconomy {
         this.money = money;
     }
 
-    final String type = plugin.getConfig().getString("Database.Type");
-
     // Returns the money of a player
     public double getBalance() {
-        if (type.equalsIgnoreCase("H2")) {
-            return plugin.getRDatabase().getTokens(this.p.getName());
-        }
-
-        if (type.equalsIgnoreCase("MySQL")) {
-            return new MySQL().getTokens(this.p.getName());
-        }
-
-        return 0D;
+        return getBalance(this.p.getName());
     }
 
     // Set the money for a player
     public void setBalance() {
-
-        if (type.equalsIgnoreCase("H2")) {
-            plugin.getRDatabase().setTokens(this.p.getName(), this.money);
-        }
-
-        if (type.equalsIgnoreCase("MySQL")) {
-            new MySQL().setTokens(this.p.getName(), this.money);
-        }
+        dbType.setTokens(p.getName(), money);
     }
 
     // Add moneys to a player account
     public void addBalance() {
         super.depositPlayer(this.p.getName(), money);
         double result = getBalance() + this.money;
-
-        if (type.equalsIgnoreCase("H2")) {
-            plugin.getRDatabase().setTokens(this.p.getName(), result);
-        }
-
-        if (type.equalsIgnoreCase("MySQL")) {
-            new MySQL().setTokens(this.p.getName(), result);
-        }
+        dbType.setTokens(this.p.getName(), result);
     }
 
     // Remove moneys from a player's account
     public void takeBalance() {
         super.withdrawPlayer(this.p.getName(), this.money);
         double result = getBalance() - this.money;
-
-        if (type.equalsIgnoreCase("H2")) {
-            plugin.getRDatabase().setTokens(this.p.getName(), result);
-        }
-
-        if (type.equalsIgnoreCase("MySQL")) {
-            new MySQL().setTokens(this.p.getName(), result);
-        }
+        dbType.setTokens(this.p.getName(), result);
     }
 
     public void setBank () {
-        if (type.equalsIgnoreCase("H2")) {
-            plugin.getRDatabase().setBank(this.p.getName(), this.money);
-        }
-
-        if (type.equalsIgnoreCase("MySQL")) {
-            new MySQL().setBank(this.p.getName(), this.money);
-        }
+        dbType.setBank(this.p.getName(), money);
     }
 
     public double getBank () {
-        if (type.equalsIgnoreCase("H2")) {
-            return plugin.getRDatabase().getBank(this.p.getName());
-        }
-
-        if (type.equalsIgnoreCase("MySQL")) {
-            return new MySQL().getBank(this.p.getName());
-        }
-        return 0D;
+        return dbType.getBank(this.p.getName());
     }
 
     // Controls if the player has enough moneys
