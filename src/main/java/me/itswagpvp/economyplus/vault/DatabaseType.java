@@ -1,7 +1,7 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.storage.mysql.MySQL;
+import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
 
 enum DatabaseType {
     H2{

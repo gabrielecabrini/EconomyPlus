@@ -1,75 +1,45 @@
-package me.itswagpvp.economyplus.storage.mysql;
+package me.itswagpvp.economyplus.dbStorage.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.storage.sqlite.Errors;
 import org.bukkit.Bukkit;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
-public class MySQL {
+public abstract class Database {
 
-    public EconomyPlus plugin = EconomyPlus.getInstance();
+    EconomyPlus plugin;
+    Connection connection;
 
-    final String user = plugin.getConfig().getString("Database.User");
-    final String password = plugin.getConfig().getString("Database.Password");
-    final String host = plugin.getConfig().getString("Database.Host");
-    final String port = plugin.getConfig().getString("Database.Port");
-    final String database = plugin.getConfig().getString("Database.Database");
-    final String table = plugin.getConfig().getString("Database.Table");
-    final boolean autoReconnect = plugin.getConfig().getBoolean("Database.AutoReconnect");
-
-    final String url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=" + autoReconnect + "&useSSL=false&characterEncoding=utf8";
-
-    static Connection connection;
-
-    // Connect to the database
-    public void connect () {
-        try {
-
-            connection = DriverManager.getConnection(url, user, password);
-
-        }catch (SQLException e) {
-
-            e.printStackTrace();
-
-        }
+    // The name of the table we created back in SQLite class.
+    public String table = "data";
+    public Database(EconomyPlus instance){
+        plugin = instance;
     }
 
-    // Close the database connection if not null
-    public void closeConnection() {
+    public abstract Connection getSQLiteConnection();
+
+    public abstract void load();
+
+    public void initialize () {
+        connection = getSQLiteConnection();
         try {
-            if (connection!=null && !connection.isClosed()){
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
+            ResultSet rs = ps.executeQuery();
 
-                connection.close();
-            }
+            updateTable();
 
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
+            close(ps,rs);
 
-    public void createTable () {
-        String sql = "CREATE TABLE " + table + " ("
-                + "player VARCHAR(45) NOT NULL,"
-                + "moneys DOUBLE NOT NULL,"
-                + "bank DOUBLE NOT NULL,"
-                + "PRIMARY KEY (player))";
-
-        try {
-
-            PreparedStatement stmt = connection.prepareStatement(sql);
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            if (e.toString().contains("Table '" + table + "' already exists")) {
-                return;
-            }
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
         }
     }
 
@@ -85,6 +55,10 @@ public class MySQL {
             if (e.toString().contains("Duplicate column name 'bank'")) {
                 return;
             }
+
+            if (e.toString().contains("duplicate column name: bank")) {
+                return;
+            }
             e.printStackTrace();
         }
     }
@@ -93,18 +67,18 @@ public class MySQL {
     public double getTokens(String player) {
 
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
-
+            Connection conn = getSQLiteConnection();
             try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
                     ResultSet rs = ps.executeQuery()
             ) {
                 while(rs.next()){
                     if(rs.getString("player").equalsIgnoreCase(player)){
-                        return rs.getDouble("moneys"); 
+                        return rs.getDouble("moneys");
                     }
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
             return 0.00;
         });
@@ -121,13 +95,12 @@ public class MySQL {
     // Save the balance to the player's database
     public void setTokens (String player, double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
-
+            Connection conn = getSQLiteConnection();
             try (
-                    PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+                    PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
             ){
 
                 ps.setString(1, player);
-
 
                 ps.setDouble(2, tokens);
 
@@ -135,7 +108,7 @@ public class MySQL {
 
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
         });
     }
@@ -144,9 +117,9 @@ public class MySQL {
     public double getBank (String player) {
 
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
-
+            Connection conn = getSQLiteConnection();
             try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
                     ResultSet rs = ps.executeQuery()
             ) {
                 while(rs.next()){
@@ -155,7 +128,7 @@ public class MySQL {
                     }
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
             return 0.00;
         });
@@ -172,9 +145,9 @@ public class MySQL {
     // Save the balance to the player's database
     public void setBank (String player, double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
-
+            Connection conn = getSQLiteConnection();
             try (
-                    PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+                    PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
             ){
 
                 ps.setString(1, player);
@@ -185,18 +158,18 @@ public class MySQL {
 
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
         });
     }
 
-    // Get the list of the players saved
+    // Gets the list of the players in the database
     public List<String> getList () {
         CompletableFuture<List<String>> getList = CompletableFuture.supplyAsync(() -> {
-
+            Connection conn = getSQLiteConnection();
             List<String> list = new ArrayList<>();
             try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table);
+                    PreparedStatement ps = conn.prepareStatement("SELECT player FROM 'data'");
                     ResultSet rs = ps.executeQuery()
             ) {
 
@@ -220,4 +193,15 @@ public class MySQL {
         return new ArrayList<>();
     }
 
+    // Closes the database connection
+    public void close(PreparedStatement ps, ResultSet rs){
+        try {
+            if (ps != null)
+                ps.close();
+            if (rs != null)
+                rs.close();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to close MySQL connection: ", ex);
+        }
+    }
 }

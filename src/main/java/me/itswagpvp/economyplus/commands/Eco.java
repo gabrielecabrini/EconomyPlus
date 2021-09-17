@@ -32,7 +32,7 @@ public class Eco implements CommandExecutor {
                 return true;
             }
 
-            String arg = null;
+            String arg;
             if (args[2].contains(",")) {
                 arg = args[2].replaceAll(",", ".");
             } else {
@@ -97,8 +97,6 @@ public class Eco implements CommandExecutor {
                     Utils.playErrorSound(sender);
                     return true;
                 }
-
-                double res = money.getBalance() + value;
 
                 money.addBalance();
 

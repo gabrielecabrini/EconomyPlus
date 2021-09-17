@@ -9,9 +9,9 @@ import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.Data;
 import me.itswagpvp.economyplus.misc.Updater;
-import me.itswagpvp.economyplus.storage.mysql.MySQL;
-import me.itswagpvp.economyplus.storage.sqlite.Database;
-import me.itswagpvp.economyplus.storage.sqlite.SQLite;
+import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
+import me.itswagpvp.economyplus.dbStorage.sqlite.Database;
+import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
 import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
 import me.itswagpvp.economyplus.misc.Utils;
@@ -49,9 +49,6 @@ public final class EconomyPlus extends JavaPlugin {
 
     // plugin instance
     public static EconomyPlus plugin;
-
-    public static String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
-    public static int ver = Integer.parseInt(split[1]);
 
     Updater updater;
 
