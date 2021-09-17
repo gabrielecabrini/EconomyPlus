@@ -4,14 +4,23 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.menu.MenuListener;
-import me.itswagpvp.economyplus.commands.*;
+import me.itswagpvp.economyplus.commands.Bal;
+import me.itswagpvp.economyplus.commands.BalTop;
+import me.itswagpvp.economyplus.commands.Eco;
+import me.itswagpvp.economyplus.commands.Main;
+import me.itswagpvp.economyplus.commands.Pay;
+import me.itswagpvp.economyplus.dbStorage.json.JsonManager;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.metrics.bStats;
-import me.itswagpvp.economyplus.misc.*;
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
 import me.itswagpvp.economyplus.dbStorage.sqlite.Database;
 import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
+import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
+import me.itswagpvp.economyplus.misc.Data;
+import me.itswagpvp.economyplus.misc.DatabaseType;
+import me.itswagpvp.economyplus.misc.Updater;
+import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
 import org.bukkit.Bukkit;
@@ -27,8 +36,6 @@ import java.sql.SQLException;
 
 public final class EconomyPlus extends JavaPlugin {
 
-    public boolean useHolographicDisplays;
-
     private FileConfiguration messagesConfig;
 
     // Database
@@ -38,6 +45,11 @@ public final class EconomyPlus extends JavaPlugin {
     // holograms file
     private File hologramFile;
     private FileConfiguration hologramConfig;
+
+    /*
+     */
+    private File ymlFile;
+    private FileConfiguration ymlConfig;
 
     // Economy
     public static VEconomy veco;
@@ -133,13 +145,13 @@ public final class EconomyPlus extends JavaPlugin {
 
     }
 
-    public void loadEconomy () {
+    public void loadEconomy() {
         try {
             veco = new VEconomy(plugin);
             hook = new VHook();
 
             hook.onHook();
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fVault: §CError");
             e.printStackTrace();
             return;
@@ -168,7 +180,7 @@ public final class EconomyPlus extends JavaPlugin {
             try {
                 this.db = new SQLite(this);
                 this.db.load();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (SQLite)");
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
                 return;
@@ -176,6 +188,32 @@ public final class EconomyPlus extends JavaPlugin {
 
             dbType = DatabaseType.H2;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (SQLite)");
+        }
+
+        if (getConfig().getString("Database.Type").equalsIgnoreCase("YAML")) {
+            try {
+                createYMLStorage();
+            } catch (Exception e) {
+                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (YAML)");
+                Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                return;
+            }
+
+            dbType = DatabaseType.YAML;
+            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (YAML)");
+        }
+
+        if (getConfig().getString("Database.Type").equalsIgnoreCase("JSON")) {
+            try {
+                new JsonManager().test();
+            } catch (Exception e) {
+                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (JSON)");
+                Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                return;
+            }
+
+            dbType = DatabaseType.JSON;
+            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (JSON)");
         }
     }
 
@@ -214,7 +252,7 @@ public final class EconomyPlus extends JavaPlugin {
             getCommand("bank").setExecutor(new Bank());
             getCommand("bank").setTabCompleter(new ConstructorTabCompleter());
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fCommands: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
@@ -231,7 +269,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         try {
             new bStats(this, 11565);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fbStats: §cError");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
@@ -239,13 +277,13 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("   - §fbStats: §aLoaded");
     }
 
-    public void loadHolograms () {
+    public void loadHolograms() {
 
         if (!plugin.getConfig().getBoolean("Hooks.HolographicDisplays")) {
             return;
         }
 
-        useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+        boolean useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 
         if (useHolographicDisplays) {
 
@@ -314,7 +352,7 @@ public final class EconomyPlus extends JavaPlugin {
     public void createMessagesConfig() {
         File messagesConfigFile = new File(getDataFolder(), "messages.yml");
         if (!messagesConfigFile.exists()) {
-            boolean success = messagesConfigFile.getParentFile().mkdirs();
+            messagesConfigFile.getParentFile().mkdirs();
             saveResource("messages.yml", false);
         }
 
@@ -349,13 +387,44 @@ public final class EconomyPlus extends JavaPlugin {
     public void createHologramConfig() {
         hologramFile = new File(plugin.getDataFolder(), "holograms.yml");
         if (!hologramFile.exists()) {
-            boolean success = hologramFile.getParentFile().mkdirs();
+            hologramFile.getParentFile().mkdirs();
             plugin.saveResource("holograms.yml", false);
         }
 
         hologramConfig = new YamlConfiguration();
         try {
             hologramConfig.load(hologramFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getYMLData() {
+        return this.ymlConfig;
+    }
+
+    public void saveYMLConfig() {
+        try {
+            ymlConfig.save(ymlFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createYMLStorage() {
+        ymlFile = new File(plugin.getDataFolder(), "data.yml");
+        if (!ymlFile.exists()) {
+            hologramFile.getParentFile().mkdirs();
+            plugin.saveResource("data.yml", false);
+        }
+
+        loadYML();
+    }
+
+    private void loadYML() {
+        ymlConfig = new YamlConfiguration();
+        try {
+            ymlConfig.load(ymlFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
