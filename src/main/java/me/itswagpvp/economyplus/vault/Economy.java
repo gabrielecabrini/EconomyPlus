@@ -22,29 +22,29 @@ public class Economy extends VEconomy {
 
     // Set the money for a player
     public void setBalance() {
-        dbType.setTokens(p.getName(), money);
+        EconomyPlus.getDBType().setTokens(p.getName(), money);
     }
 
     // Add moneys to a player account
     public void addBalance() {
         super.depositPlayer(this.p.getName(), money);
         double result = getBalance() + this.money;
-        dbType.setTokens(this.p.getName(), result);
+        EconomyPlus.getDBType().setTokens(this.p.getName(), result);
     }
 
     // Remove moneys from a player's account
     public void takeBalance() {
         super.withdrawPlayer(this.p.getName(), this.money);
         double result = getBalance() - this.money;
-        dbType.setTokens(this.p.getName(), result);
+        EconomyPlus.getDBType().setTokens(this.p.getName(), result);
     }
 
     public void setBank () {
-        dbType.setBank(this.p.getName(), money);
+        EconomyPlus.getDBType().setBank(this.p.getName(), money);
     }
 
     public double getBank () {
-        return dbType.getBank(this.p.getName());
+        return EconomyPlus.getDBType().getBank(this.p.getName());
     }
 
     // Controls if the player has enough moneys

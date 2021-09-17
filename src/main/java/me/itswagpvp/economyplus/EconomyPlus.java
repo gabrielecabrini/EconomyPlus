@@ -7,14 +7,11 @@ import me.itswagpvp.economyplus.bank.menu.MenuListener;
 import me.itswagpvp.economyplus.commands.*;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.metrics.bStats;
-import me.itswagpvp.economyplus.misc.Data;
-import me.itswagpvp.economyplus.misc.Updater;
+import me.itswagpvp.economyplus.misc.*;
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
 import me.itswagpvp.economyplus.dbStorage.sqlite.Database;
 import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
-import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
-import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
 import org.bukkit.Bukkit;
@@ -36,6 +33,7 @@ public final class EconomyPlus extends JavaPlugin {
 
     // Database
     private Database db;
+    private DatabaseType dbType = DatabaseType.Undefined;
 
     // holograms file
     private File hologramFile;
@@ -126,17 +124,7 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§f-> §cClosing database connection");
 
         try {
-
-            String type = plugin.getConfig().getString("Database.Type");
-
-            if (type.equalsIgnoreCase("H2")) {
-                getRDatabase().getSQLiteConnection().close();
-            }
-
-            if (type.equalsIgnoreCase("MySQL")) {
-                new MySQL().closeConnection();
-            }
-
+            dbType.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -172,7 +160,7 @@ public final class EconomyPlus extends JavaPlugin {
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
                 return;
             }
-
+            dbType = DatabaseType.MySQL;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (MySQL)");
         }
 
@@ -186,6 +174,7 @@ public final class EconomyPlus extends JavaPlugin {
                 return;
             }
 
+            dbType = DatabaseType.MySQL;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (SQLite)");
         }
     }
@@ -325,7 +314,7 @@ public final class EconomyPlus extends JavaPlugin {
     public void createMessagesConfig() {
         File messagesConfigFile = new File(getDataFolder(), "messages.yml");
         if (!messagesConfigFile.exists()) {
-            messagesConfigFile.getParentFile().mkdirs();
+            boolean success = messagesConfigFile.getParentFile().mkdirs();
             saveResource("messages.yml", false);
         }
 
@@ -360,7 +349,7 @@ public final class EconomyPlus extends JavaPlugin {
     public void createHologramConfig() {
         hologramFile = new File(plugin.getDataFolder(), "holograms.yml");
         if (!hologramFile.exists()) {
-            hologramFile.getParentFile().mkdirs();
+            boolean success = hologramFile.getParentFile().mkdirs();
             plugin.saveResource("holograms.yml", false);
         }
 
@@ -370,5 +359,9 @@ public final class EconomyPlus extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
+
+    public static DatabaseType getDBType() {
+        return getInstance().dbType;
     }
 }

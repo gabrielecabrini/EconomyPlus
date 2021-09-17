@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.misc.DatabaseType;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -12,24 +13,9 @@ import java.util.Locale;
 public class VEconomy implements Economy {
 
     public EconomyPlus plugin;
-    protected final DatabaseType dbType;
 
     public VEconomy (EconomyPlus plugin) {
         this.plugin = plugin;
-        dbType = getDataBaseType();
-    }
-
-    private DatabaseType getDataBaseType(){
-        String type =  plugin.getConfig().getString("Database.Type");
-        if (type.equalsIgnoreCase("H2")) {
-            return DatabaseType.H2;
-        }
-
-        if (type.equalsIgnoreCase("MySQL")) {
-            return DatabaseType.MySQL;
-        }
-
-        return DatabaseType.Undefined;
     }
 
     @Override
@@ -72,7 +58,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return dbType.contains(playerName);
+        return EconomyPlus.getDBType().contains(playerName);
     }
 
     @Override
@@ -92,7 +78,7 @@ public class VEconomy implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return dbType.getToken(playerName);
+        return EconomyPlus.getDBType().getToken(playerName);
     }
 
     @Override
@@ -112,7 +98,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        double playerMoney = dbType.getToken(playerName);
+        double playerMoney = EconomyPlus.getDBType().getToken(playerName);
         return (playerMoney - amount) >= 0;
     }
 
@@ -134,7 +120,7 @@ public class VEconomy implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         double tokens = getBalance(playerName) - amount;
-        dbType.setTokens(playerName, tokens);
+        EconomyPlus.getDBType().setTokens(playerName, tokens);
         return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
@@ -156,7 +142,7 @@ public class VEconomy implements Economy {
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
         double tokens = getBalance(playerName) + amount;
-        dbType.setTokens(playerName, tokens);
+        EconomyPlus.getDBType().setTokens(playerName, tokens);
         return new EconomyResponse(amount, tokens,EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
