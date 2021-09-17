@@ -174,7 +174,7 @@ public final class EconomyPlus extends JavaPlugin {
                 return;
             }
 
-            dbType = DatabaseType.MySQL;
+            dbType = DatabaseType.H2;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (SQLite)");
         }
     }
