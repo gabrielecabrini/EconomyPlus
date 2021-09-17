@@ -71,7 +71,6 @@ public class Utils {
 
             if (EconomyPlus.getDBType() == DatabaseType.YAML) {
                 plugin.createYMLStorage();
-                plugin.loadYML();
             }
 
             plugin.saveDefaultConfig();

@@ -4,7 +4,12 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.menu.MenuListener;
-import me.itswagpvp.economyplus.commands.*;
+import me.itswagpvp.economyplus.commands.Bal;
+import me.itswagpvp.economyplus.commands.BalTop;
+import me.itswagpvp.economyplus.commands.Eco;
+import me.itswagpvp.economyplus.commands.Main;
+import me.itswagpvp.economyplus.commands.Pay;
+import me.itswagpvp.economyplus.dbStorage.json.JsonManager;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
@@ -196,6 +201,19 @@ public final class EconomyPlus extends JavaPlugin {
 
             dbType = DatabaseType.YAML;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (YAML)");
+        }
+
+        if (getConfig().getString("Database.Type").equalsIgnoreCase("JSON")) {
+            try {
+                new JsonManager().test();
+            } catch (Exception e) {
+                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (JSON)");
+                Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                return;
+            }
+
+            dbType = DatabaseType.JSON;
+            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (JSON)");
         }
     }
 
@@ -403,7 +421,7 @@ public final class EconomyPlus extends JavaPlugin {
         loadYML();
     }
 
-    public void loadYML() {
+    private void loadYML() {
         ymlConfig = new YamlConfiguration();
         try {
             ymlConfig.load(ymlFile);

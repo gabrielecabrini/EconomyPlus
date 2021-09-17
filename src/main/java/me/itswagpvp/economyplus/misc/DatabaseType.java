@@ -2,6 +2,7 @@ package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
+import me.itswagpvp.economyplus.dbStorage.yml.YMLManager;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.sql.SQLException;
@@ -81,7 +82,7 @@ public enum DatabaseType {
             new MySQL().closeConnection();
         }
     },
-    Json{
+    JSON{
         @Override
         public boolean contains(String playerName) {
             return false;
@@ -125,22 +126,22 @@ public enum DatabaseType {
 
         @Override
         public double getToken(String playerName) {
-            return 0;
+            return new YMLManager().getTokens(playerName);
         }
 
         @Override
         public void setTokens(String playerName, double tokens) {
-
+            new YMLManager().setTokens(playerName, tokens);
         }
 
         @Override
         public void setBank(String playerName, double tokens) {
-
+            new YMLManager().setBank(playerName, tokens);
         }
 
         @Override
         public double getBank(String playerName) {
-            return 0;
+            return new YMLManager().getBank(playerName);
         }
 
         @Override
