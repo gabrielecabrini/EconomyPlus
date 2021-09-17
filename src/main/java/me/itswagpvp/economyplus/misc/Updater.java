@@ -16,7 +16,6 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -110,7 +109,6 @@ public class Updater implements Listener {
             e.getPlayer().sendMessage("" +
                     "§7An update is available for §dEconomyPlus§7! " +
                     "\n§7You can download it with §5/ep update");
-            return;
         }
     }
 

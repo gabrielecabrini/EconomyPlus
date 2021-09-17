@@ -60,7 +60,6 @@ public class BalTop implements CommandExecutor {
                         .replaceAll("%player%", "" + name)
                         .replaceAll("%money%", "" + utilities.fixMoney(money))
                         .replaceAll("%money_formatted%", "" + new Utils().fixMoney(money)));
-
             }
         });
 

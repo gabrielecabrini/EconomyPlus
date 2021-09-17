@@ -102,6 +102,8 @@ Bank:
   Enabled: true
   # /bank <withdraw/deposit> section
   GUI:
+    # The button for confirming the gui withdraw / deposit
+    ConfirmButton: GREEN_STAINED_GLASS_PANE
     Borders: BLACK_STAINED_GLASS_PANE
     # /bank withdraw
     Withdraw:

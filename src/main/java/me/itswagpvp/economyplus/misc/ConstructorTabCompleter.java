@@ -50,25 +50,19 @@ public class ConstructorTabCompleter implements TabCompleter {
         // EconomyPlus main command TabCompleter
         if (command.getName().equalsIgnoreCase("economyplus")) {
             int i = (args.length);
-            switch (i) {
-                case 1: {
-                    return Arrays.asList("help", "debug", "reload", "hologram", "update");
-                }
-                default:
-                    return listDefault;
+            if (i == 1) {
+                return Arrays.asList("help", "debug", "reload", "hologram", "update");
             }
+            return listDefault;
         }
 
         // /bal
         if (command.getName().equalsIgnoreCase("bal")) {
             int i = (args.length);
-            switch (i) {
-                case 1: {
-                    return playerNames;
-                }
-                default:
-                    return listDefault;
+            if (i == 1) {
+                return playerNames;
             }
+            return listDefault;
         }
 
         // /pay
@@ -91,13 +85,10 @@ public class ConstructorTabCompleter implements TabCompleter {
         // /baltop
         if (command.getName().equalsIgnoreCase("baltop")) {
             int i = (args.length);
-            switch (i) {
-                case 1: {
-                    return Arrays.asList("1", "2", "3");
-                }
-                default:
-                    return listDefault;
+            if (i == 1) {
+                return Arrays.asList("1", "2", "3");
             }
+            return listDefault;
         }
 
         // /bank

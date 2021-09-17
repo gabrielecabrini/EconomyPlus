@@ -3,7 +3,6 @@ package me.itswagpvp.economyplus.bank.commands;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.bank.menu.Deposit;
 import me.itswagpvp.economyplus.bank.menu.Withdraw;
-import me.itswagpvp.economyplus.commands.Eco;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
@@ -15,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class Bank implements CommandExecutor {
 
-    private static EconomyPlus plugin = EconomyPlus.getInstance();
+    private static final EconomyPlus plugin = EconomyPlus.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

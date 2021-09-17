@@ -50,9 +50,6 @@ public final class EconomyPlus extends JavaPlugin {
     // plugin instance
     public static EconomyPlus plugin;
 
-    public static String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
-    public static int ver = Integer.parseInt(split[1]);
-
     Updater updater;
 
     @Override

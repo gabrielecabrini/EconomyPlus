@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class MenuListener implements Listener {
 
-    private static EconomyPlus plugin = EconomyPlus.getInstance();
+    private static final EconomyPlus plugin = EconomyPlus.getInstance();
 
     int amount = 10;
 
@@ -23,7 +23,7 @@ public class MenuListener implements Listener {
             return;
         }
 
-        if (e.getCurrentItem().getType() == Material.BLACK_STAINED_GLASS_PANE) {
+        if (e.getCurrentItem().getType() == Material.getMaterial(plugin.getConfig().getString("Bank.GUI.Borders"))) {
             e.setCancelled(true);
         }
 
@@ -91,7 +91,7 @@ public class MenuListener implements Listener {
 
                 e.setCancelled(true);
 
-            } else if (e.getCurrentItem().getType() == Material.GREEN_STAINED_GLASS_PANE) {
+            } else if (e.getCurrentItem().getType() == Material.getMaterial(plugin.getConfig().getString("Bank.GUI.ConfirmButton"))) {
                 double balance = new Economy(player, amount).getBalance();
                 if ((balance - amount) < 0) {
                     player.sendMessage(plugin.getMessage("Pay.NoMoney"));
@@ -170,7 +170,7 @@ public class MenuListener implements Listener {
 
                 e.setCancelled(true);
 
-            } else if (e.getCurrentItem().getType() == Material.GREEN_STAINED_GLASS_PANE) {
+            } else if (e.getCurrentItem().getType() == Material.getMaterial(plugin.getConfig().getString("Bank.GUI.ConfirmButton"))) {
 
                 double balance = new Economy(player, 0).getBank();
                 if (amount > balance) {
@@ -193,7 +193,6 @@ public class MenuListener implements Listener {
                 Utils.playSuccessSound(player);
                 e.setCancelled(true);
                 e.getView().close();
-                return;
             }
         }
     }

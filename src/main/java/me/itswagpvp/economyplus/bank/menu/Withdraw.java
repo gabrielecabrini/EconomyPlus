@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class Withdraw {
 
-    private static EconomyPlus plugin = EconomyPlus.getInstance();
+    private static final EconomyPlus plugin = EconomyPlus.getInstance();
 
     public static void openMenu(Player p, int Size) {
 
@@ -25,8 +25,8 @@ public class Withdraw {
         paneMeta.setDisplayName("§a  ");
         pane.setItemMeta(paneMeta);
 
-        for (int index = 0; index < cornerNumbers.length; index++) {
-            gui.setItem(cornerNumbers[index], pane);
+        for (int cornerNumber : cornerNumbers) {
+            gui.setItem(cornerNumber, pane);
         }
 
         ItemStack RemoveItem = new ItemStack(Material.RED_WOOL);
