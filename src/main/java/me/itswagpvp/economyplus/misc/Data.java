@@ -15,22 +15,13 @@ public class Data {
     public Data() {
         this.balTop = new ArrayList<>();
         this.balTopName = new TreeMap<>();
-
-        String type = EconomyPlus.getInstance().getConfig().getString("Database.Type");
-        if (type.equalsIgnoreCase("H2")) {
-            loadFromH2Data();
-        }
-
-        if (type.equalsIgnoreCase("MySQL")) {
-            loadFromSQLData();
-        }
-
+        loadFromDatabase();
     }
 
-    private void loadFromH2Data() {
+    private void loadFromDatabase() {
         getBalTop().clear();
 
-        for ( String playerName : EconomyPlus.getInstance().getRDatabase().getList()) {
+        for ( String playerName : EconomyPlus.getDBType().getList()) {
 
             double money = EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
 
@@ -39,26 +30,8 @@ public class Data {
             getBalTopName().put( pData.getName(), pData );
 
         }
-
         getBalTop().sort(new PlayerComparator());
     }
-
-    private void loadFromSQLData() {
-        getBalTop().clear();
-
-        for ( String playerName : new MySQL().getList()) {
-
-            double money = new MySQL().getTokens(playerName);
-
-            PlayerData pData = new PlayerData(playerName, money);
-            getBalTop().add( pData );
-            getBalTopName().put( pData.getName(), pData );
-
-        }
-
-        getBalTop().sort(new PlayerComparator());
-    }
-
 
     public List<PlayerData> getBalTop() {
         return balTop;
