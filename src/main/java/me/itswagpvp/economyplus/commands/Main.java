@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.commands;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.misc.Utils;
@@ -12,14 +11,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-public class Main implements CommandExecutor {
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-    public EconomyPlus plugin = EconomyPlus.getInstance();
+public class Main implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("§d§lEconomy§5§lPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
+            sender.sendMessage("§d§lEconomy§5§lPlus §7v" + plugin.getDescription().getVersion() + " made by §d_ItsWagPvP");
             sender.sendMessage("§7For help do /economyplus help");
             return true;
         }
@@ -56,8 +55,8 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("                §4Debug");
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7MC-Version of the server: §c" + Bukkit.getBukkitVersion());
-                sender.sendMessage("§f-> §7Version of the plugin: §e" + EconomyPlus.plugin.getDescription().getVersion());
-                sender.sendMessage("§f-> §7Version of the config: §e" + EconomyPlus.getInstance().getConfig().getString("Version"));
+                sender.sendMessage("§f-> §7Version of the plugin: §e" + plugin.getDescription().getVersion());
+                sender.sendMessage("§f-> §7Version of the config: §e" + plugin.getConfig().getString("Version"));
                 sender.sendMessage("§f-> §7Database: §b" + plugin.getConfig().getString("Database.Type"));
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Server software: §6" + Bukkit.getName());
@@ -73,7 +72,7 @@ public class Main implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("help")) {
-                sender.sendMessage("§d§lEconomy§5§lPlus §7v" + EconomyPlus.getInstance().getDescription().getVersion() + " made by §d_ItsWagPvP");
+                sender.sendMessage("§d§lEconomy§5§lPlus §7v" + plugin.getDescription().getVersion() + " made by §d_ItsWagPvP");
                 sender.sendMessage("§7If you need support, join the discord server!");
                 sender.sendMessage("§f-> §9https://discord.io/wagsupport");
 

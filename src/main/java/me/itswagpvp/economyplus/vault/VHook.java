@@ -4,9 +4,10 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.ServicePriority;
 
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
+
 public class VHook {
 
-    public EconomyPlus plugin = EconomyPlus.getInstance();
     public Economy veco;
 
     public void onHook() {

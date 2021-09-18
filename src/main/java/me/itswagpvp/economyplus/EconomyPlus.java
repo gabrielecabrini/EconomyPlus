@@ -4,23 +4,14 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.menu.MenuListener;
-import me.itswagpvp.economyplus.commands.Bal;
-import me.itswagpvp.economyplus.commands.BalTop;
-import me.itswagpvp.economyplus.commands.Eco;
-import me.itswagpvp.economyplus.commands.Main;
-import me.itswagpvp.economyplus.commands.Pay;
+import me.itswagpvp.economyplus.commands.*;
 import me.itswagpvp.economyplus.dbStorage.json.JsonManager;
-import me.itswagpvp.economyplus.hooks.HolographicDisplays;
-import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
-import me.itswagpvp.economyplus.dbStorage.sqlite.Database;
 import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
-import me.itswagpvp.economyplus.misc.ConstructorTabCompleter;
-import me.itswagpvp.economyplus.misc.Data;
-import me.itswagpvp.economyplus.misc.DatabaseType;
-import me.itswagpvp.economyplus.misc.Updater;
-import me.itswagpvp.economyplus.misc.Utils;
+import me.itswagpvp.economyplus.hooks.HolographicDisplays;
+import me.itswagpvp.economyplus.metrics.bStats;
+import me.itswagpvp.economyplus.misc.*;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
 import org.bukkit.Bukkit;
@@ -39,15 +30,13 @@ public final class EconomyPlus extends JavaPlugin {
     private FileConfiguration messagesConfig;
 
     // Database
-    private Database db;
-    private DatabaseType dbType = DatabaseType.Undefined;
+    private static DatabaseType dbType = DatabaseType.Undefined;
 
     // holograms file
     private File hologramFile;
     private FileConfiguration hologramConfig;
 
-    /*
-     */
+    // FileConfig
     private File ymlFile;
     private FileConfiguration ymlConfig;
 
@@ -178,8 +167,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         if (getConfig().getString("Database.Type").equalsIgnoreCase("H2")) {
             try {
-                this.db = new SQLite(this);
-                this.db.load();
+                new SQLite().load();
             } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (SQLite)");
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
@@ -320,11 +308,6 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§f");
     }
 
-    // Returns plugin instance
-    public static EconomyPlus getInstance() {
-        return plugin;
-    }
-
     public Data getData() {
 
         if (data == null) {
@@ -332,11 +315,6 @@ public final class EconomyPlus extends JavaPlugin {
             new Data();
         }
         return data;
-    }
-
-    // Returns the database
-    public Database getRDatabase() {
-        return db;
     }
 
     // Controls if there's Vault installed
@@ -431,6 +409,6 @@ public final class EconomyPlus extends JavaPlugin {
     }
 
     public static DatabaseType getDBType() {
-        return getInstance().dbType;
+        return dbType;
     }
 }

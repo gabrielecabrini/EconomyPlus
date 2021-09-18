@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.dbStorage.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.misc.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +13,7 @@ import java.util.logging.Level;
 
 public class SQLite extends Database {
     String dbname;
-    public SQLite(EconomyPlus instance) {
-        super(instance);
+    public SQLite() {
         dbname = "database";
     }
 
@@ -27,12 +27,12 @@ public class SQLite extends Database {
 
     // Creates the SQL database file
     public Connection getSQLiteConnection() {
-        File dataFolder = new File(plugin.getDataFolder(), dbname+".db");
+        File dataFolder = new File(EconomyPlus.plugin.getDataFolder(), dbname+".db");
         if (!dataFolder.exists()){
             try {
                 dataFolder.createNewFile();
             } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE, "File write error: " + dbname + ".db");
+                Logger.getLogger().log(Level.SEVERE, "File write error: " + dbname + ".db");
             }
         }
         try {
@@ -43,9 +43,9 @@ public class SQLite extends Database {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
             return connection;
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE,"SQLite exception on initialize", ex);
+            Logger.getLogger().log(Level.SEVERE,"SQLite exception on initialize", ex);
         } catch (ClassNotFoundException ex) {
-            plugin.getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it. Put it in /lib folder.");
+            Logger.getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it. Put it in /lib folder.");
         }
         return null;
     }

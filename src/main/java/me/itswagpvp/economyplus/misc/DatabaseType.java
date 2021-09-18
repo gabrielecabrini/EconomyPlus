@@ -1,7 +1,7 @@
 package me.itswagpvp.economyplus.misc;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
+import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
 import me.itswagpvp.economyplus.dbStorage.yml.YMLManager;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -13,37 +13,37 @@ public enum DatabaseType {
     H2{
         @Override
         public boolean contains(String playerName) {
-            return EconomyPlus.getInstance().getRDatabase().getList().contains(playerName);
+            return new SQLite().getList().contains(playerName);
         }
 
         @Override
         public double getToken(String playerName) {
-            return EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
+            return  new SQLite().getTokens(playerName);
         }
 
         @Override
         public void setTokens(String playerName, double tokens) {
-            EconomyPlus.getInstance().getRDatabase().setTokens(playerName, tokens);
+            new SQLite().setTokens(playerName, tokens);
         }
 
         @Override
         public void setBank(String playerName, double tokens) {
-            EconomyPlus.getInstance().getRDatabase().setBank(playerName, tokens);
+            new SQLite().setBank(playerName, tokens);
         }
 
         @Override
         public double getBank(String playerName) {
-            return EconomyPlus.getInstance().getRDatabase().getBank(playerName);
+            return new SQLite().getBank(playerName);
         }
 
         @Override
         public List<String> getList() {
-            return EconomyPlus.getInstance().getRDatabase().getList();
+            return  new SQLite().getList();
         }
 
         @Override
         public void close() throws SQLException {
-            EconomyPlus.getInstance().getRDatabase().getSQLiteConnection().close();
+            new SQLite().getSQLiteConnection().close();
         }
     },
     MySQL{
