@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.dbStorage.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.misc.Logger;
 import org.bukkit.Bukkit;
 
 import java.sql.Connection;
@@ -15,14 +16,10 @@ import java.util.logging.Level;
 
 public abstract class Database {
 
-    EconomyPlus plugin;
     Connection connection;
 
     // The name of the table we created back in SQLite class.
     public String table = "data";
-    public Database(EconomyPlus instance){
-        plugin = instance;
-    }
 
     public abstract Connection getSQLiteConnection();
 
@@ -39,7 +36,7 @@ public abstract class Database {
             close(ps,rs);
 
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
+            Logger.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
         }
     }
 
@@ -78,7 +75,7 @@ public abstract class Database {
                     }
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                Logger.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
             return 0.00;
         });
@@ -94,7 +91,7 @@ public abstract class Database {
 
     // Save the balance to the player's database
     public void setTokens (String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.plugin, () -> {
             Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
@@ -108,7 +105,7 @@ public abstract class Database {
 
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                Logger.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
         });
     }
@@ -128,7 +125,7 @@ public abstract class Database {
                     }
                 }
             } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                Logger.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
             return 0.00;
         });
@@ -144,7 +141,7 @@ public abstract class Database {
 
     // Save the balance to the player's database
     public void setBank (String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.plugin, () -> {
             Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
@@ -158,7 +155,7 @@ public abstract class Database {
 
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                Logger.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
         });
     }
@@ -201,7 +198,7 @@ public abstract class Database {
             if (rs != null)
                 rs.close();
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to close MySQL connection: ", ex);
+            Logger.getLogger().log(Level.SEVERE, "Failed to close MySQL connection: ", ex);
         }
     }
 }

@@ -7,15 +7,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class Join implements Listener {
 
-    public EconomyPlus plugin = EconomyPlus.getInstance();
-
     @EventHandler
     public void setStartBalance (PlayerJoinEvent event) {
 
         if (event.getPlayer().hasPlayedBefore()) return;
+        String playerName = event.getPlayer().getName();
 
-        EconomyPlus.getDBType().setTokens(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Balance"));
-        EconomyPlus.getDBType().setBank(event.getPlayer().getName(), plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00));
+        EconomyPlus.getDBType().setTokens(playerName, EconomyPlus.plugin.getConfig().getDouble("Starting-Balance"));
+        EconomyPlus.getDBType().setBank(playerName, EconomyPlus.plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00));
 
     }
 }
