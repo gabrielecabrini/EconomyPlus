@@ -23,7 +23,7 @@ public class Data {
 
         for ( String playerName : EconomyPlus.getDBType().getList()) {
 
-            double money = EconomyPlus.getInstance().getRDatabase().getTokens(playerName);
+            double money = EconomyPlus.getDBType().getToken(playerName);
 
             PlayerData pData = new PlayerData(playerName, money);
             getBalTop().add( pData );

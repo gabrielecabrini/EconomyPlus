@@ -77,8 +77,10 @@ Baltop:
 
 # Select how to storage the data
 Database:
-  # H2 (database.db file)
+  # H2 (database.db)
   # MySQL
+  # YAML (data.yml)
+  # JSON (data.json)
   Type: H2
   # If you have set Type to H2 you have to ignore this section
   # Localhost connection

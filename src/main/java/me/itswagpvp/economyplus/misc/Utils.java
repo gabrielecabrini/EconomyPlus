@@ -1,5 +1,6 @@
 package me.itswagpvp.economyplus.misc;
 
+import com.google.common.base.Charsets;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.hooks.MVdWPlaceholderAPI;
 import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
@@ -7,7 +8,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
@@ -63,6 +68,11 @@ public class Utils {
         Bukkit.getConsoleSender().sendMessage("[EconomyPlus] §aReloading the plugin! This action may take a while!");
 
         try {
+
+            if (EconomyPlus.getDBType() == DatabaseType.YAML) {
+                plugin.createYMLStorage();
+            }
+
             plugin.saveDefaultConfig();
             plugin.reloadConfig();
 
