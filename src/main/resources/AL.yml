@@ -1,0 +1,48 @@
+# Dosja e mesazheve për EconomyPlus
+#
+# Ju mund të përdorni %money% dhe %money_formatted% (kur shihni %money%)!
+#
+# Mesazhe generale
+NoConsole: "&cNuk mund ta besh këtë nga Console!"
+NoPlayer: "&cNuk mund ta besh këtë!"
+NoPerms: "&cNuk keni leje të mjaftueshme!"
+Reload: "&aPlugin u ricarikuar ne %time%ms!"
+PlayerNotFound: "&cLojtari nuk u gjet!"
+
+# Mesazhe për argumentet e pavlefshme
+InvalidArgs:
+  Main: "&cArgumente të pavlefshme! /economyplus <debug/help/reload>"
+  Eco: "&cArgumente të pavlefshme! /eco <player> <set/give/take/reset> <money>"
+  Balance: "&cArgumente të pavlefshme! /bal <player>"
+  Pay: "&cArgumente të pavlefshme! /pay <player> <money>"
+  Bank: "&cArgumente të pavlefshme! /bank <withdraw/deposit/admin> <set/get> <player> <moneys>"
+
+# Rifreskimi i parave
+Money:
+  Done: "&aAksioni u krye me sukses!"
+  Refreshed: "&eParatë tuaja janë rifreskuar! Tani ke %money%$!"
+  Reset: "&cParatë tuaja janë rikthyer në bilancin fillestar!"
+
+# /bal
+Balance:
+  Self: "&aTi ke %money%$!"
+  Others: "&a%player% ka %money%$!"
+
+# /pay
+Pay:
+  NoSelf: "&cJu nuk mund t'i dërgoni para vetes!"
+  NoMoney: "&cNuk keni para të mjaftueshme!"
+  Self: "&7Keni dërguar &c%player% &c%money%$&7!"
+  Target: "&a%player% &7te dërgoi &a%money%$&7!"
+
+# /bank
+Bank:
+  Disabled: "&cBanka është e disabilituar!"
+  NoMoney: "&cJu nuk keni para të mjaftueshme në bankë!"
+  Deposit: "&eKeni depozituar %money%$!"
+  Withdraw: "&eKeni tërhequr %money%$ &7nga bankë!"
+  Self: "&aKeni %money%$ ne bankë!"
+  Admin:
+    Get: "&a%player% ka %money% ne bankë!"
+    Set: "&eKeni vendosur bankën e %player% në %money%"
+    Refreshed: "&eBankë e jote u karikua me %money%"

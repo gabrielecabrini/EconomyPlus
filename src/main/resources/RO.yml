@@ -1,0 +1,48 @@
+# Fișier de mesaje pentru EconomyPlus
+#
+# Poți să folosești %money% și %money_formatted% (Unde vezi %money%)!
+#
+# Mesaje generale
+NoConsole: "&cNu puteți face acest lucru de pe consolă!"
+NoPlayer: "&cYou can't do this from game!"
+NoPerms: "&cNu poți face asta din joc!"
+Reload: "&aPluginul s-a reîncărcat %time%ms!"
+PlayerNotFound: "&cJucătorul nu a fost găsit!"
+
+# Mesaje pentru argumentele nevalide
+InvalidArgs:
+  Main: "&cArgumente nevalide! /economyplus <debug/help/reload>"
+  Eco: "&cArgumente nevalide! /eco <player> <set/give/take/reset> <money>"
+  Balance: "&cArgumente nevalide! /bal <player>"
+  Pay: "&cArgumente nevalide! /pay <player> <money>"
+  Bank: "&cArgumente nevalide! /bank <withdraw/deposit/admin> <set/get> <player> <moneys>"
+
+# Banii s-au reîmprospătat
+Money:
+  Done: "&aAcțiune executată cu succes!"
+  Refreshed: "&eBanii tăi au fost actualizați! Acum ai %money%$!"
+  Reset: "&cBanii tăi au fost restabiliți la soldul inițial!"
+
+# /bal
+Balance:
+  Self: "&aAveți%$!"
+  Others: "&a%player% are %money%$!"
+
+# /pay
+Pay:
+  NoSelf: "&cNu poți trimite bani către tine!"
+  NoMoney: "&CNu aveți destui bani!"
+  Self: "&7Ai trimis &c%money%$ &7to &c%player%&7!"
+  Target: "&7Le-ai primit &a%money%$ &7din &a%player%&7!"
+
+# /bank
+Bank:
+  Disabled: "&cBanca este dezactivată!"
+  NoMoney: "&cNu ai destui bani în bancă!"
+  Deposit: "&eAți depus %money%$!"
+  Withdraw: "&eTe-ai retras %money%$!"
+  Self: "&aAveți %money%$ în banca !"
+  Admin:
+    Get: "&a%player% are %money% în banca!"
+    Set: "&eAți stabilit %player%'sbanca la %money%"
+    Refreshed: "&eBanca ta fost actualizată la %money%"

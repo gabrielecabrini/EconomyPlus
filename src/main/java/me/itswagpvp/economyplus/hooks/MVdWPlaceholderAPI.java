@@ -14,7 +14,7 @@ public class MVdWPlaceholderAPI {
 
         // {economyplus_money}
 
-        PlaceholderAPI.registerPlaceholder(plugin, "economyplus_money",
+        be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "economyplus_money",
                 placeholderReplaceEvent -> {
 
                     Economy eco = new Economy(placeholderReplaceEvent.getPlayer(), 0);
@@ -23,7 +23,7 @@ public class MVdWPlaceholderAPI {
 
         // {economyplus_money_formatted}
 
-        PlaceholderAPI.registerPlaceholder(plugin, "economyplus_money_formatted",
+        be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "economyplus_money_formatted",
                 placeholderReplaceEvent -> {
 
                     Economy eco = new Economy(placeholderReplaceEvent.getPlayer(), 0);
@@ -32,7 +32,7 @@ public class MVdWPlaceholderAPI {
 
         // {economyplus_bank}
 
-        PlaceholderAPI.registerPlaceholder(plugin, "economyplus_bank",
+        be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "economyplus_bank",
                 placeholderReplaceEvent -> {
 
                     Economy eco = new Economy(placeholderReplaceEvent.getPlayer(), 0);
@@ -41,7 +41,7 @@ public class MVdWPlaceholderAPI {
 
         // {economyplus_bank_formatted}
 
-        PlaceholderAPI.registerPlaceholder(plugin, "economyplus_bank_formatted",
+        be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "economyplus_bank_formatted",
                 placeholderReplaceEvent -> {
 
                     Economy eco = new Economy(placeholderReplaceEvent.getPlayer(), 0);

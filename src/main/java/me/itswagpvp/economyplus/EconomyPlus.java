@@ -5,11 +5,13 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.menu.MenuListener;
 import me.itswagpvp.economyplus.commands.*;
-import me.itswagpvp.economyplus.dbStorage.json.JsonManager;
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
 import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
 import me.itswagpvp.economyplus.hooks.HolographicDisplays;
+import me.itswagpvp.economyplus.messages.DefaultFiles;
+import me.itswagpvp.economyplus.messages.MessageUtils;
+import me.itswagpvp.economyplus.messages.MessagesFile;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.*;
 import me.itswagpvp.economyplus.vault.VEconomy;
@@ -27,16 +29,17 @@ import java.sql.SQLException;
 
 public final class EconomyPlus extends JavaPlugin {
 
-    private FileConfiguration messagesConfig;
-
     // Database
     private static DatabaseType dbType = DatabaseType.Undefined;
 
-    // holograms file
+    // Messages
+    public static MessagesFile messagesType = MessagesFile.Undefined;
+
+    // (holograms.yml)
     private File hologramFile;
     private FileConfiguration hologramConfig;
 
-    // FileConfig
+    // FileConfig (data.yml)
     private File ymlFile;
     private FileConfiguration ymlConfig;
 
@@ -44,9 +47,10 @@ public final class EconomyPlus extends JavaPlugin {
     public static VEconomy veco;
     public static VHook hook;
 
+    // BalTop
     public static Data data;
 
-    // plugin instance
+    // Plugin instance
     public static EconomyPlus plugin;
 
     Updater updater;
@@ -63,7 +67,6 @@ public final class EconomyPlus extends JavaPlugin {
 
         plugin.getConfig().options().copyDefaults(true);
 
-        createMessagesConfig();
         createHologramConfig();
 
         if (!setupEconomy()) {
@@ -92,6 +95,8 @@ public final class EconomyPlus extends JavaPlugin {
 
         loadCommands();
 
+        loadMessages();
+
         Bukkit.getConsoleSender().sendMessage("§8");
         Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks!");
 
@@ -106,7 +111,16 @@ public final class EconomyPlus extends JavaPlugin {
 
         updater = Updater.getInstance(this);
 
+        if (plugin.getDescription().getVersion() != plugin.getConfig().getString("Version")) {
+            Bukkit.getConsoleSender().sendMessage("§f-> §eRemind to update the config.yml! Your config version is outdated!");
+        }
+
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
+
+        if (dbType == DatabaseType.Undefined) {
+            Bukkit.getConsoleSender().sendMessage("§c[EconomyPlus] Unable to start the plugin without a valid database option!");
+            getServer().getPluginManager().disablePlugin(this);
+        }
 
     }
 
@@ -134,7 +148,7 @@ public final class EconomyPlus extends JavaPlugin {
 
     }
 
-    public void loadEconomy() {
+    private void loadEconomy() {
         try {
             veco = new VEconomy(plugin);
             hook = new VHook();
@@ -150,7 +164,7 @@ public final class EconomyPlus extends JavaPlugin {
     }
 
     // Loads the SQLite database
-    public void loadDatabase() {
+    private void loadDatabase() {
         if (getConfig().getString("Database.Type").equalsIgnoreCase("MySQL")) {
             try {
                 new MySQL().connect();
@@ -163,9 +177,7 @@ public final class EconomyPlus extends JavaPlugin {
             }
             dbType = DatabaseType.MySQL;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (MySQL)");
-        }
-
-        if (getConfig().getString("Database.Type").equalsIgnoreCase("H2")) {
+        } else if (getConfig().getString("Database.Type").equalsIgnoreCase("H2")) {
             try {
                 new SQLite().load();
             } catch (Exception e) {
@@ -176,9 +188,7 @@ public final class EconomyPlus extends JavaPlugin {
 
             dbType = DatabaseType.H2;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (SQLite)");
-        }
-
-        if (getConfig().getString("Database.Type").equalsIgnoreCase("YAML")) {
+        } else if (getConfig().getString("Database.Type").equalsIgnoreCase("YAML")) {
             try {
                 createYMLStorage();
             } catch (Exception e) {
@@ -189,23 +199,14 @@ public final class EconomyPlus extends JavaPlugin {
 
             dbType = DatabaseType.YAML;
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (YAML)");
-        }
-
-        if (getConfig().getString("Database.Type").equalsIgnoreCase("JSON")) {
-            try {
-                new JsonManager().test();
-            } catch (Exception e) {
-                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (JSON)");
-                Bukkit.getConsoleSender().sendMessage(e.getMessage());
-                return;
-            }
-
-            dbType = DatabaseType.JSON;
-            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (JSON)");
+        } else {
+            String type = plugin.getConfig().getString("Database.Type");
+            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cInvalid database type: " + type);
+            dbType = DatabaseType.Undefined;
         }
     }
 
-    public void loadEvents() {
+    private void loadEvents() {
         try {
             Bukkit.getPluginManager().registerEvents(new Join(), this);
             Bukkit.getPluginManager().registerEvents(new Updater(this), this);
@@ -219,7 +220,7 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("   - §fEvents: §aLoaded");
     }
 
-    public void loadCommands() {
+    private void loadCommands() {
         try {
 
             getCommand("baltop").setExecutor(new BalTop());
@@ -249,7 +250,7 @@ public final class EconomyPlus extends JavaPlugin {
     }
 
     // Loads the bStats metrics
-    public void loadMetrics() {
+    private void loadMetrics() {
 
         if (!getConfig().getBoolean("Metrics")) {
             return;
@@ -265,7 +266,7 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("   - §fbStats: §aLoaded");
     }
 
-    public void loadHolograms() {
+    private void loadHolograms() {
 
         if (!plugin.getConfig().getBoolean("Hooks.HolographicDisplays")) {
             return;
@@ -298,7 +299,7 @@ public final class EconomyPlus extends JavaPlugin {
     }
 
     // Loads the placeholder for PlaceholderAPI or MVdWPlaceholderAPI
-    public void loadPlaceholders() {
+    private void loadPlaceholders() {
 
         // MVdWPlaceholderAPI
         new Utils().loadMVdWPlaceholderAPI();
@@ -306,6 +307,23 @@ public final class EconomyPlus extends JavaPlugin {
         // PlaceholderAPI
         new Utils().loadPlaceholderAPI();
         Bukkit.getConsoleSender().sendMessage("§f");
+    }
+
+    private void loadMessages() {
+        String messages = plugin.getConfig().getString("Language");
+        try {
+
+            messagesType = MessagesFile.valueOf(messages);
+
+            new MessageUtils().initialize();
+        } catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage("   - §fMessages: §cInvalid file! (" + messages + "), using EN");
+            messagesType = MessagesFile.EN;
+            return;
+        }
+
+        Bukkit.getConsoleSender().sendMessage("   - §fMessages: §aLoaded " + messages + ".yml file!");
+
     }
 
     public Data getData() {
@@ -322,32 +340,12 @@ public final class EconomyPlus extends JavaPlugin {
         return getServer().getPluginManager().isPluginEnabled("Vault");
     }
 
-    public FileConfiguration getMessagesFile() {
-        return this.messagesConfig;
-    }
-
-    // Messages file
-    public void createMessagesConfig() {
-        File messagesConfigFile = new File(getDataFolder(), "messages.yml");
-        if (!messagesConfigFile.exists()) {
-            messagesConfigFile.getParentFile().mkdirs();
-            saveResource("messages.yml", false);
-        }
-
-        messagesConfig = new YamlConfiguration();
-        try {
-            messagesConfig.load(messagesConfigFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
-
     public String getMessage(String path) {
-        if (!getMessagesFile().isString(path)) {
+        if (!new DefaultFiles().getMessagesFile().isString(path)) {
             return path;
         }
 
-        return ChatColor.translateAlternateColorCodes('&', getMessagesFile().getString(path));
+        return ChatColor.translateAlternateColorCodes('&', new DefaultFiles().getMessagesFile().getString(path));
     }
 
     public FileConfiguration getHologramConfig() {

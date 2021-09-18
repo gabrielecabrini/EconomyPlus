@@ -2,6 +2,8 @@ package me.itswagpvp.economyplus.dbStorage.yml;
 
 import org.bukkit.Bukkit;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -53,7 +55,8 @@ public class YMLManager {
     }
 
     public List<String> getList () {
-        return null;
+        List<String> list = new ArrayList<>(plugin.getYMLData().getConfigurationSection("Data").getKeys(false));
+        return list;
     }
 
 }

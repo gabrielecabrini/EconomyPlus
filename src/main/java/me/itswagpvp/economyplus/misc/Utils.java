@@ -3,6 +3,8 @@ package me.itswagpvp.economyplus.misc;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.hooks.MVdWPlaceholderAPI;
 import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
+import me.itswagpvp.economyplus.messages.MessageUtils;
+import me.itswagpvp.economyplus.messages.MessagesFile;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -74,8 +76,18 @@ public class Utils {
             EconomyPlus.data = new Data();
             new Data();
 
-            plugin.createMessagesConfig();
             plugin.createHologramConfig();
+
+            String messages = plugin.getConfig().getString("Language");
+
+            try {
+                EconomyPlus.messagesType = MessagesFile.valueOf(messages);
+
+                new MessageUtils().initialize();
+            } catch (Exception e) {
+                EconomyPlus.messagesType = MessagesFile.EN;
+                return;
+            }
 
         }catch (Exception e) {
             p.sendMessage("§cError on reloading the plugin! (" + e.getMessage() + ")");
