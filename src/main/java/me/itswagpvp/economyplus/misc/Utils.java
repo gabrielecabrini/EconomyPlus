@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.misc;
 
-import com.google.common.base.Charsets;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.hooks.MVdWPlaceholderAPI;
 import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
@@ -8,11 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
@@ -21,7 +16,7 @@ public class Utils {
     // Error sound played to player
     public static void playErrorSound (CommandSender sender) {
 
-        if (!EconomyPlus.getInstance().getConfig().getBoolean("Sounds.Use")) {
+        if (!plugin.getConfig().getBoolean("Sounds.Use")) {
             return;
         }
 
@@ -32,7 +27,7 @@ public class Utils {
         Player player = (Player) sender;
 
         try {
-            Sound x = Sound.valueOf(EconomyPlus.getInstance().getConfig().getString("Sounds.Error", "ENTITY_VILLAGER_NO"));
+            Sound x = Sound.valueOf(plugin.getConfig().getString("Sounds.Error", "ENTITY_VILLAGER_NO"));
             player.playSound(player.getPlayer().getLocation(), x, 1.0f, 1.0f);
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("[EconomyPlus] §7Error on the §cplayErrorSound§7! Check your config!");
@@ -43,7 +38,7 @@ public class Utils {
     // Success sound played to player
     public static void playSuccessSound (CommandSender sender) {
 
-        if (!EconomyPlus.getInstance().getConfig().getBoolean("Sounds.Use")) {
+        if (!plugin.getConfig().getBoolean("Sounds.Use")) {
             return;
         }
 
@@ -54,7 +49,7 @@ public class Utils {
         Player player = (Player) sender;
 
         try {
-            Sound x = Sound.valueOf(EconomyPlus.getInstance().getConfig().getString("Sounds.Success", "ENTITY_PLAYER_LEVELUP"));
+            Sound x = Sound.valueOf(plugin.getConfig().getString("Sounds.Success", "ENTITY_PLAYER_LEVELUP"));
             player.playSound(player.getPlayer().getLocation(), x, 1.0f, 1.0f);
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("[EconomyPlus] §7Error on the §cplaySuccessSound§7! Check your config!");
@@ -106,19 +101,19 @@ public class Utils {
             return format(d);
         }
         if (d < 1000000L) {
-            return format(d / 1000D) + EconomyPlus.getInstance().getConfig().getString("Format.k");
+            return format(d / 1000D) + plugin.getConfig().getString("Format.k");
         }
         if (d < 1000000000L) {
-            return format(d / 1000000D) + EconomyPlus.getInstance().getConfig().getString("Format.M");
+            return format(d / 1000000D) + plugin.getConfig().getString("Format.M");
         }
         if (d < 1000000000000L) {
-            return format(d / 1000000000D) + EconomyPlus.getInstance().getConfig().getString("Format.B");
+            return format(d / 1000000000D) + plugin.getConfig().getString("Format.B");
         }
         if (d < 1000000000000000L) {
-            return format(d / 1000000000000D) + EconomyPlus.getInstance().getConfig().getString("Format.T");
+            return format(d / 1000000000000D) + plugin.getConfig().getString("Format.T");
         }
         if (d < 1000000000000000000L) {
-            return format(d / 1000000000000000D) + EconomyPlus.getInstance().getConfig().getString("Format.Q");
+            return format(d / 1000000000000000D) + plugin.getConfig().getString("Format.Q");
         }
 
         return format(d);

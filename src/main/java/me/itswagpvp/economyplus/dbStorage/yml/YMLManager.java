@@ -1,15 +1,14 @@
 package me.itswagpvp.economyplus.dbStorage.yml;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class YMLManager {
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-    private static final EconomyPlus plugin = EconomyPlus.getInstance();
+public class YMLManager {
 
     public boolean contains(String playerName) {
         CompletableFuture<Boolean> getBoolean = CompletableFuture.supplyAsync(() -> plugin.getYMLData().contains("Data." + playerName));

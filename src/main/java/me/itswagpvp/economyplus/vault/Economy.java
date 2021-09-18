@@ -10,7 +10,7 @@ public class Economy extends VEconomy {
 
     // Constructor
     public Economy(Player p, double money) {
-        super(EconomyPlus.getInstance());
+        super(EconomyPlus.plugin);
         this.p = p;
         this.money = money;
     }

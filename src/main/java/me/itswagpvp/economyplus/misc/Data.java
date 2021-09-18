@@ -1,13 +1,10 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
 
 import java.util.*;
 
 public class Data {
-
-    public static EconomyPlus plugin = EconomyPlus.getInstance();
 
     public List<PlayerData> balTop;
     public Map<String,PlayerData> balTopName;

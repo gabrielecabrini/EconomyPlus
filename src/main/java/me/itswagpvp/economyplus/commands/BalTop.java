@@ -10,9 +10,9 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class BalTop implements CommandExecutor {
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-    public static EconomyPlus plugin = EconomyPlus.getInstance();
+public class BalTop implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -1,13 +1,12 @@
 package me.itswagpvp.economyplus.hooks;
 
-import be.maximvdw.placeholderapi.PlaceholderAPI;
-import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 
-public class MVdWPlaceholderAPI {
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-    public static EconomyPlus plugin = EconomyPlus.getInstance();
+
+public class MVdWPlaceholderAPI {
 
     public void loadMVdWPlaceholders () {
 

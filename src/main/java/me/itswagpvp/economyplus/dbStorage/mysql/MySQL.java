@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.dbStorage.mysql;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
 
 import java.sql.*;
@@ -10,9 +9,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
-public class MySQL {
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-    public EconomyPlus plugin = EconomyPlus.getInstance();
+public class MySQL {
 
     final String user = plugin.getConfig().getString("Database.User");
     final String password = plugin.getConfig().getString("Database.Password");
@@ -119,7 +118,7 @@ public class MySQL {
 
     // Save the balance to the player's database
     public void setTokens (String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             try (
                     PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
@@ -169,7 +168,7 @@ public class MySQL {
 
     // Save the balance to the player's database
     public void setBank (String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             try (
                     PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")

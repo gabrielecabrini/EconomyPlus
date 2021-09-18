@@ -11,9 +11,9 @@ import org.bukkit.World;
 
 import java.util.List;
 
-public class HolographicDisplays {
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-    public static EconomyPlus plugin = EconomyPlus.getInstance();
+public class HolographicDisplays {
 
     World w = Bukkit.getWorld(plugin.getHologramConfig().getString("Hologram.BalTop.World"));
     double x = plugin.getHologramConfig().getDouble("Hologram.BalTop.X");
@@ -30,7 +30,7 @@ public class HolographicDisplays {
 
         EconomyPlus.data = new Data();
         new Data();
-        Data data = EconomyPlus.plugin.getData();
+        Data data = plugin.getData();
 
         Utils utilities = new Utils();
 
@@ -78,7 +78,7 @@ public class HolographicDisplays {
 
         EconomyPlus.data = new Data();
         new Data();
-        Data data = EconomyPlus.plugin.getData();
+        Data data = plugin.getData();
 
         Utils utilities = new Utils();
 

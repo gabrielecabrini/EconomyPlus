@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.bank.menu;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,9 +7,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class Deposit {
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-    private static final EconomyPlus plugin = EconomyPlus.getInstance();
+public class Deposit {
 
     public static void openMenu(Player p, int size) {
 

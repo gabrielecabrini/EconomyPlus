@@ -1,7 +1,6 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
-import me.itswagpvp.economyplus.dbStorage.sqlite.Database;
 import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
 import me.itswagpvp.economyplus.dbStorage.yml.YMLManager;
 import org.apache.commons.lang.NotImplementedException;

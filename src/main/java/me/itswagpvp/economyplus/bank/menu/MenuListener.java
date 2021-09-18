@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.bank.menu;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Material;
@@ -10,9 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class MenuListener implements Listener {
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-    private static final EconomyPlus plugin = EconomyPlus.getInstance();
+public class MenuListener implements Listener {
 
     int amount = 10;
 
