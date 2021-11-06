@@ -7,11 +7,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-//TODO Add support for offline players
 public class Eco implements CommandExecutor {
 
     @Override
