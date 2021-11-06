@@ -182,7 +182,7 @@ public final class EconomyPlus extends JavaPlugin {
                 new SQLite().load();
             } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (SQLite)");
-                Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                e.printStackTrace();
                 return;
             }
 
@@ -310,7 +310,7 @@ public final class EconomyPlus extends JavaPlugin {
     }
 
     private void loadMessages() {
-        String messages = plugin.getConfig().getString("Language");
+        String messages = plugin.getConfig().getString("Language", "EN");
         try {
 
             messagesType = MessagesFile.valueOf(messages);
@@ -345,7 +345,8 @@ public final class EconomyPlus extends JavaPlugin {
             return path;
         }
 
-        return ChatColor.translateAlternateColorCodes('&', new DefaultFiles().getMessagesFile().getString(path));
+        return ChatColor.translateAlternateColorCodes('&',
+                new DefaultFiles().getMessagesFile().getString(path));
     }
 
     public FileConfiguration getHologramConfig() {

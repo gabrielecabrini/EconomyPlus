@@ -1,15 +1,16 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class Economy extends VEconomy {
 
-    private final Player p;
+    private final OfflinePlayer p;
     private final double money;
 
     // Constructor
-    public Economy(Player p, double money) {
+    public Economy(OfflinePlayer p, double money) {
         super(EconomyPlus.plugin);
         this.p = p;
         this.money = money;

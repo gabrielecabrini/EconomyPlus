@@ -3,6 +3,7 @@ package me.itswagpvp.economyplus.commands;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,21 +11,13 @@ import org.bukkit.entity.Player;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
-
+//TODO Add support for offline players
 public class Eco implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 3) {
-            Player p = Bukkit.getServer().getPlayer(args[0]);
-
-            if (p == null) {
-
-                sender.sendMessage(plugin.getMessage("PlayerNotFound"));
-                Utils.playErrorSound(sender);
-
-                return true;
-            }
+            OfflinePlayer p = Bukkit.getServer().getPlayer(args[0]);
 
             if (args[2].startsWith("-")) {
                 sender.sendMessage(plugin.getMessage("InvalidArgs.Eco"));
@@ -54,12 +47,16 @@ public class Eco implements CommandExecutor {
                 money.setBalance();
 
                 sender.sendMessage(plugin.getMessage("Money.Done"));
-                p.sendMessage(plugin.getMessage("Money.Refreshed")
-                .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
-                        .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
+
+                if (p.getPlayer() != null)  {
+                    p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
+                            .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
+                            .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
+
+                    Utils.playSuccessSound(p.getPlayer());
+                }
 
                 Utils.playSuccessSound(sender);
-                Utils.playSuccessSound(p);
 
                 return true;
             }
@@ -82,11 +79,14 @@ public class Eco implements CommandExecutor {
                 }
 
                 sender.sendMessage(plugin.getMessage("Money.Done"));
-                p.sendMessage(plugin.getMessage("Money.Refreshed")
-                        .replaceAll("%money%", "" + utility.fixMoney(res)));
+
+                if (p.getPlayer() != null) {
+                    p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
+                            .replaceAll("%money%", "" + utility.fixMoney(res)));
+                    Utils.playSuccessSound(p.getPlayer());
+                }
 
                 Utils.playSuccessSound(sender);
-                Utils.playSuccessSound(p);
 
                 return true;
             }
@@ -101,12 +101,15 @@ public class Eco implements CommandExecutor {
                 money.addBalance();
 
                 sender.sendMessage(plugin.getMessage("Money.Done"));
-                p.sendMessage(plugin.getMessage("Money.Refreshed")
-                        .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
-                        .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
+
+                if (p.getPlayer() != null) {
+                    p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
+                            .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
+                            .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
+                    Utils.playSuccessSound(p.getPlayer());
+                }
 
                 Utils.playSuccessSound(sender);
-                Utils.playSuccessSound(p);
 
                 return true;
             }
@@ -116,26 +119,27 @@ public class Eco implements CommandExecutor {
         }
 
         if (args.length == 2) {
-            Player p = Bukkit.getServer().getPlayer(args[0]);
-
-            if (p == null) {
-
-                sender.sendMessage(plugin.getMessage("PlayerNotFound"));
-                Utils.playErrorSound(sender);
-
-                return true;
-            }
+            OfflinePlayer p = Bukkit.getServer().getPlayer(args[0]);
 
             if (!args[0].equalsIgnoreCase("reset")) {
+
+                if (!sender.hasPermission("economyplus.eco.reset")) {
+                    sender.sendMessage(plugin.getMessage("NoPerms"));
+                    Utils.playErrorSound(sender);
+                    return true;
+                }
 
                 Economy eco = new Economy(p, plugin.getConfig().getDouble("Starting-Balance"));
                 eco.setBalance();
 
                 sender.sendMessage(plugin.getMessage("Money.Done"));
-                p.sendMessage(plugin.getMessage("Money.Reset"));
+
+                if (p.getPlayer() != null) {
+                    p.getPlayer().sendMessage(plugin.getMessage("Money.Reset"));
+                    Utils.playErrorSound(p.getPlayer());
+                }
 
                 Utils.playSuccessSound(sender);
-                Utils.playErrorSound(p);
 
                 return true;
             }

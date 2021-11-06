@@ -18,12 +18,8 @@ public class MenuListener implements Listener {
     @EventHandler
     public void onMenuClick(InventoryClickEvent e) {
 
-        if (e.getCurrentItem() == null) {
+        if (!plugin.getConfig().getBoolean("Bank.Enabled")) {
             return;
-        }
-
-        if (e.getCurrentItem().getType() == Material.getMaterial(plugin.getConfig().getString("Bank.GUI.Borders"))) {
-            e.setCancelled(true);
         }
 
         String withdrawTitle = plugin.getConfig().getString("Bank.GUI.Withdraw.Title")
@@ -33,6 +29,14 @@ public class MenuListener implements Listener {
                 .replaceAll("&", "§");
 
         if (e.getView().getTitle().equals(withdrawTitle) || e.getView().getTitle().equals(depositTitle)) {
+            e.setCancelled(true);
+        }
+
+        if (e.getCurrentItem() == null) {
+            return;
+        }
+
+        if (e.getCurrentItem().getType() == Material.getMaterial(plugin.getConfig().getString("Bank.GUI.Borders"))) {
             e.setCancelled(true);
         }
 

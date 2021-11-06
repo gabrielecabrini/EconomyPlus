@@ -3,6 +3,7 @@ package me.itswagpvp.economyplus.commands;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +24,7 @@ public class Bal implements CommandExecutor {
                 return true;
             }
 
-            Player p2 = Bukkit.getServer().getPlayer(args[0]);
+            OfflinePlayer p2 = Bukkit.getServer().getOfflinePlayer(args[0]);
 
             if (p2 == null) {
 
@@ -42,7 +43,8 @@ public class Bal implements CommandExecutor {
             Economy otherEco = new Economy(p2, 0);
 
             sender.sendMessage(plugin.getMessage("Balance.Others")
-                    .replaceAll("%money%", "" + otherEco.getBalance())
+                    .replaceAll("%money%", "" + new Utils().fixMoney(otherEco.getBalance()))
+                    .replaceAll("%money_formatted%", "" + new Utils().fixMoney(otherEco.getBalance()))
                     .replaceAll("%player%", ""+ p2.getName()));
 
             Utils.playSuccessSound(sender);
@@ -63,7 +65,8 @@ public class Bal implements CommandExecutor {
             Economy selfEco = new Economy(p, 0);
 
             p.sendMessage(plugin.getMessage("Balance.Self")
-            .replaceAll("%money%", "" + new Utils().format(selfEco.getBalance())));
+            .replaceAll("%money%", "" + new Utils().fixMoney(selfEco.getBalance()))
+                    .replaceAll("%money_formatted%", ""+ new Utils().fixMoney(selfEco.getBalance())));
 
             Utils.playSuccessSound(sender);
 
@@ -93,7 +96,7 @@ public class Bal implements CommandExecutor {
                 Economy selfEco = new Economy(p, 0);
 
                 sender.sendMessage(plugin.getMessage("Balance.Self")
-                        .replaceAll("%money%", "" + new Utils().format(selfEco.getBalance()))
+                        .replaceAll("%money%", "" + new Utils().fixMoney(selfEco.getBalance()))
                         .replaceAll("%money_formatted%", "" + new Utils().fixMoney(selfEco.getBalance())));
 
                 Utils.playSuccessSound(sender);
@@ -104,7 +107,7 @@ public class Bal implements CommandExecutor {
             Economy otherEco = new Economy(p2, 0);
 
             sender.sendMessage(plugin.getMessage("Balance.Others")
-                    .replaceAll("%money%", "" + new Utils().format(otherEco.getBalance()))
+                    .replaceAll("%money%", "" + new Utils().fixMoney(otherEco.getBalance()))
                     .replaceAll("%money_formatted%", "" + new Utils().fixMoney(otherEco.getBalance()))
                     .replaceAll("%player%", ""+ p2.getName()));
 
