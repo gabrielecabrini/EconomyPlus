@@ -5,6 +5,7 @@ import me.itswagpvp.economyplus.hooks.MVdWPlaceholderAPI;
 import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
 import me.itswagpvp.economyplus.messages.MessageUtils;
 import me.itswagpvp.economyplus.messages.MessagesFile;
+import me.itswagpvp.economyplus.storage.DatabaseType;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;

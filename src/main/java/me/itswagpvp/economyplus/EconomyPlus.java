@@ -14,6 +14,8 @@ import me.itswagpvp.economyplus.messages.MessageUtils;
 import me.itswagpvp.economyplus.messages.MessagesFile;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.*;
+import me.itswagpvp.economyplus.storage.DatabaseType;
+import me.itswagpvp.economyplus.storage.StorageMode;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
 import org.bukkit.Bukkit;
@@ -31,6 +33,7 @@ public final class EconomyPlus extends JavaPlugin {
 
     // Database
     private static DatabaseType dbType = DatabaseType.Undefined;
+    private static StorageMode storageMode = StorageMode.Undefined;
 
     // Messages
     public static MessagesFile messagesType = MessagesFile.Undefined;
@@ -163,8 +166,13 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("   - §fVault: §6Hooked");
     }
 
-    // Loads the SQLite database
     private void loadDatabase() {
+
+        // Select how the plugin needs to storage the data
+        if (getConfig().getString("Database.Mode", "NICKNAME").equalsIgnoreCase("UUID")) {storageMode = StorageMode.UUID;}
+        else if (getConfig().getString("Database.Mode", "NICKNAME").equalsIgnoreCase("NICKNAME")) {storageMode = StorageMode.NICKNAME;}
+        else {storageMode = StorageMode.Undefined;}
+
         if (getConfig().getString("Database.Type").equalsIgnoreCase("MySQL")) {
             try {
                 new MySQL().connect();
@@ -410,4 +418,9 @@ public final class EconomyPlus extends JavaPlugin {
     public static DatabaseType getDBType() {
         return dbType;
     }
+
+    public static StorageMode getStorageMode() {
+        return storageMode;
+    }
+
 }

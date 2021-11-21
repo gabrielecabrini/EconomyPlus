@@ -1,6 +1,10 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.commands.BalTop;
+import me.itswagpvp.economyplus.commands.Eco;
+import me.itswagpvp.economyplus.storage.StorageMode;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 
@@ -65,7 +69,12 @@ public class Data {
         }
 
         public String getName() {
-            return name;
+            if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+                return name;
+            } else if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+                return Bukkit.getServer().getOfflinePlayer(UUID.fromString(name)).getName();
+            }
+            return "Invalid user";
         }
 
         public double getMoney() {

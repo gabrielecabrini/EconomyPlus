@@ -82,11 +82,13 @@ Baltop:
 
 # Select how to storage the data
 Database:
+  # You can choose one from UUID or NICKNAME
+  Mode: "UUID"
   # H2 (database.db)
   # MySQL
   # YAML (data.yml)
   Type: H2
-  # If you have set Type to H2 you have to ignore this section
+  # If you have set Type to H2 or YAML you have to ignore this options
   # Localhost connection
   Host: localhost
   # Default is 3306

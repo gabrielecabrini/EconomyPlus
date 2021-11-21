@@ -57,7 +57,10 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§f-> §7MC-Version of the server: §c" + Bukkit.getBukkitVersion());
                 sender.sendMessage("§f-> §7Version of the plugin: §e" + plugin.getDescription().getVersion());
                 sender.sendMessage("§f-> §7Version of the config: §e" + plugin.getConfig().getString("Version"));
+                sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Database: §b" + plugin.getConfig().getString("Database.Type"));
+                sender.sendMessage("§f-> §7Storage-mode: §2" + plugin.getConfig().getString("Database.Mode", "NICKNAME"));
+                sender.sendMessage("§f-> §7Messages file: §2" + plugin.getConfig().getString("Language", "EN"));
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Server software: §6" + Bukkit.getName());
                 sender.sendMessage("§f-> §7Software version: §6" + Bukkit.getVersion());
