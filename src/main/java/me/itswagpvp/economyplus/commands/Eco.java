@@ -15,7 +15,7 @@ public class Eco implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 3) {
-            OfflinePlayer p = Bukkit.getServer().getPlayer(args[0]);
+            OfflinePlayer p = Bukkit.getServer().getOfflinePlayer(args[0]);
 
             if (args[2].startsWith("-")) {
                 sender.sendMessage(plugin.getMessage("InvalidArgs.Eco"));
@@ -117,7 +117,7 @@ public class Eco implements CommandExecutor {
         }
 
         if (args.length == 2) {
-            OfflinePlayer p = Bukkit.getServer().getPlayer(args[0]);
+            OfflinePlayer p = Bukkit.getServer().getOfflinePlayer(args[0]);
 
             if (!args[0].equalsIgnoreCase("reset")) {
 

@@ -43,7 +43,7 @@ public class Bal implements CommandExecutor {
             Economy otherEco = new Economy(p2, 0);
 
             sender.sendMessage(plugin.getMessage("Balance.Others")
-                    .replaceAll("%money%", "" + new Utils().fixMoney(otherEco.getBalance()))
+                    .replaceAll("%money%", "" + new Utils().format(otherEco.getBalance()))
                     .replaceAll("%money_formatted%", "" + new Utils().fixMoney(otherEco.getBalance()))
                     .replaceAll("%player%", ""+ p2.getName()));
 
@@ -81,15 +81,7 @@ public class Bal implements CommandExecutor {
                 return true;
             }
 
-            Player p2 = Bukkit.getServer().getPlayer(args[0]);
-
-            if (p2 == null) {
-
-                p.sendMessage(plugin.getMessage("PlayerNotFound"));
-                Utils.playErrorSound(sender);
-                return true;
-
-            }
+            OfflinePlayer p2 = Bukkit.getServer().getOfflinePlayer(args[0]);
 
             if (p2 == sender) {
 

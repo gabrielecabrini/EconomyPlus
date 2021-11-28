@@ -11,7 +11,7 @@ PlayerNotFound: "&cGiocatore non trovato!"
 
 # Messaggi degli argomenti invalidi
 InvalidArgs:
-  Main: "&cArgomenti invalidi! /economyplus <debug/help/reload>"
+  Main: "&cArgomenti invalidi! /economyplus <debug/help/reload/convert>"
   Eco: "&cArgomenti invalidi! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cArgomenti invalidi! /bal <player>"
   Pay: "&cArgomenti invalidi! /pay <player> <money>"

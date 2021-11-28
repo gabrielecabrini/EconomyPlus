@@ -1,6 +1,5 @@
-package me.itswagpvp.economyplus.dbStorage.sqlite;
+package me.itswagpvp.economyplus.database.sqlite;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Logger;
 import org.bukkit.Bukkit;
 
@@ -13,6 +12,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
+
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public abstract class Database {
 
@@ -91,7 +92,7 @@ public abstract class Database {
 
     // Save the balance to the player's database
     public void setTokens (String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
@@ -141,7 +142,7 @@ public abstract class Database {
 
     // Save the balance to the player's database
     public void setBank (String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(EconomyPlus.plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
@@ -188,6 +189,20 @@ public abstract class Database {
         }
 
         return new ArrayList<>();
+    }
+
+    // Remove a user (UUID/NICKNAME) from the database
+    public void removeUser(String user) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            Connection conn = getSQLiteConnection();
+            String sql = "DELETE FROM " + table + " where player = '" + user + "'";
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     // Closes the database connection

@@ -1,4 +1,4 @@
-package me.itswagpvp.economyplus.dbStorage.yml;
+package me.itswagpvp.economyplus.database.yaml;
 
 import org.bukkit.Bukkit;
 

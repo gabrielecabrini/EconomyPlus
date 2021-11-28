@@ -11,7 +11,7 @@ PlayerNotFound: "&cPlayer not found!"
 
 # Messages for the invalid args
 InvalidArgs:
-  Main: "&cInvalid args! /economyplus <debug/help/reload>"
+  Main: "&cInvalid args! /economyplus <debug/help/reload/convert>"
   Eco: "&cInvalid args! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cInvalid args! /bal <player>"
   Pay: "&cInvalid args! /pay <player> <money>"

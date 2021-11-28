@@ -117,6 +117,8 @@ public class DefaultFiles {
         }
     }
 
+    // Returns the config selected messages file
+
     public FileConfiguration getMessagesFile() {
 
         if (EconomyPlus.messagesType == MessagesFile.EN) {

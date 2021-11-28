@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.commands;
 
-import me.itswagpvp.economyplus.hooks.HolographicDisplays;
+import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
+import me.itswagpvp.economyplus.misc.Converter;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.Bukkit;
@@ -10,13 +11,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Main implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length == 0) {
             sender.sendMessage("§d§lEconomy§5§lPlus §7v" + plugin.getDescription().getVersion() + " made by §d_ItsWagPvP");
             sender.sendMessage("§7For help do /economyplus help");
@@ -33,7 +37,7 @@ public class Main implements CommandExecutor {
                     return true;
                 }
 
-                Utils.onReload(sender);
+                Utils.reloadPlugin(sender);
 
                 Utils.playSuccessSound(sender);
 
@@ -67,7 +71,6 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§f-> §7Vault Version: §d" + Bukkit.getServer().getPluginManager().getPlugin("Vault").getDescription().getVersion());
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7PlaceholderAPI: §a" + Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"));
-                sender.sendMessage("§f-> §7MVdWPlaceholderAPI: §a" + Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI"));
                 sender.sendMessage("§f-> §7HolographicDisplays: §a" + Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays"));
                 sender.sendMessage("§8+------------------------------------+");
 
@@ -77,7 +80,7 @@ public class Main implements CommandExecutor {
             if (args[0].equalsIgnoreCase("help")) {
                 sender.sendMessage("§d§lEconomy§5§lPlus §7v" + plugin.getDescription().getVersion() + " made by §d_ItsWagPvP");
                 sender.sendMessage("§7If you need support, join the discord server!");
-                sender.sendMessage("§f-> §9https://discord.io/wagsupport");
+                sender.sendMessage("§f-> §9https://discord.itswagpvp.eu/");
 
                 return true;
             }
@@ -124,6 +127,27 @@ public class Main implements CommandExecutor {
             sender.sendMessage(plugin.getMessage("InvalidArgs.Main"));
             Utils.playErrorSound(sender);
 
+        }
+
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("convert")) {
+
+                if (!(sender instanceof ConsoleCommandSender)) {
+                    sender.sendMessage(plugin.getMessage("NoPlayer"));
+                    Utils.playErrorSound(sender);
+                    return true;
+                }
+
+                String newStorageMode = args[1];
+                if (!(newStorageMode.equalsIgnoreCase("uuid") || newStorageMode.equalsIgnoreCase("nickname"))) {
+                    sender.sendMessage("§cYou have to set /ep convert <UUID/NICKNAME>");
+                    return true;
+                }
+
+                int updatedAccounts = new Converter().convert();
+                sender.sendMessage("§aYou have converted " + updatedAccounts + " accounts to " + newStorageMode.toUpperCase(Locale.ROOT) + " storage mode!");
+                return true;
+            }
         }
 
         return true;

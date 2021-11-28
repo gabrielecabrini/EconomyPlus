@@ -1,9 +1,9 @@
-package me.itswagpvp.economyplus.hooks;
+package me.itswagpvp.economyplus.hooks.holograms;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.misc.Data;
+import me.itswagpvp.economyplus.misc.BalTopManager;
 import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,9 +28,9 @@ public class HolographicDisplays {
 
         List<String> header = plugin.getConfig().getStringList("Baltop.Hologram.Header");
 
-        EconomyPlus.data = new Data();
-        new Data();
-        Data data = plugin.getData();
+        EconomyPlus.balTopManager = new BalTopManager();
+        new BalTopManager();
+        BalTopManager balTopManager = plugin.getBalTopManager();
 
         Utils utilities = new Utils();
 
@@ -44,8 +44,8 @@ public class HolographicDisplays {
                     .replaceAll("&", "§"));
         }
 
-        for ( int i = start; i < data.getBalTop().size() && i < start + 10; i++ ) {
-            Data.PlayerData pData = data.getBalTop().get(i);
+        for (int i = start; i < balTopManager.getBalTop().size() && i < start + 10; i++ ) {
+            BalTopManager.PlayerData pData = balTopManager.getBalTop().get(i);
 
             String name = pData.getName();
             double money = pData.getMoney();
@@ -76,9 +76,9 @@ public class HolographicDisplays {
 
         List<String> header = plugin.getConfig().getStringList("Baltop.Hologram.Header");
 
-        EconomyPlus.data = new Data();
-        new Data();
-        Data data = plugin.getData();
+        EconomyPlus.balTopManager = new BalTopManager();
+        new BalTopManager();
+        BalTopManager balTopManager = plugin.getBalTopManager();
 
         Utils utilities = new Utils();
 
@@ -92,8 +92,8 @@ public class HolographicDisplays {
                     .replaceAll("&", "§"));
         }
 
-        for ( int i = start; i < data.getBalTop().size() && i < start + 10; i++ ) {
-            Data.PlayerData pData = data.getBalTop().get(i);
+        for (int i = start; i < balTopManager.getBalTop().size() && i < start + 10; i++ ) {
+            BalTopManager.PlayerData pData = balTopManager.getBalTop().get(i);
 
             String name = pData.getName();
             double money = pData.getMoney();

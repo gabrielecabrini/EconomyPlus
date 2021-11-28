@@ -1,7 +1,7 @@
 package me.itswagpvp.economyplus.commands;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.misc.Data;
+import me.itswagpvp.economyplus.misc.BalTopManager;
 import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -26,9 +26,9 @@ public class BalTop implements CommandExecutor {
 
             List<String> header = plugin.getConfig().getStringList("Baltop.Chat.Header");
 
-            EconomyPlus.data = new Data();
-            new Data();
-            Data data = EconomyPlus.plugin.getData();
+            EconomyPlus.balTopManager = new BalTopManager();
+            new BalTopManager();
+            BalTopManager balTopManager = EconomyPlus.plugin.getBalTopManager();
 
             Utils utilities = new Utils();
 
@@ -48,8 +48,8 @@ public class BalTop implements CommandExecutor {
                         .replaceAll("&", "§"));
             }
 
-            for ( int i = start; i < data.getBalTop().size() && i < start + 10; i++ ) {
-                Data.PlayerData pData = data.getBalTop().get(i);
+            for (int i = start; i < balTopManager.getBalTop().size() && i < start + 10; i++ ) {
+                BalTopManager.PlayerData pData = balTopManager.getBalTop().get(i);
 
                 String name = pData.getName();
                 double money = pData.getMoney();
@@ -58,7 +58,7 @@ public class BalTop implements CommandExecutor {
                         .replaceAll("&", "§")
                         .replaceAll("%number%", "" + (i + 1))
                         .replaceAll("%player%", "" + name)
-                        .replaceAll("%money%", "" + utilities.fixMoney(money))
+                        .replaceAll("%money%", "" + utilities.format(money))
                         .replaceAll("%money_formatted%", "" + utilities.fixMoney(money)));
             }
         });

@@ -11,7 +11,7 @@ PlayerNotFound: "&cJucătorul nu a fost găsit!"
 
 # Mesaje pentru argumentele nevalide
 InvalidArgs:
-  Main: "&cArgumente nevalide! /economyplus <debug/help/reload>"
+  Main: "&cArgumente nevalide! /economyplus <debug/help/reload/convert>"
   Eco: "&cArgumente nevalide! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cArgumente nevalide! /bal <player>"
   Pay: "&cArgumente nevalide! /pay <player> <money>"

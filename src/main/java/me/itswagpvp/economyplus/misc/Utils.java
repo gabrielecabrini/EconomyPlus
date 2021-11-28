@@ -1,23 +1,24 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.hooks.MVdWPlaceholderAPI;
-import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
 import me.itswagpvp.economyplus.messages.MessageUtils;
 import me.itswagpvp.economyplus.messages.MessagesFile;
-import me.itswagpvp.economyplus.storage.DatabaseType;
+import me.itswagpvp.economyplus.database.storage.DatabaseType;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Utils {
 
     // Error sound played to player
-    public static void playErrorSound (CommandSender sender) {
+    public static void playErrorSound(CommandSender sender) {
 
         if (!plugin.getConfig().getBoolean("Sounds.Use")) {
             return;
@@ -39,7 +40,7 @@ public class Utils {
     }
 
     // Success sound played to player
-    public static void playSuccessSound (CommandSender sender) {
+    public static void playSuccessSound(CommandSender sender) {
 
         if (!plugin.getConfig().getBoolean("Sounds.Use")) {
             return;
@@ -60,7 +61,7 @@ public class Utils {
         }
     }
 
-    public static void onReload (CommandSender p) {
+    public static void reloadPlugin(CommandSender p) {
         long before = System.currentTimeMillis();
 
         Bukkit.getConsoleSender().sendMessage("[EconomyPlus] §aReloading the plugin! This action may take a while!");
@@ -74,8 +75,8 @@ public class Utils {
             plugin.saveDefaultConfig();
             plugin.reloadConfig();
 
-            EconomyPlus.data = new Data();
-            new Data();
+            EconomyPlus.balTopManager = new BalTopManager();
+            new BalTopManager();
 
             plugin.createHologramConfig();
 
@@ -90,7 +91,7 @@ public class Utils {
                 return;
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             p.sendMessage("§cError on reloading the plugin! (" + e.getMessage() + ")");
             return;
         } finally {
@@ -132,55 +133,18 @@ public class Utils {
         return format(d);
     }
 
-    // Load MVdWPlaceholders
-
-    public void loadMVdWPlaceholderAPI () {
-        // MVdWPlaceholderAPI
-
-        if (!plugin.getConfig().getBoolean("Hooks.MVdWPlaceholderAPI")) {
-            return;
+    public String hexColor(String text) {
+        Pattern pattern = Pattern.compile("#[a-fA-f0-9]{6}");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            String color = text.substring(matcher.start(), matcher.end());
+            text = text.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
         }
-
-        if (!Bukkit.getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-            Bukkit.getConsoleSender().sendMessage("   - MVdWPlaceholderAPI: §cNot found!");
-            return;
-        }
-
-        try {
-            MVdWPlaceholderAPI MvdWPlaceholderAPI = new MVdWPlaceholderAPI();
-            MvdWPlaceholderAPI.loadMVdWPlaceholders();
-        } catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("   - MVdWPlaceholderAPI: §cError!");
-            Bukkit.getConsoleSender().sendMessage(e.getMessage());
-            return;
-        } finally {
-            Bukkit.getConsoleSender().sendMessage("   - MVdWPlaceholderAPI: §aDone!");
-        }
-
-        return;
+        return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', text);
     }
 
-    // Load PlaceholderAPI
-
-    public void loadPlaceholderAPI () {
-        if (!plugin.getConfig().getBoolean("Hooks.PlaceholderAPI")) {
-            return;
-        }
-
-        if (!Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            Bukkit.getConsoleSender().sendMessage("   - PlaceholderAPI: §cNot found!");
-            return;
-        }
-
-        try {
-            new PlaceholderAPI(plugin).register();
-        }catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("   - PlaceholderAPI: §cError!");
-            Bukkit.getConsoleSender().sendMessage(e.getMessage());
-            return;
-        }finally {
-            Bukkit.getConsoleSender().sendMessage("   - PlaceholderAPI: §aDone!");
-        }
+    public boolean supportHexColors() {
+        return Bukkit.getVersion().contains("16") || Bukkit.getVersion().contains("17");
     }
 
 }

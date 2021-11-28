@@ -4,6 +4,7 @@ import me.itswagpvp.economyplus.bank.menu.Deposit;
 import me.itswagpvp.economyplus.bank.menu.Withdraw;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

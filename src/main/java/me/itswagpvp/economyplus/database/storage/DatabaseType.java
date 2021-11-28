@@ -1,8 +1,8 @@
-package me.itswagpvp.economyplus.storage;
+package me.itswagpvp.economyplus.database.storage;
 
-import me.itswagpvp.economyplus.dbStorage.mysql.MySQL;
-import me.itswagpvp.economyplus.dbStorage.sqlite.SQLite;
-import me.itswagpvp.economyplus.dbStorage.yml.YMLManager;
+import me.itswagpvp.economyplus.database.mysql.MySQL;
+import me.itswagpvp.economyplus.database.sqlite.SQLite;
+import me.itswagpvp.economyplus.database.yaml.YMLManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

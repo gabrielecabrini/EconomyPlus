@@ -1,19 +1,17 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.commands.BalTop;
-import me.itswagpvp.economyplus.commands.Eco;
-import me.itswagpvp.economyplus.storage.StorageMode;
+import me.itswagpvp.economyplus.database.storage.StorageMode;
 import org.bukkit.Bukkit;
 
 import java.util.*;
 
-public class Data {
+public class BalTopManager {
 
     public List<PlayerData> balTop;
     public Map<String,PlayerData> balTopName;
 
-    public Data() {
+    public BalTopManager() {
         this.balTop = new ArrayList<>();
         this.balTopName = new TreeMap<>();
         loadFromDatabase();
@@ -72,6 +70,7 @@ public class Data {
             if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
                 return name;
             } else if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+                if (Bukkit.getServer().getOfflinePlayer(UUID.fromString(name)).getName() == null) return "Invalid User";
                 return Bukkit.getServer().getOfflinePlayer(UUID.fromString(name)).getName();
             }
             return "Invalid user";

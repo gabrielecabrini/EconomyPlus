@@ -25,7 +25,6 @@ Metrics: true
 Hooks:
   # Placeholders
   PlaceholderAPI: true
-  MVdWPlaceholderAPI: true
   HolographicDisplays: true
 
 # You want to enable the updater?

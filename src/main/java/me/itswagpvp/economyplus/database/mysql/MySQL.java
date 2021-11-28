@@ -1,6 +1,7 @@
-package me.itswagpvp.economyplus.dbStorage.mysql;
+package me.itswagpvp.economyplus.database.mysql;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,12 +27,12 @@ public class MySQL {
     static Connection connection;
 
     // Connect to the database
-    public void connect () {
+    public void connect() {
         try {
 
             connection = DriverManager.getConnection(url, user, password);
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
 
             e.printStackTrace();
 
@@ -41,17 +42,17 @@ public class MySQL {
     // Close the database connection if not null
     public void closeConnection() {
         try {
-            if (connection!=null && !connection.isClosed()){
+            if (connection != null && !connection.isClosed()) {
 
                 connection.close();
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void createTable () {
+    public void createTable() {
         String sql = "CREATE TABLE " + table + " ("
                 + "player VARCHAR(45) NOT NULL,"
                 + "moneys DOUBLE NOT NULL,"
@@ -93,12 +94,12 @@ public class MySQL {
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
 
             try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
                     ResultSet rs = ps.executeQuery()
             ) {
-                while(rs.next()){
-                    if(rs.getString("player").equalsIgnoreCase(player)){
-                        return rs.getDouble("moneys"); 
+                while (rs.next()) {
+                    if (rs.getString("player").equalsIgnoreCase(player)) {
+                        return rs.getDouble("moneys");
                     }
                 }
             } catch (SQLException ex) {
@@ -117,12 +118,12 @@ public class MySQL {
     }
 
     // Save the balance to the player's database
-    public void setTokens (String player, double tokens) {
+    public void setTokens(String player, double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             try (
                     PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-            ){
+            ) {
 
                 ps.setString(1, player);
 
@@ -138,16 +139,16 @@ public class MySQL {
     }
 
     // Retrieve the bank of the player
-    public double getBank (String player) {
+    public double getBank(String player) {
 
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
 
             try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
                     ResultSet rs = ps.executeQuery()
             ) {
-                while(rs.next()){
-                    if(rs.getString("player").equalsIgnoreCase(player)){
+                while (rs.next()) {
+                    if (rs.getString("player").equalsIgnoreCase(player)) {
                         return rs.getDouble("bank");
                     }
                 }
@@ -167,12 +168,12 @@ public class MySQL {
     }
 
     // Save the balance to the player's database
-    public void setBank (String player, double tokens) {
+    public void setBank(String player, double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             try (
                     PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-            ){
+            ) {
 
                 ps.setString(1, player);
 
@@ -188,7 +189,7 @@ public class MySQL {
     }
 
     // Get the list of the players saved
-    public List<String> getList () {
+    public List<String> getList() {
         CompletableFuture<List<String>> getList = CompletableFuture.supplyAsync(() -> {
 
             List<String> list = new ArrayList<>();
@@ -215,6 +216,37 @@ public class MySQL {
         }
 
         return new ArrayList<>();
+    }
+
+    // Remove a user (UUID/NICKNAME) from the database
+    public void changeUser(OfflinePlayer user, String convertTo) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+
+            String playerName = user.getName();
+            String playerUuid = String.valueOf(user.getUniqueId());
+
+            if (convertTo.equals("UUID")) {
+                try {
+                    PreparedStatement ps = connection.prepareStatement(
+                            "UPDATE " + table + " " +
+                                    "SET player = \"" + playerUuid + "\" " +
+                                    "WHERE player = \"" + playerName + "\"");
+                    ps.executeUpdate();
+                } catch (SQLException ex) {
+                    plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                }
+            } else if (convertTo.equals("NICKNAME")) {
+                try {
+                    PreparedStatement ps = connection.prepareStatement(
+                            "UPDATE " + table + " " +
+                                    "SET player = \"" + playerName + "\" " +
+                                    "WHERE player = \"" + playerUuid + "\"");
+                    ps.executeUpdate();
+                } catch (SQLException ex) {
+                    plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                }
+            }
+        });
     }
 
 }

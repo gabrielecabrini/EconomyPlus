@@ -11,7 +11,7 @@ PlayerNotFound: "&cLojtari nuk u gjet!"
 
 # Mesazhe për argumentet e pavlefshme
 InvalidArgs:
-  Main: "&cArgumente të pavlefshme! /economyplus <debug/help/reload>"
+  Main: "&cArgumente të pavlefshme! /economyplus <debug/help/reload/convert>"
   Eco: "&cArgumente të pavlefshme! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cArgumente të pavlefshme! /bal <player>"
   Pay: "&cArgumente të pavlefshme! /pay <player> <money>"

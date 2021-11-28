@@ -3,9 +3,8 @@ package me.itswagpvp.economyplus.misc;
 import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -35,7 +34,6 @@ public class Updater implements Listener {
         if (!enabled) return;
 
         Updater.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         currentVersion = plugin.getDescription().getVersion();
 
@@ -96,8 +94,7 @@ public class Updater implements Listener {
         return instance;
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
+    public void checkForPlayerUpdate(Player e) {
         if (!enabled || alreadyDownloaded) return;
         if (ready && updateAvailable && plugin.getConfig().getBoolean("Updater", true)) {
             if (!e.getPlayer().hasPermission("economyplus.update")) return;

@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ConstructorTabCompleter implements TabCompleter {
+public class TabCompleterLoader implements TabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
@@ -50,8 +50,13 @@ public class ConstructorTabCompleter implements TabCompleter {
         // EconomyPlus main command TabCompleter
         if (command.getName().equalsIgnoreCase("economyplus")) {
             int i = (args.length);
-            if (i == 1) {
-                return Arrays.asList("help", "debug", "reload", "hologram", "update");
+            switch (i) {
+                case 1:
+                    return Arrays.asList("help", "debug", "reload", "hologram", "update", "convert");
+                case 2:
+                    if (args[1].equalsIgnoreCase("convert")) {
+                        Arrays.asList("UUID", "NICKNAME");
+                    }
             }
             return listDefault;
         }
