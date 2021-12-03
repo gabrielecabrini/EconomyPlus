@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.storage.StorageMode;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -29,12 +30,12 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasBankSupport() {
-        return false;
+        return true;
     }
 
     @Override
     public int fractionalDigits() {
-        return 0;
+        return 2;
     }
 
     @Override
@@ -47,12 +48,12 @@ public class VEconomy implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return "$";
+        return "Dollar";
     }
 
     @Override
     public String currencyNameSingular() {
-        return "$";
+        return "Dollars";
     }
 
     @Override
@@ -62,7 +63,16 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return hasAccount(player.getName());
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return hasAccount(player.getName());
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return hasAccount(String.valueOf(player.getUniqueId()));
+        }
+
+        return false;
+
     }
 
     @Override
@@ -72,7 +82,15 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return hasAccount(player.getName());
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return hasAccount(player.getName());
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return hasAccount(String.valueOf(player.getUniqueId()));
+        }
+
+        return false;
     }
 
     @Override
@@ -82,7 +100,15 @@ public class VEconomy implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return getBalance(player.getName());
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return getBalance(player.getName());
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return getBalance(String.valueOf(player.getUniqueId()));
+        }
+
+        return 0;
     }
 
     @Override
@@ -92,7 +118,15 @@ public class VEconomy implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer player, String world) {
-        return getBalance(player.getName());
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return getBalance(player.getName());
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return getBalance(String.valueOf(player.getUniqueId()));
+        }
+
+        return 0;
     }
 
     @Override
@@ -103,7 +137,15 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return has(player.getName(), amount);
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return has(player.getName(), amount);
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return has(String.valueOf(player.getUniqueId()), amount);
+        }
+
+        return false;
     }
 
     @Override
@@ -113,7 +155,15 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean has(OfflinePlayer player, String worldName, double amount) {
-        return has(player.getName(), amount);
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return has(player.getName(), amount);
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return has(String.valueOf(player.getUniqueId()), amount);
+        }
+
+        return false;
     }
 
     @Override
@@ -125,6 +175,14 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return withdrawPlayer(player.getName(), amount);
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return withdrawPlayer(String.valueOf(player.getUniqueId()), amount);
+        }
+
         return withdrawPlayer(player.getName(), amount);
     }
 
@@ -135,6 +193,14 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return withdrawPlayer(player.getName(), amount);
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return withdrawPlayer(String.valueOf(player.getUniqueId()), amount);
+        }
+
         return withdrawPlayer(player.getName(), amount);
     }
 
@@ -147,6 +213,14 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return depositPlayer(player.getName(), amount);
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return depositPlayer(String.valueOf(player.getUniqueId()), amount);
+        }
+
         return depositPlayer(player.getName(), amount);
     }
 
@@ -157,6 +231,14 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return depositPlayer(player.getName(), amount);
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return depositPlayer(String.valueOf(player.getUniqueId()), amount);
+        }
+
         return depositPlayer(player.getName(), amount);
     }
 

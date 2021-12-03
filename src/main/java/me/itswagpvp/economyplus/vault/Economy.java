@@ -9,7 +9,6 @@ public class Economy extends VEconomy {
     private final OfflinePlayer p;
     private final double money;
 
-    // Constructor
     public Economy(OfflinePlayer p, double money) {
         super(EconomyPlus.plugin);
         this.p = p;
@@ -18,25 +17,34 @@ public class Economy extends VEconomy {
 
     // Returns the money of a player
     public double getBalance() {
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) return getBalance(String.valueOf(this.p.getUniqueId()));
-        else if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) return getBalance(p.getName());
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return super.getBalance(String.valueOf(this.p.getUniqueId()));
+        }
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return super.getBalance(p.getName());
+        }
         return 0;
     }
 
-    // Set the money for a player
+    // Set the money of a player
     public void setBalance() {
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) EconomyPlus.getDBType().setTokens(String.valueOf(p.getUniqueId()), money);
-        else if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) EconomyPlus.getDBType().setTokens(p.getName(), money);
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            double bal = getBalance(String.valueOf(p.getUniqueId()));
+            super.depositPlayer(String.valueOf(p.getUniqueId()), (bal + money));
+        }
+
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            double bal = getBalance(String.valueOf(p.getName()));
+            super.depositPlayer(p.getName(), (bal + money));
+        }
     }
 
     // Add moneys to a player account
     public void addBalance() {
-        double result = getBalance() + this.money;
         if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            EconomyPlus.getDBType().setTokens(this.p.getName(), result);
             super.depositPlayer(this.p.getName(), money);
-        } else if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            EconomyPlus.getDBType().setTokens(String.valueOf(this.p.getUniqueId()), result);
+        }
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
             super.depositPlayer(String.valueOf(this.p.getUniqueId()), money);
         }
 
@@ -44,12 +52,10 @@ public class Economy extends VEconomy {
 
     // Remove moneys from a player's account
     public void takeBalance() {
-        double result = getBalance() - this.money;
         if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            EconomyPlus.getDBType().setTokens(this.p.getName(), result);
             super.withdrawPlayer(this.p.getName(), this.money);
-        } else if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            EconomyPlus.getDBType().setTokens(String.valueOf(this.p.getUniqueId()), result);
+        }
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
             super.withdrawPlayer(String.valueOf(this.p.getUniqueId()), this.money);
         }
 

@@ -12,7 +12,7 @@ public class VHook {
 
     public void onHook() {
         veco = new VEconomy(plugin);
-        plugin.getServer().getServicesManager().register(Economy.class, EconomyPlus.veco, plugin, ServicePriority.Highest);
+        plugin.getServer().getServicesManager().register(Economy.class, EconomyPlus.veco, plugin, ServicePriority.Lowest);
     }
 
     public void offHook() {
