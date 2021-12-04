@@ -1,7 +1,7 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.storage.StorageMode;
+import me.itswagpvp.economyplus.database.misc.StorageMode;
 import org.bukkit.Bukkit;
 
 import java.util.*;
@@ -21,6 +21,18 @@ public class BalTopManager {
         getBalTop().clear();
 
         for ( String playerName : EconomyPlus.getDBType().getList()) {
+
+            if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+                String convertedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerName)).getName();
+                if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + convertedPlayer)) {
+                    continue;
+                }
+            } else {
+                if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + playerName)) {
+                    continue;
+                }
+            }
+
 
             double money = EconomyPlus.getDBType().getToken(playerName);
 

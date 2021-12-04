@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.database.sqlite;
 
-import me.itswagpvp.economyplus.misc.Logger;
 import org.bukkit.Bukkit;
 
 import java.sql.Connection;

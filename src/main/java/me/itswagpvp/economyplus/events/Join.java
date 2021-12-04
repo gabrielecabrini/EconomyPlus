@@ -1,7 +1,7 @@
 package me.itswagpvp.economyplus.events;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.storage.StorageMode;
+import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.misc.Updater;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

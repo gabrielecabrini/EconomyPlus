@@ -48,6 +48,7 @@ public class BalTop implements CommandExecutor {
                         .replaceAll("&", "§"));
             }
 
+
             for (int i = start; i < balTopManager.getBalTop().size() && i < start + 10; i++ ) {
                 BalTopManager.PlayerData pData = balTopManager.getBalTop().get(i);
 

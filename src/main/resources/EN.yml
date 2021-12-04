@@ -11,7 +11,7 @@ PlayerNotFound: "&cPlayer not found!"
 
 # Messages for the invalid args
 InvalidArgs:
-  Main: "&cInvalid args! /economyplus <debug/help/reload/convert>"
+  Main: "&cInvalid args! /economyplus <debug/help/reload/convert/exclude/hologram>"
   Eco: "&cInvalid args! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cInvalid args! /bal <player>"
   Pay: "&cInvalid args! /pay <player> <money>"
@@ -34,6 +34,10 @@ Pay:
   NoMoney: "&CYou do not have enough moneys!"
   Self: "&7You have sent &c%money%$ &7to &c%player%&7!"
   Target: "&7You have received &a%money%$ &7from &a%player%&7!"
+  DisabledPayments: "&cThe player doesn't accept incoming payments"
+  Toggle:
+    Enabled: "&cYou have disabled your incoming payments!"
+    Disabled: "&aYou have enabled your incoming payments!"
 
 # /bank
 Bank:

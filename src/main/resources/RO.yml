@@ -11,7 +11,7 @@ PlayerNotFound: "&cJucătorul nu a fost găsit!"
 
 # Mesaje pentru argumentele nevalide
 InvalidArgs:
-  Main: "&cArgumente nevalide! /economyplus <debug/help/reload/convert>"
+  Main: "&cArgumente nevalide! /economyplus <debug/help/reload/convert/exclude/hologram>"
   Eco: "&cArgumente nevalide! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cArgumente nevalide! /bal <player>"
   Pay: "&cArgumente nevalide! /pay <player> <money>"
@@ -34,6 +34,10 @@ Pay:
   NoMoney: "&CNu aveți destui bani!"
   Self: "&7Ai trimis &c%money%$ &7to &c%player%&7!"
   Target: "&7Le-ai primit &a%money%$ &7din &a%player%&7!"
+  DisabledPayments: "&cIl giocatore ha disattivato i pagamenti in entrata"
+    Toggle:
+      Enabled: "&cAți dezactivat plățile primite"
+      Disabled: "&aAți activat plățile primite"
 
 # /bank
 Bank:

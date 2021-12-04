@@ -3,7 +3,7 @@ package me.itswagpvp.economyplus.misc;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.messages.MessageUtils;
 import me.itswagpvp.economyplus.messages.MessagesFile;
-import me.itswagpvp.economyplus.database.storage.DatabaseType;
+import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -78,7 +78,7 @@ public class Utils {
             EconomyPlus.balTopManager = new BalTopManager();
             new BalTopManager();
 
-            plugin.createHologramConfig();
+            new StorageManager().createStorageConfig();
 
             String messages = plugin.getConfig().getString("Language");
 

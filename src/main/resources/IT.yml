@@ -11,7 +11,7 @@ PlayerNotFound: "&cGiocatore non trovato!"
 
 # Messaggi degli argomenti invalidi
 InvalidArgs:
-  Main: "&cArgomenti invalidi! /economyplus <debug/help/reload/convert>"
+  Main: "&cArgomenti invalidi! /economyplus <debug/help/reload/convert/exclude/hologram>"
   Eco: "&cArgomenti invalidi! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cArgomenti invalidi! /bal <player>"
   Pay: "&cArgomenti invalidi! /pay <player> <money>"
@@ -34,6 +34,10 @@ Pay:
   NoMoney: "&CNon hai abbastanza soldi!"
   Self: "&7Hai mandato &c%money%$ &7a &c%player%&7!"
   Target: "&7Hai ricevuto &a%money%$ &7da &a%player%&7!"
+  DisabledPayments: "&cIl giocatore ha disattivato i pagamenti in entrata"
+  Toggle:
+    Enabled: "&cHai disattivato i pagamenti in entrata!"
+    Disabled: "&aHai attivato i pagamenti in entrata!"
 
 # /bank
 Bank:

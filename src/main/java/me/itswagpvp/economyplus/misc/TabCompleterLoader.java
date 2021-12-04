@@ -52,7 +52,7 @@ public class TabCompleterLoader implements TabCompleter {
             int i = (args.length);
             switch (i) {
                 case 1:
-                    return Arrays.asList("help", "debug", "reload", "hologram", "update", "convert");
+                    return Arrays.asList("help", "debug", "reload", "hologram", "update", "convert", "exclude");
                 case 2:
                     if (args[1].equalsIgnoreCase("convert")) {
                         Arrays.asList("UUID", "NICKNAME");

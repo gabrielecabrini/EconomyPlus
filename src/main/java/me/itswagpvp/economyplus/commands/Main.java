@@ -4,6 +4,7 @@ import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.misc.Converter;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.misc.Utils;
+import me.itswagpvp.economyplus.misc.StorageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -100,11 +101,19 @@ public class Main implements CommandExecutor {
 
                 Location loc = p.getLocation();
 
-                plugin.getHologramConfig().set("Hologram.BalTop.World", loc.getWorld().getName());
-                plugin.getHologramConfig().set("Hologram.BalTop.X", loc.getX());
-                plugin.getHologramConfig().set("Hologram.BalTop.Y", loc.getY());
-                plugin.getHologramConfig().set("Hologram.BalTop.Z", loc.getZ());
-                plugin.saveHologramConfig();
+                StorageManager storageManager = new StorageManager();
+
+                storageManager.getStorageConfig().set("Hologram.BalTop.World", loc.getWorld().getName());
+                new StorageManager().saveStorageConfig();
+
+                storageManager.getStorageConfig().set("Hologram.BalTop.X", loc.getX());
+                new StorageManager().saveStorageConfig();
+
+                storageManager.getStorageConfig().set("Hologram.BalTop.Y", loc.getY());
+                new StorageManager().saveStorageConfig();
+
+                storageManager.getStorageConfig().set("Hologram.BalTop.Z", loc.getZ());
+                new StorageManager().saveStorageConfig();
 
                 new HolographicDisplays().createHologram();
 
@@ -123,9 +132,6 @@ public class Main implements CommandExecutor {
 
                 return true;
             }
-
-            sender.sendMessage(plugin.getMessage("InvalidArgs.Main"));
-            Utils.playErrorSound(sender);
 
         }
 
@@ -148,7 +154,31 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§aYou have converted " + updatedAccounts + " accounts to " + newStorageMode.toUpperCase(Locale.ROOT) + " storage mode!");
                 return true;
             }
+
+            if (args[0].equalsIgnoreCase("exclude")) {
+
+                if (!(sender instanceof ConsoleCommandSender)) {
+                    sender.sendMessage(plugin.getMessage("NoPlayer"));
+                    Utils.playErrorSound(sender);
+                    return true;
+                }
+
+                if (plugin.getConfig().getBoolean("BalTop.Exclude." + args[1])) {
+                    new StorageManager().getStorageConfig().set("BalTop.Exclude." + args[1], false);
+                    sender.sendMessage("§aIncluded " + args[1] + " in the BalTop!");
+                } else {
+                    new StorageManager().getStorageConfig().set("BalTop.Exclude." + args[1], true);
+                    sender.sendMessage("§aExcluded " + args[1] + " from the BalTop!");
+                }
+
+                new StorageManager().saveStorageConfig();
+
+                return true;
+            }
         }
+
+        sender.sendMessage(plugin.getMessage("InvalidArgs.Main"));
+        Utils.playErrorSound(sender);
 
         return true;
     }

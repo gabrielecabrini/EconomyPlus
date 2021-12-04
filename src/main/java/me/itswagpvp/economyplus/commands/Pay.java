@@ -1,5 +1,6 @@
 package me.itswagpvp.economyplus.commands;
 
+import me.itswagpvp.economyplus.misc.StorageManager;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
@@ -39,6 +40,12 @@ public class Pay implements CommandExecutor {
 
         if (target == null) {
             p.sendMessage(plugin.getMessage("PlayerNotFound"));
+            Utils.playErrorSound(p);
+            return true;
+        }
+
+        if (new StorageManager().getStorageConfig().getBoolean("PayToggle." + target.getName())) {
+            p.sendMessage(plugin.getMessage("Pay.DisabledPayments"));
             Utils.playErrorSound(p);
             return true;
         }

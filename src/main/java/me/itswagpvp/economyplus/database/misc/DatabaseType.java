@@ -1,4 +1,4 @@
-package me.itswagpvp.economyplus.database.storage;
+package me.itswagpvp.economyplus.database.misc;
 
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;

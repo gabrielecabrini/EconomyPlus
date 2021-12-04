@@ -11,7 +11,7 @@ PlayerNotFound: "&cLojtari nuk u gjet!"
 
 # Mesazhe për argumentet e pavlefshme
 InvalidArgs:
-  Main: "&cArgumente të pavlefshme! /economyplus <debug/help/reload/convert>"
+  Main: "&cArgumente të pavlefshme! /economyplus <debug/help/reload/convert/exclude/hologram>"
   Eco: "&cArgumente të pavlefshme! /eco <player> <set/give/take/reset> <money>"
   Balance: "&cArgumente të pavlefshme! /bal <player>"
   Pay: "&cArgumente të pavlefshme! /pay <player> <money>"
@@ -34,6 +34,10 @@ Pay:
   NoMoney: "&cNuk keni para të mjaftueshme!"
   Self: "&7Keni dërguar &c%player% &c%money%$&7!"
   Target: "&a%player% &7te dërgoi &a%money%$&7!"
+  DisabledPayments: "&cX nuk pranon pagesa"
+    Toggle:
+      Enabled: "&cKeni çaktivizuar pagesat në hyrje"
+      Disabled: "&aJu keni aktivizuar hyrjen e pagesave"
 
 # /bank
 Bank:

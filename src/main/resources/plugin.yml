@@ -23,6 +23,8 @@ commands:
     usage: /<command>
   pay:
     usage: /<command>
+  paytoggle:
+    usage: /<command>
   baltop:
     usage: /<command>
     aliases:

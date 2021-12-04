@@ -1,7 +1,7 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.storage.StorageMode;
+import me.itswagpvp.economyplus.database.misc.StorageMode;
 import org.bukkit.OfflinePlayer;
 
 public class Economy extends VEconomy {
@@ -28,14 +28,12 @@ public class Economy extends VEconomy {
 
     // Set the money of a player
     public void setBalance() {
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            double bal = getBalance(String.valueOf(p.getUniqueId()));
-            super.depositPlayer(String.valueOf(p.getUniqueId()), (bal + money));
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            EconomyPlus.getDBType().setTokens(this.p.getName(), this.money);
         }
 
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            double bal = getBalance(String.valueOf(p.getName()));
-            super.depositPlayer(p.getName(), (bal + money));
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            EconomyPlus.getDBType().setTokens(String.valueOf(this.p.getUniqueId()), this.money);
         }
     }
 
