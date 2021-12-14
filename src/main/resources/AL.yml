@@ -35,9 +35,9 @@ Pay:
   Self: "&7Keni dërguar &c%player% &c%money%$&7!"
   Target: "&a%player% &7te dërgoi &a%money%$&7!"
   DisabledPayments: "&cX nuk pranon pagesa"
-    Toggle:
-      Enabled: "&cKeni çaktivizuar pagesat në hyrje"
-      Disabled: "&aJu keni aktivizuar hyrjen e pagesave"
+  Toggle:
+    Enabled: "&cKeni çaktivizuar pagesat në hyrje"
+    Disabled: "&aJu keni aktivizuar hyrjen e pagesave"
 
 # /bank
 Bank:

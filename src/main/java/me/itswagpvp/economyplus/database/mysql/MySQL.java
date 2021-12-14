@@ -218,6 +218,13 @@ public class MySQL {
         return new ArrayList<>();
     }
 
+    // Create a player account
+    public boolean createPlayer(String player) {
+        setTokens(player, plugin.getConfig().getDouble("Starting-Balance"));
+        setBank(player, plugin.getConfig().getDouble("Starting-Bank-Balance"));
+        return true;
+    }
+
     // Remove a user (UUID/NICKNAME) from the database
     public void changeUser(OfflinePlayer user, String convertTo) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {

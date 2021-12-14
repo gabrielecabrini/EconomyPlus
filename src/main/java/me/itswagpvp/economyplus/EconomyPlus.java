@@ -220,7 +220,9 @@ public final class EconomyPlus extends JavaPlugin {
     private void loadEvents() {
         try {
             Bukkit.getPluginManager().registerEvents(new Join(), this);
-            Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
+            if (plugin.getConfig().getBoolean("Bank.Enable")) {
+                Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
+            }
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §cError loading the listeners");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
@@ -246,8 +248,10 @@ public final class EconomyPlus extends JavaPlugin {
             getCommand("eco").setExecutor(new Eco());
             getCommand("eco").setTabCompleter(new TabCompleterLoader());
 
-            getCommand("bank").setExecutor(new Bank());
-            getCommand("bank").setTabCompleter(new TabCompleterLoader());
+            if (plugin.getConfig().getBoolean("Bank.Enable")) {
+                getCommand("bank").setExecutor(new Bank());
+                getCommand("bank").setTabCompleter(new TabCompleterLoader());
+            }
 
             getCommand("paytoggle").setExecutor(new PayToggle());
             getCommand("paytoggle").setTabCompleter(new TabCompleterLoader());

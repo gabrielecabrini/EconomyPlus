@@ -18,18 +18,14 @@ public class MenuListener implements Listener {
     @EventHandler
     public void onMenuClick(InventoryClickEvent e) {
 
-        if (!plugin.getConfig().getBoolean("Bank.Enabled")) {
-            return;
-        }
-
         String withdrawTitle = plugin.getConfig().getString("Bank.GUI.Withdraw.Title")
                 .replaceAll("&", "§");
 
         String depositTitle = plugin.getConfig().getString("Bank.GUI.Deposit.Title")
                 .replaceAll("&", "§");
 
-        if (e.getView().getTitle().equals(withdrawTitle) || e.getView().getTitle().equals(depositTitle)) {
-            e.setCancelled(true);
+        if (!e.getView().getTitle().equals(withdrawTitle) || !e.getView().getTitle().equals(depositTitle)) {
+            return;
         }
 
         if (e.getCurrentItem() == null) {

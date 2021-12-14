@@ -41,6 +41,11 @@ public enum DatabaseType {
         }
 
         @Override
+        public boolean createPlayer(String player) {
+            return new SQLite().createPlayer(player);
+        }
+
+        @Override
         public void close() throws SQLException {
             new SQLite().getSQLiteConnection().close();
         }
@@ -74,6 +79,11 @@ public enum DatabaseType {
         @Override
         public List<String> getList() {
             return new MySQL().getList();
+        }
+
+        @Override
+        public boolean createPlayer(String player) {
+            return new MySQL().createPlayer(player);
         }
 
         @Override
@@ -113,6 +123,11 @@ public enum DatabaseType {
         }
 
         @Override
+        public boolean createPlayer(String player) {
+            return new YMLManager().createPlayer(player);
+        }
+
+        @Override
         public void close() {}
     },
     Undefined{
@@ -143,6 +158,11 @@ public enum DatabaseType {
         }
 
         @Override
+        public boolean createPlayer(String player) {
+            return false;
+        }
+
+        @Override
         public void close() {}
     };
 
@@ -152,5 +172,6 @@ public enum DatabaseType {
     public abstract void setBank(String playerName, double tokens);
     public abstract double getBank(String playerName);
     public abstract List<String> getList();
+    public abstract boolean createPlayer(String player);
     public abstract void close() throws SQLException;
 }

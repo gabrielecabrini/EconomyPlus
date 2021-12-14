@@ -35,9 +35,9 @@ Pay:
   Self: "&7Ai trimis &c%money%$ &7to &c%player%&7!"
   Target: "&7Le-ai primit &a%money%$ &7din &a%player%&7!"
   DisabledPayments: "&cIl giocatore ha disattivato i pagamenti in entrata"
-    Toggle:
-      Enabled: "&cAți dezactivat plățile primite"
-      Disabled: "&aAți activat plățile primite"
+  Toggle:
+    Enabled: "&cAți dezactivat plățile primite"
+    Disabled: "&aAți activat plățile primite"
 
 # /bank
 Bank:

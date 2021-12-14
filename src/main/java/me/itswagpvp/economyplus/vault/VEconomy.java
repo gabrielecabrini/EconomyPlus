@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -304,21 +305,29 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        return false;
+        return EconomyPlus.getDBType().createPlayer(playerName);
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
-        return false;
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return EconomyPlus.getDBType().createPlayer(player.getName());
+        } else {
+            return EconomyPlus.getDBType().createPlayer(player.getUniqueId().toString());
+        }
     }
 
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
-        return false;
+        return EconomyPlus.getDBType().createPlayer(playerName);
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
-        return false;
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            return EconomyPlus.getDBType().createPlayer(player.getName());
+        } else {
+            return EconomyPlus.getDBType().createPlayer(player.getUniqueId().toString());
+        }
     }
 }

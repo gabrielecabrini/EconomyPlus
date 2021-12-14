@@ -36,7 +36,7 @@ public abstract class Database {
             close(ps,rs);
 
         } catch (SQLException ex) {
-            Logger.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
+            plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
         }
     }
 
@@ -75,7 +75,7 @@ public abstract class Database {
                     }
                 }
             } catch (SQLException ex) {
-                Logger.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
             return 0.00;
         });
@@ -105,7 +105,7 @@ public abstract class Database {
 
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                Logger.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
         });
     }
@@ -125,7 +125,7 @@ public abstract class Database {
                     }
                 }
             } catch (SQLException ex) {
-                Logger.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
             return 0.00;
         });
@@ -155,7 +155,7 @@ public abstract class Database {
 
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                Logger.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
         });
     }
@@ -204,6 +204,13 @@ public abstract class Database {
         });
     }
 
+    // Create a default player
+    public boolean createPlayer(String player) {
+        setTokens(player, plugin.getConfig().getDouble("Starting-Balance"));
+        setBank(player, plugin.getConfig().getDouble("Starting-Bank-Balance"));
+        return true;
+    }
+
     // Closes the database connection
     public void close(PreparedStatement ps, ResultSet rs){
         try {
@@ -212,7 +219,7 @@ public abstract class Database {
             if (rs != null)
                 rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger().log(Level.SEVERE, "Failed to close MySQL connection: ", ex);
+            plugin.getLogger().log(Level.SEVERE, "Failed to close MySQL connection: ", ex);
         }
     }
 }

@@ -53,6 +53,12 @@ public class YMLManager {
         });
     }
 
+    public boolean createPlayer(String player) {
+        setTokens(player, plugin.getConfig().getDouble("Starting-Balance"));
+        setBank(player, plugin.getConfig().getDouble("Starting-Bank-Balance"));
+        return true;
+    }
+
     public List<String> getList () {
         List<String> list = new ArrayList<>(plugin.getYMLData().getConfigurationSection("Data").getKeys(false));
         return list;
