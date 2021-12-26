@@ -20,6 +20,7 @@ public class Bank implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (!plugin.getConfig().getBoolean("Bank.Enabled")) {
+
             sender.sendMessage(plugin.getMessage("Bank.Disabled"));
             Utils.playErrorSound(sender);
             return true;

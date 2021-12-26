@@ -78,7 +78,9 @@ public class Updater implements Listener {
 
                 ready = true;
             } catch (IOException e) {
-                plugin.getLogger().warning("Unable to check for an update! " + e.getMessage());
+                if (!e.getMessage().contains("HTTP response code: 503")) {
+                    plugin.getLogger().warning("Unable to check for an update! " + e.getMessage());
+                }
             }
         });
     }

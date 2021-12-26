@@ -6,7 +6,7 @@
 
     <groupId>me.ItsWagPvP</groupId>
     <artifactId>EconomyPlus</artifactId>
-    <version>3.1</version>
+    <version>3.2</version>
     <packaging>jar</packaging>
 
     <name>EconomyPlus</name>
@@ -67,7 +67,7 @@
         </repository>
         <repository>
             <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
             <id>codemc-repo</id>

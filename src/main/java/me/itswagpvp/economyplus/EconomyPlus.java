@@ -352,11 +352,17 @@ public final class EconomyPlus extends JavaPlugin {
         }
 
         String rawMessage = new DefaultFiles().getMessagesFile().getString(path);
+
+        assert rawMessage != null;
+        if (rawMessage.equalsIgnoreCase("none")) {
+            return null;
+        }
+
         if (new Utils().supportHexColors()) {
             String hexMessage = new Utils().hexColor(rawMessage);
             return ChatColor.translateAlternateColorCodes('&', hexMessage);
         }
-        assert rawMessage != null;
+
         return ChatColor.translateAlternateColorCodes('&', rawMessage);
     }
 

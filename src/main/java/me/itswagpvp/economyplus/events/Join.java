@@ -15,15 +15,14 @@ public class Join implements Listener {
 
         new Updater(EconomyPlus.plugin).checkForPlayerUpdate(event.getPlayer());
 
-        if (!event.getPlayer().hasPlayedBefore()) {
-            String playerName;
+        String playerName = "";
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            playerName = String.valueOf(event.getPlayer().getUniqueId());
+        } else if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
+            playerName = event.getPlayer().getName();
+        }
 
-            if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-                playerName = String.valueOf(event.getPlayer().getUniqueId());
-            } else if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-                playerName = event.getPlayer().getName();
-            } else return;
-
+        if (!EconomyPlus.getDBType().getList().contains(playerName)) {
             EconomyPlus.getDBType().setTokens(playerName, EconomyPlus.plugin.getConfig().getDouble("Starting-Balance", 0.00D));
             EconomyPlus.getDBType().setBank(playerName, EconomyPlus.plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00D));
         }
