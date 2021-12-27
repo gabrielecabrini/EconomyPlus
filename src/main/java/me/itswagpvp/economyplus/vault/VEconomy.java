@@ -1,8 +1,6 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.misc.DatabaseType;
-import me.itswagpvp.economyplus.database.misc.StorageMode;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -64,16 +62,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return hasAccount(player.getName());
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return hasAccount(String.valueOf(player.getUniqueId()));
-        }
-
-        return false;
-
+        return hasAccount(_playerToString(player));
     }
 
     @Override
@@ -83,15 +72,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return hasAccount(player.getName());
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return hasAccount(String.valueOf(player.getUniqueId()));
-        }
-
-        return false;
+        return hasAccount(_playerToString(player));
     }
 
     @Override
@@ -101,15 +82,7 @@ public class VEconomy implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return getBalance(player.getName());
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return getBalance(String.valueOf(player.getUniqueId()));
-        }
-
-        return 0;
+        return getBalance(_playerToString(player));
     }
 
     @Override
@@ -119,15 +92,7 @@ public class VEconomy implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer player, String world) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return getBalance(player.getName());
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return getBalance(String.valueOf(player.getUniqueId()));
-        }
-
-        return 0;
+        return getBalance(_playerToString(player));
     }
 
     @Override
@@ -138,15 +103,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return has(player.getName(), amount);
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return has(String.valueOf(player.getUniqueId()), amount);
-        }
-
-        return false;
+        return has(_playerToString(player), amount);
     }
 
     @Override
@@ -156,15 +113,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean has(OfflinePlayer player, String worldName, double amount) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return has(player.getName(), amount);
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return has(String.valueOf(player.getUniqueId()), amount);
-        }
-
-        return false;
+        return has(_playerToString(player), amount);
     }
 
     @Override
@@ -176,15 +125,7 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return withdrawPlayer(player.getName(), amount);
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return withdrawPlayer(String.valueOf(player.getUniqueId()), amount);
-        }
-
-        return withdrawPlayer(player.getName(), amount);
+        return withdrawPlayer(_playerToString(player), amount);
     }
 
     @Override
@@ -194,35 +135,19 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return withdrawPlayer(player.getName(), amount);
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return withdrawPlayer(String.valueOf(player.getUniqueId()), amount);
-        }
-
-        return withdrawPlayer(player.getName(), amount);
+        return withdrawPlayer(_playerToString(player), amount);
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
         double tokens = getBalance(playerName) + amount;
         EconomyPlus.getDBType().setTokens(playerName, tokens);
-        return new EconomyResponse(amount, tokens,EconomyResponse.ResponseType.SUCCESS, "Done");
+        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return depositPlayer(player.getName(), amount);
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return depositPlayer(String.valueOf(player.getUniqueId()), amount);
-        }
-
-        return depositPlayer(player.getName(), amount);
+        return depositPlayer(_playerToString(player), amount);
     }
 
     @Override
@@ -232,15 +157,7 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return depositPlayer(player.getName(), amount);
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return depositPlayer(String.valueOf(player.getUniqueId()), amount);
-        }
-
-        return depositPlayer(player.getName(), amount);
+        return depositPlayer(_playerToString(player), amount);
     }
 
     @Override
@@ -310,11 +227,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return EconomyPlus.getDBType().createPlayer(player.getName());
-        } else {
-            return EconomyPlus.getDBType().createPlayer(player.getUniqueId().toString());
-        }
+        return EconomyPlus.getDBType().createPlayer(_playerToString(player));
     }
 
     @Override
@@ -324,10 +237,16 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return EconomyPlus.getDBType().createPlayer(player.getName());
-        } else {
-            return EconomyPlus.getDBType().createPlayer(player.getUniqueId().toString());
+        return EconomyPlus.getDBType().createPlayer(_playerToString(player));
+    }
+
+    public String _playerToString(OfflinePlayer player) {
+        switch (EconomyPlus.getStorageMode()) {
+            case NICKNAME:
+                return player.getName();
+            case UUID:
+            default:
+                return player.getUniqueId().toString();
         }
     }
 }
