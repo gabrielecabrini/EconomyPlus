@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.database.mysql;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.sql.*;
@@ -119,23 +118,21 @@ public class MySQL {
 
     // Save the balance to the player's database
     public void setTokens(String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            try (
-                    PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-            ) {
+        try (
+                PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+        ) {
 
-                ps.setString(1, player);
+            ps.setString(1, player);
 
-                ps.setDouble(2, tokens);
+            ps.setDouble(2, tokens);
 
-                ps.setDouble(3, getBank(player));
+            ps.setDouble(3, getBank(player));
 
-                ps.executeUpdate();
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-            }
-        });
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+        }
     }
 
     // Retrieve the bank of the player
@@ -169,23 +166,21 @@ public class MySQL {
 
     // Save the balance to the player's database
     public void setBank(String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            try (
-                    PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-            ) {
+        try (
+                PreparedStatement ps = connection.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+        ) {
 
-                ps.setString(1, player);
+            ps.setString(1, player);
 
-                ps.setDouble(2, getTokens(player));
+            ps.setDouble(2, getTokens(player));
 
-                ps.setDouble(3, tokens);
+            ps.setDouble(3, tokens);
 
-                ps.executeUpdate();
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-            }
-        });
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+        }
     }
 
     // Get the list of the players saved
@@ -227,33 +222,31 @@ public class MySQL {
 
     // Remove a user (UUID/NICKNAME) from the database
     public void changeUser(OfflinePlayer user, String convertTo) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            String playerName = user.getName();
-            String playerUuid = String.valueOf(user.getUniqueId());
+        String playerName = user.getName();
+        String playerUuid = String.valueOf(user.getUniqueId());
 
-            if (convertTo.equals("UUID")) {
-                try {
-                    PreparedStatement ps = connection.prepareStatement(
-                            "UPDATE " + table + " " +
-                                    "SET player = \"" + playerUuid + "\" " +
-                                    "WHERE player = \"" + playerName + "\"");
-                    ps.executeUpdate();
-                } catch (SQLException ex) {
-                    plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-                }
-            } else if (convertTo.equals("NICKNAME")) {
-                try {
-                    PreparedStatement ps = connection.prepareStatement(
-                            "UPDATE " + table + " " +
-                                    "SET player = \"" + playerName + "\" " +
-                                    "WHERE player = \"" + playerUuid + "\"");
-                    ps.executeUpdate();
-                } catch (SQLException ex) {
-                    plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-                }
+        if (convertTo.equals("UUID")) {
+            try {
+                PreparedStatement ps = connection.prepareStatement(
+                        "UPDATE " + table + " " +
+                                "SET player = \"" + playerUuid + "\" " +
+                                "WHERE player = \"" + playerName + "\"");
+                ps.executeUpdate();
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
-        });
+        } else if (convertTo.equals("NICKNAME")) {
+            try {
+                PreparedStatement ps = connection.prepareStatement(
+                        "UPDATE " + table + " " +
+                                "SET player = \"" + playerName + "\" " +
+                                "WHERE player = \"" + playerUuid + "\"");
+                ps.executeUpdate();
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+            }
+        }
     }
 
 }

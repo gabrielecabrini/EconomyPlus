@@ -1,7 +1,5 @@
 package me.itswagpvp.economyplus.database.sqlite;
 
-import org.bukkit.Bukkit;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -91,23 +89,21 @@ public abstract class Database {
 
     // Save the balance to the player's database
     public void setTokens (String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            Connection conn = getSQLiteConnection();
-            try (
-                    PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-            ){
+        Connection conn = getSQLiteConnection();
+        try (
+                PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+        ){
 
-                ps.setString(1, player);
+            ps.setString(1, player);
 
-                ps.setDouble(2, tokens);
+            ps.setDouble(2, tokens);
 
-                ps.setDouble(3, getBank(player));
+            ps.setDouble(3, getBank(player));
 
-                ps.executeUpdate();
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-            }
-        });
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+        }
     }
 
     // Retrieve the bank of the player
@@ -141,23 +137,21 @@ public abstract class Database {
 
     // Save the balance to the player's database
     public void setBank (String player, double tokens) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            Connection conn = getSQLiteConnection();
-            try (
-                    PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-            ){
+        Connection conn = getSQLiteConnection();
+        try (
+                PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+        ){
 
-                ps.setString(1, player);
+            ps.setString(1, player);
 
-                ps.setDouble(2, getTokens(player));
+            ps.setDouble(2, getTokens(player));
 
-                ps.setDouble(3, tokens);
+            ps.setDouble(3, tokens);
 
-                ps.executeUpdate();
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-            }
-        });
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+        }
     }
 
     // Gets the list of the players in the database
@@ -192,16 +186,14 @@ public abstract class Database {
 
     // Remove a user (UUID/NICKNAME) from the database
     public void removeUser(String user) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            Connection conn = getSQLiteConnection();
-            String sql = "DELETE FROM " + table + " where player = '" + user + "'";
-            try {
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.execute();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+        Connection conn = getSQLiteConnection();
+        String sql = "DELETE FROM " + table + " where player = '" + user + "'";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // Create a default player
