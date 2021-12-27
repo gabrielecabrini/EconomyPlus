@@ -1,7 +1,5 @@
 package me.itswagpvp.economyplus.database.yaml;
 
-import org.bukkit.Bukkit;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -36,10 +34,8 @@ public class YMLManager {
     }
 
     public void setTokens(String name, double value) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            plugin.getYMLData().set("Data." + name + ".tokens", value);
-            plugin.saveYMLConfig();
-        });
+        plugin.getYMLData().set("Data." + name + ".tokens", value);
+        plugin.saveYMLConfig();
     }
 
     public double getBank(String name) {
@@ -47,10 +43,8 @@ public class YMLManager {
     }
 
     public void setBank(String name, double value) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            plugin.getYMLData().set("Data." + name + ".bank", value);
-            plugin.saveYMLConfig();
-        });
+        plugin.getYMLData().set("Data." + name + ".bank", value);
+        plugin.saveYMLConfig();
     }
 
     public boolean createPlayer(String player) {
