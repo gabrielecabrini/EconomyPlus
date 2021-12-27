@@ -21,6 +21,9 @@ Language: EN
 # bStats system (https://bstats.org/plugin/bukkit/EconomyPlus/11565)
 Metrics: true
 
+# It will send to console plugin's internal logs
+Debug-Mode: false
+
 # Controls if EconomyPlus need to connect to another plugin for more features
 Hooks:
   # Placeholders
@@ -28,6 +31,7 @@ Hooks:
   HolographicDisplays: true
 
 # You want to enable the updater?
+# You will receive notifications in game and on the console if you have the permission (economyplus.update)
 Updater: true
 
 # Play to the player the sounds in front of success / error
@@ -71,8 +75,8 @@ Baltop:
       - '&8&m-----------------'
   # This is for the hologram! (/ep hologram)
   Hologram:
-    # Refresh rate in seconds!
-    Refresh-Rate: 60
+    # Refresh rate of holograms!
+    Refresh-Rate: 60 # <- In seconds
     Player-Format: "&6%number%) &f%player%: &c%money%$"
     Header:
       - '&8&m-----------------'
@@ -81,6 +85,13 @@ Baltop:
 
 # Select how to storage the data
 Database:
+  # Cache settings for better db performances
+  Cache:
+    # How much frequently the plugin should refresh the cache?
+    # Does not affect player moneys or placeholders
+    # It's only for security purposes
+    # Default: 300 = 5 Minutes
+    Auto-Save: 300 # <- In seconds
   # You can choose one from UUID or NICKNAME
   Mode: "UUID"
   # H2 (database.db)
@@ -107,14 +118,3 @@ Database:
 Bank:
   # You want to use the bank feature?
   Enabled: true
-  # /bank <withdraw/deposit> section
-  GUI:
-    # The button for confirming the gui withdraw / deposit
-    ConfirmButton: GREEN_STAINED_GLASS_PANE
-    Borders: BLACK_STAINED_GLASS_PANE
-    # /bank withdraw
-    Withdraw:
-      # The title of the GUI
-      Title: "&6&lBank &8> &aWithdraw"
-    Deposit:
-      Title: "&6&lBank &8> &cDeposit"

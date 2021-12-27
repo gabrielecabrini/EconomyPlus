@@ -1,79 +1,55 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.misc.StorageMode;
+import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.misc.Selector;
 import org.bukkit.OfflinePlayer;
 
 public class Economy extends VEconomy {
 
-    private final OfflinePlayer p;
+    private final OfflinePlayer player;
     private final double money;
 
-    public Economy(OfflinePlayer p, double money) {
+    public Economy(OfflinePlayer player, double money) {
         super(EconomyPlus.plugin);
-        this.p = p;
+        this.player = player;
         this.money = money;
     }
 
     // Returns the money of a player
     public double getBalance() {
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return super.getBalance(String.valueOf(this.p.getUniqueId()));
-        }
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return super.getBalance(p.getName());
-        }
-        return 0;
+        return super.getBalance(new Selector().playerToString(player));
     }
 
     // Set the money of a player
     public void setBalance() {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            EconomyPlus.getDBType().setTokens(this.p.getName(), this.money);
-        }
-
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            EconomyPlus.getDBType().setTokens(String.valueOf(this.p.getUniqueId()), this.money);
-        }
+        CacheManager.cachedPlayersMoneys.put(new Selector().playerToString(player), money);
+        EconomyPlus.getDBType().setTokens(new Selector().playerToString(player), money);
     }
 
     // Add moneys to a player account
     public void addBalance() {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            super.depositPlayer(this.p.getName(), money);
-        }
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            super.depositPlayer(String.valueOf(this.p.getUniqueId()), money);
-        }
-
+        super.depositPlayer(new Selector().playerToString(player), money);
     }
 
     // Remove moneys from a player's account
     public void takeBalance() {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            super.withdrawPlayer(this.p.getName(), this.money);
-        }
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            super.withdrawPlayer(String.valueOf(this.p.getUniqueId()), this.money);
-        }
-
+        super.withdrawPlayer(new Selector().playerToString(player), money);
     }
 
     // Set player's bank to the constructor value
-    public void setBank () {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) EconomyPlus.getDBType().setBank(this.p.getName(), money);
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) EconomyPlus.getDBType().setBank(String.valueOf(this.p.getUniqueId()), money);
+    public void setBank() {
+        CacheManager.cachedPlayersBanks.put(new Selector().playerToString(player), money);
+        EconomyPlus.getDBType().setBank(new Selector().playerToString(player), money);
     }
 
     // Returns the player bank
-    public double getBank () {
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) return EconomyPlus.getDBType().getBank(this.p.getName());
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) return EconomyPlus.getDBType().getBank(String.valueOf(this.p.getUniqueId()));
-        return 0;
+    public double getBank() {
+        return CacheManager.cachedPlayersBanks.get(new Selector().playerToString(player));
     }
 
     // Controls if the player has enough moneys
     public boolean detractable() {
-        return getBalance() - this.money >= 0;
+        return has(player, money);
     }
 }

@@ -80,7 +80,8 @@ public class Eco implements CommandExecutor {
 
                 if (p.getPlayer() != null) {
                     p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
-                            .replaceAll("%money%", "" + utility.fixMoney(res)));
+                            .replaceAll("%money%", "" + utility.format(res))
+                            .replaceAll("%money_formatted%", "" + utility.fixMoney(res)));
                     Utils.playSuccessSound(p.getPlayer());
                 }
 
@@ -102,8 +103,8 @@ public class Eco implements CommandExecutor {
 
                 if (p.getPlayer() != null) {
                     p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
-                            .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
-                            .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
+                            .replaceAll("%money_formatted%", "" + utility.fixMoney(money.getBalance()))
+                            .replaceAll("%money%", "" + utility.format(money.getBalance())));
                     Utils.playSuccessSound(p.getPlayer());
                 }
 

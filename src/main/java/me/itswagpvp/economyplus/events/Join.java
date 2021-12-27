@@ -1,7 +1,8 @@
 package me.itswagpvp.economyplus.events;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.misc.StorageMode;
+import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Updater;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,16 +16,13 @@ public class Join implements Listener {
 
         new Updater(EconomyPlus.plugin).checkForPlayerUpdate(event.getPlayer());
 
-        String playerName = "";
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            playerName = String.valueOf(event.getPlayer().getUniqueId());
-        } else if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            playerName = event.getPlayer().getName();
-        }
+        String playerName = new Selector().playerToString(event.getPlayer());
 
         if (!EconomyPlus.getDBType().getList().contains(playerName)) {
-            EconomyPlus.getDBType().setTokens(playerName, EconomyPlus.plugin.getConfig().getDouble("Starting-Balance", 0.00D));
-            EconomyPlus.getDBType().setBank(playerName, EconomyPlus.plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00D));
+            double startingBalance = EconomyPlus.plugin.getConfig().getDouble("Starting-Balance", 0.00D);
+            double startingBank = EconomyPlus.plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00D);
+            CacheManager.cachedPlayersMoneys.put(playerName, startingBalance);
+            CacheManager.cachedPlayersBanks.put(playerName, startingBank);
         }
     }
 }

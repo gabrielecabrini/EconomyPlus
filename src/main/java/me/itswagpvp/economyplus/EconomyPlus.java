@@ -3,7 +3,7 @@ package me.itswagpvp.economyplus;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.bank.commands.Bank;
-import me.itswagpvp.economyplus.bank.menu.MenuListener;
+import me.itswagpvp.economyplus.database.cache.CacheManager;
 import me.itswagpvp.economyplus.commands.*;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
@@ -53,17 +53,21 @@ public final class EconomyPlus extends JavaPlugin {
     // Plugin instance
     public static EconomyPlus plugin;
 
+    // Debug mode
+    public static boolean debugMode;
+
     Updater updater;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+        long before = System.currentTimeMillis();
 
         plugin = this;
 
-        long before = System.currentTimeMillis();
-
         saveDefaultConfig();
+
+        if (getConfig().getBoolean("Debug-Mode", false)) debugMode = true;
 
         plugin.getConfig().options().copyDefaults(true);
 
@@ -85,7 +89,7 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("              §aEnabling");
         Bukkit.getConsoleSender().sendMessage("§8");
 
-        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core!");
+        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core:");
 
         loadDatabase();
 
@@ -98,7 +102,7 @@ public final class EconomyPlus extends JavaPlugin {
         loadMessages();
 
         Bukkit.getConsoleSender().sendMessage("§8");
-        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks!");
+        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
 
         loadMetrics();
 
@@ -215,16 +219,21 @@ public final class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cInvalid database type: " + type);
             dbType = DatabaseType.Undefined;
         }
+
+        // Load the cache for the database - Vault API
+        int cachedAccounts = new CacheManager().cacheDatabase();
+        Bukkit.getConsoleSender().sendMessage("     - §fCached §c%accounts% §faccounts..."
+                .replace("%accounts%", "" + cachedAccounts));
+
+        new CacheManager().startAutoSave();
+
     }
 
     private void loadEvents() {
         try {
             Bukkit.getPluginManager().registerEvents(new Join(), this);
-            if (plugin.getConfig().getBoolean("Bank.Enable")) {
-                Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
-            }
         } catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("   - §cError loading the listeners");
+            Bukkit.getConsoleSender().sendMessage("   - §cError loading listeners");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
         }
     }
@@ -248,7 +257,7 @@ public final class EconomyPlus extends JavaPlugin {
             getCommand("eco").setExecutor(new Eco());
             getCommand("eco").setTabCompleter(new TabCompleterLoader());
 
-            if (plugin.getConfig().getBoolean("Bank.Enable")) {
+            if (plugin.getConfig().getBoolean("Bank.Enabled")) {
                 getCommand("bank").setExecutor(new Bank());
                 getCommand("bank").setTabCompleter(new TabCompleterLoader());
             }
@@ -284,7 +293,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         if (useHolographicDisplays) {
 
-            Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §aFound");
+            Bukkit.getConsoleSender().sendMessage("   - HolographicDisplays: §aDone!");
 
             if (new StorageManager().getStorageConfig().getString("Hologram.BalTop.World") != null) {
 
@@ -355,7 +364,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         assert rawMessage != null;
         if (rawMessage.equalsIgnoreCase("none")) {
-            return null;
+            return "";
         }
 
         if (new Utils().supportHexColors()) {

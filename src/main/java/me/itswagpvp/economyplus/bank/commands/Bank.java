@@ -1,10 +1,7 @@
 package me.itswagpvp.economyplus.bank.commands;
 
-import me.itswagpvp.economyplus.bank.menu.Deposit;
-import me.itswagpvp.economyplus.bank.menu.Withdraw;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,22 +40,6 @@ public class Bank implements CommandExecutor {
                     .replaceAll("%money%", "" + utility.format(bank)));
             Utils.playSuccessSound(sender);
             return true;
-        }
-
-        if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("withdraw")) {
-
-                Withdraw.openMenu(p, 54);
-                Utils.playSuccessSound(p);
-
-            }
-
-            if (args[0].equalsIgnoreCase("deposit")) {
-
-                Deposit.openMenu(p, 54);
-                Utils.playSuccessSound(p);
-
-            }
         }
 
         if (args.length == 2) {

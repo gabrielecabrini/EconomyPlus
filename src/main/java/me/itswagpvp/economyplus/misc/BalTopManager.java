@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.cache.CacheManager;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import org.bukkit.Bukkit;
 
@@ -33,8 +34,7 @@ public class BalTopManager {
                 }
             }
 
-
-            double money = EconomyPlus.getDBType().getToken(playerName);
+            double money = CacheManager.cachedPlayersMoneys.get(playerName);
 
             PlayerData pData = new PlayerData(playerName, money);
             getBalTop().add( pData );

@@ -2,6 +2,8 @@ package me.itswagpvp.economyplus.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.entity.Player;
@@ -112,26 +114,22 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
         // %economyplus_money%
         if(identifier.equals("money")){
-            Economy eco = new Economy(player, 0);
-            return new Utils().format(eco.getBalance());
+            return new Utils().format(CacheManager.cachedPlayersMoneys.get(new Selector().playerToString(player)));
         }
 
         //%economyplus_money_formatted%
         if (identifier.equals("money_formatted")) {
-            Economy eco = new Economy(player, 0);
-            return String.valueOf(utilities.fixMoney(eco.getBalance()));
+            return String.valueOf(utilities.fixMoney(CacheManager.cachedPlayersMoneys.get(new Selector().playerToString(player))));
         }
 
         // %economyplus_bank%
         if(identifier.equals("bank")){
-            Economy eco = new Economy(player, 0);
-            return new Utils().format(eco.getBank());
+            return new Utils().format(CacheManager.cachedPlayersBanks.get(new Selector().playerToString(player)));
         }
 
         //%economyplus_money_formatted%
         if (identifier.equals("bank_formatted")) {
-            Economy eco = new Economy(player, 0);
-            return String.valueOf(utilities.fixMoney(eco.getBank()));
+            return String.valueOf(utilities.fixMoney(CacheManager.cachedPlayersBanks.get(new Selector().playerToString(player))));
         }
 
         return "Invalid placeholder!";
