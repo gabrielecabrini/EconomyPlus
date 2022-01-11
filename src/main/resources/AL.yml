@@ -46,6 +46,7 @@ Bank:
   Deposit: "&eKeni depozituar %money%$!"
   Withdraw: "&eKeni tërhequr %money%$ &7nga bankë!"
   Self: "&aKeni %money%$ ne bankë!"
+  Interests: "&aJu keni marrë një interes të %percentage%%!"
   Admin:
     Get: "&a%player% ka %money% ne bankë!"
     Set: "&eKeni vendosur bankën e %player% në %money%"

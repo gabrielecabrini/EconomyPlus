@@ -133,7 +133,7 @@ public class Utils {
         return format(d);
     }
 
-    public String hexColor(String text) {
+    public static String hexColor(String text) {
         Pattern pattern = Pattern.compile("#[a-fA-f0-9]{6}");
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
@@ -143,7 +143,7 @@ public class Utils {
         return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', text);
     }
 
-    public boolean supportHexColors() {
+    public static boolean supportHexColors() {
         return Bukkit.getVersion().contains("16") || Bukkit.getVersion().contains("17");
     }
 

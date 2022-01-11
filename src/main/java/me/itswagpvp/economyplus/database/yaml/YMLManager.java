@@ -1,5 +1,7 @@
 package me.itswagpvp.economyplus.database.yaml;
 
+import org.bukkit.Bukkit;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -22,12 +24,22 @@ public class YMLManager {
     }
 
     public double getTokens (String name)  {
-        return plugin.getYMLData().getDouble("Data." + name + ".tokens");
+        CompletableFuture<Double> getTokens = CompletableFuture.supplyAsync(() -> plugin.getYMLData().getDouble("Data." + name + ".tokens"));
+
+        try {
+            return getTokens.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return 0D;
     }
 
     public void setTokens(String name, double value) {
-        plugin.getYMLData().set("Data." + name + ".tokens", value);
-        plugin.saveYMLConfig();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.getYMLData().set("Data." + name + ".tokens", value);
+            plugin.saveYMLConfig();
+        });
     }
 
     public double getBank(String name) {
@@ -35,8 +47,10 @@ public class YMLManager {
     }
 
     public void setBank(String name, double value) {
-        plugin.getYMLData().set("Data." + name + ".bank", value);
-        plugin.saveYMLConfig();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.getYMLData().set("Data." + name + ".bank", value);
+            plugin.saveYMLConfig();
+        });
     }
 
     public boolean createPlayer(String player) {
@@ -46,7 +60,8 @@ public class YMLManager {
     }
 
     public List<String> getList () {
-        return new ArrayList<>(plugin.getYMLData().getConfigurationSection("Data").getKeys(false));
+        List<String> list = new ArrayList<>(plugin.getYMLData().getConfigurationSection("Data").getKeys(false));
+        return list;
     }
 
 }

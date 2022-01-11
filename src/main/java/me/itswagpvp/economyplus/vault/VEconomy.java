@@ -64,7 +64,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return hasAccount(new Selector().playerToString(player));
+        return hasAccount(Selector.playerToString(player));
     }
 
     @Override
@@ -74,18 +74,18 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return hasAccount(new Selector().playerToString(player));
+        return hasAccount(Selector.playerToString(player));
     }
 
     @Override
     public double getBalance(String playerName) {
-        return CacheManager.cachedPlayersMoneys.get(playerName);
+        return CacheManager.getCache(1).get(playerName);
         //return EconomyPlus.getDBType().getToken(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return getBalance(new Selector().playerToString(player));
+        return getBalance(Selector.playerToString(player));
     }
 
     @Override
@@ -95,7 +95,7 @@ public class VEconomy implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer player, String world) {
-        return getBalance(new Selector().playerToString(player));
+        return getBalance(Selector.playerToString(player));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return has(new Selector().playerToString(player), amount);
+        return has(Selector.playerToString(player), amount);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean has(OfflinePlayer player, String worldName, double amount) {
-        return has(new Selector().playerToString(player), amount);
+        return has(Selector.playerToString(player), amount);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class VEconomy implements Economy {
         double tokens = 0D;
         try {
             tokens = getBalance(playerName) - amount;
-            CacheManager.cachedPlayersMoneys.put(playerName, tokens);
+            CacheManager.getCache(1).put(playerName, tokens);
             EconomyPlus.getDBType().setTokens(playerName, tokens);
         } catch (Exception e) {
             return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Error while removing moneys from the player " + playerName);
@@ -135,7 +135,7 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        return withdrawPlayer(new Selector().playerToString(player), amount);
+        return withdrawPlayer(Selector.playerToString(player), amount);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
-        return withdrawPlayer(new Selector().playerToString(player), amount);
+        return withdrawPlayer(Selector.playerToString(player), amount);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class VEconomy implements Economy {
         double tokens = 0D;
         try {
             tokens = getBalance(playerName) + amount;
-            CacheManager.cachedPlayersMoneys.put(playerName, tokens);
+            CacheManager.getCache(1).put(playerName, tokens);
             EconomyPlus.getDBType().setTokens(playerName, tokens);
         } catch (Exception e) {
             return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Can't add moneys to the player " + playerName);
@@ -164,7 +164,7 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        return depositPlayer(new Selector().playerToString(player), amount);
+        return depositPlayer(Selector.playerToString(player), amount);
     }
 
     @Override
@@ -174,7 +174,7 @@ public class VEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
-        return depositPlayer(new Selector().playerToString(player), amount);
+        return depositPlayer(Selector.playerToString(player), amount);
     }
 
     @Override
@@ -244,7 +244,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
-        return EconomyPlus.getDBType().createPlayer(new Selector().playerToString(player));
+        return EconomyPlus.getDBType().createPlayer(Selector.playerToString(player));
     }
 
     @Override
@@ -254,6 +254,6 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
-        return EconomyPlus.getDBType().createPlayer(new Selector().playerToString(player));
+        return EconomyPlus.getDBType().createPlayer(Selector.playerToString(player));
     }
 }

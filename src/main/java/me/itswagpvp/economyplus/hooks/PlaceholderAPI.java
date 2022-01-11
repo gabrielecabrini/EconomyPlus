@@ -114,22 +114,22 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
         // %economyplus_money%
         if(identifier.equals("money")){
-            return new Utils().format(CacheManager.cachedPlayersMoneys.get(new Selector().playerToString(player)));
+            return new Utils().format(CacheManager.getCache(1).get(Selector.playerToString(player)));
         }
 
         //%economyplus_money_formatted%
         if (identifier.equals("money_formatted")) {
-            return String.valueOf(utilities.fixMoney(CacheManager.cachedPlayersMoneys.get(new Selector().playerToString(player))));
+            return String.valueOf(utilities.fixMoney(CacheManager.getCache(1).get(Selector.playerToString(player))));
         }
 
         // %economyplus_bank%
         if(identifier.equals("bank")){
-            return new Utils().format(CacheManager.cachedPlayersBanks.get(new Selector().playerToString(player)));
+            return new Utils().format(CacheManager.getCache(2).get(Selector.playerToString(player)));
         }
 
         //%economyplus_money_formatted%
         if (identifier.equals("bank_formatted")) {
-            return String.valueOf(utilities.fixMoney(CacheManager.cachedPlayersBanks.get(new Selector().playerToString(player))));
+            return String.valueOf(utilities.fixMoney(CacheManager.getCache(2).get(Selector.playerToString(player))));
         }
 
         return "Invalid placeholder!";

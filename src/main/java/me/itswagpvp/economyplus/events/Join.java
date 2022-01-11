@@ -16,13 +16,13 @@ public class Join implements Listener {
 
         new Updater(EconomyPlus.plugin).checkForPlayerUpdate(event.getPlayer());
 
-        String playerName = new Selector().playerToString(event.getPlayer());
+        String playerName = Selector.playerToString(event.getPlayer());
 
         if (!EconomyPlus.getDBType().getList().contains(playerName)) {
             double startingBalance = EconomyPlus.plugin.getConfig().getDouble("Starting-Balance", 0.00D);
             double startingBank = EconomyPlus.plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00D);
-            CacheManager.cachedPlayersMoneys.put(playerName, startingBalance);
-            CacheManager.cachedPlayersBanks.put(playerName, startingBank);
+            CacheManager.getCache(1).put(playerName, startingBalance);
+            CacheManager.getCache(2).put(playerName, startingBank);
         }
     }
 }

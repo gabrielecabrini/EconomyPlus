@@ -118,3 +118,12 @@ Database:
 Bank:
   # You want to use the bank feature?
   Enabled: true
+  # Interests feature
+  Interests:
+    Enabled: true
+    # How frequently the bank will add the interests?
+    Time: 300 # <- In seconds!
+    # Interest rate (%)
+    Percentage: 10
+    # The player needs to be online to receive the interest?
+    Online-Player: false

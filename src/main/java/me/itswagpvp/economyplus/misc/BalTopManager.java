@@ -34,7 +34,7 @@ public class BalTopManager {
                 }
             }
 
-            double money = CacheManager.cachedPlayersMoneys.get(playerName);
+            double money = CacheManager.getCache(1).get(playerName);
 
             PlayerData pData = new PlayerData(playerName, money);
             getBalTop().add( pData );

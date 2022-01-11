@@ -34,7 +34,7 @@ Pay:
   NoMoney: "&CNu aveți destui bani!"
   Self: "&7Ai trimis &c%money%$ &7to &c%player%&7!"
   Target: "&7Le-ai primit &a%money%$ &7din &a%player%&7!"
-  DisabledPayments: "&cIl giocatore ha disattivato i pagamenti in entrata"
+  DisabledPayments: "&cJucătorul a dezactivat plățile primite"
   Toggle:
     Enabled: "&cAți dezactivat plățile primite"
     Disabled: "&aAți activat plățile primite"
@@ -46,6 +46,7 @@ Bank:
   Deposit: "&eAți depus %money%$!"
   Withdraw: "&eTe-ai retras %money%$!"
   Self: "&aAveți %money%$ în banca !"
+  Interests: "&aAi primit dobanda bancara de %percentage%%!"
   Admin:
     Get: "&a%player% are %money% în banca!"
     Set: "&eAți stabilit %player%'sbanca la %money%"

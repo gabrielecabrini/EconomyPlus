@@ -1,5 +1,7 @@
 package me.itswagpvp.economyplus.database.sqlite;
 
+import org.bukkit.Bukkit;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +25,7 @@ public abstract class Database {
 
     public abstract void load();
 
-    public void initialize() {
+    public void initialize () {
         connection = getSQLiteConnection();
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
@@ -31,7 +33,7 @@ public abstract class Database {
 
             updateTable();
 
-            close(ps, rs);
+            close(ps,rs);
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
@@ -61,53 +63,64 @@ public abstract class Database {
     // Retrieve the balance of the player
     public double getTokens(String player) {
 
-        Connection conn = getSQLiteConnection();
-        try (
-                PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
-                ResultSet rs = ps.executeQuery()
-        ) {
-            while (rs.next()) {
-                if (rs.getString("player").equalsIgnoreCase(player)) {
-                    return rs.getDouble("moneys");
+        CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
+            Connection conn = getSQLiteConnection();
+            try (
+                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    ResultSet rs = ps.executeQuery()
+            ) {
+                while(rs.next()){
+                    if(rs.getString("player").equalsIgnoreCase(player)){
+                        return rs.getDouble("moneys");
+                    }
                 }
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-        }
-        return 0.00;
+            return 0.00;
+        });
 
+        try {
+            return getDouble.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return 0.00;
     }
 
     // Save the balance to the player's database
-    public void setTokens(String player, double tokens) {
-        Connection conn = getSQLiteConnection();
-        try (
-                PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-        ) {
+    public void setTokens (String player, double tokens) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            Connection conn = getSQLiteConnection();
+            try (
+                    PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+            ){
 
-            ps.setString(1, player);
+                ps.setString(1, player);
 
-            ps.setDouble(2, tokens);
+                ps.setDouble(2, tokens);
 
-            ps.setDouble(3, getBank(player));
+                ps.setDouble(3, getBank(player));
 
-            ps.executeUpdate();
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-        }
+                ps.executeUpdate();
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+            }
+        });
     }
 
     // Retrieve the bank of the player
-    public double getBank(String player) {
+    public double getBank (String player) {
 
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
             Connection conn = getSQLiteConnection();
             try (
-                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
+                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
                     ResultSet rs = ps.executeQuery()
             ) {
-                while (rs.next()) {
-                    if (rs.getString("player").equalsIgnoreCase(player)) {
+                while(rs.next()){
+                    if(rs.getString("player").equalsIgnoreCase(player)){
                         return rs.getDouble("bank");
                     }
                 }
@@ -127,26 +140,28 @@ public abstract class Database {
     }
 
     // Save the balance to the player's database
-    public void setBank(String player, double tokens) {
-        Connection conn = getSQLiteConnection();
-        try (
-                PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-        ) {
+    public void setBank (String player, double tokens) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            Connection conn = getSQLiteConnection();
+            try (
+                    PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
+            ){
 
-            ps.setString(1, player);
+                ps.setString(1, player);
 
-            ps.setDouble(2, getTokens(player));
+                ps.setDouble(2, getTokens(player));
 
-            ps.setDouble(3, tokens);
+                ps.setDouble(3, tokens);
 
-            ps.executeUpdate();
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-        }
+                ps.executeUpdate();
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+            }
+        });
     }
 
     // Gets the list of the players in the database
-    public List<String> getList() {
+    public List<String> getList () {
         CompletableFuture<List<String>> getList = CompletableFuture.supplyAsync(() -> {
             Connection conn = getSQLiteConnection();
             List<String> list = new ArrayList<>();
@@ -177,14 +192,16 @@ public abstract class Database {
 
     // Remove a user (UUID/NICKNAME) from the database
     public void removeUser(String user) {
-        Connection conn = getSQLiteConnection();
-        String sql = "DELETE FROM " + table + " where player = '" + user + "'";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            Connection conn = getSQLiteConnection();
+            String sql = "DELETE FROM " + table + " where player = '" + user + "'";
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     // Create a default player
@@ -195,7 +212,7 @@ public abstract class Database {
     }
 
     // Closes the database connection
-    public void close(PreparedStatement ps, ResultSet rs) {
+    public void close(PreparedStatement ps, ResultSet rs){
         try {
             if (ps != null)
                 ps.close();

@@ -3,6 +3,7 @@ package me.itswagpvp.economyplus;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.bank.commands.Bank;
+import me.itswagpvp.economyplus.bank.other.InterestsManager;
 import me.itswagpvp.economyplus.database.cache.CacheManager;
 import me.itswagpvp.economyplus.commands.*;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
@@ -227,6 +228,11 @@ public final class EconomyPlus extends JavaPlugin {
 
         new CacheManager().startAutoSave();
 
+        if (getConfig().getBoolean("Bank.Interests.Enabled", true)) {
+            if (getConfig().getBoolean("Bank.Enabled", true)) {
+                new InterestsManager().startBankInterests();
+            }
+        }
     }
 
     private void loadEvents() {
@@ -367,8 +373,8 @@ public final class EconomyPlus extends JavaPlugin {
             return "";
         }
 
-        if (new Utils().supportHexColors()) {
-            String hexMessage = new Utils().hexColor(rawMessage);
+        if (Utils.supportHexColors()) {
+            String hexMessage = Utils.hexColor(rawMessage);
             return ChatColor.translateAlternateColorCodes('&', hexMessage);
         }
 

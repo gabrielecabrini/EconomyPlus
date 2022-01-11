@@ -4,7 +4,7 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.OfflinePlayer;
 
 public class Selector {
-    public String playerToString(OfflinePlayer player) {
+    public static String playerToString(OfflinePlayer player) {
         switch (EconomyPlus.getStorageMode()) {
             case NICKNAME:
                 return player.getName();

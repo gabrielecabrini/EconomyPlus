@@ -46,6 +46,7 @@ Bank:
   Deposit: "&eYou have deposited %money%$!"
   Withdraw: "&eYou have withdrawn %money%$!"
   Self: "&aYou have %money%$ in your bank!"
+  Interests: "&aYou've received an interest of %percentage%%!"
   Admin:
     Get: "&a%player% has %money% in bank!"
     Set: "&eYou have set %player%'s bank to %money%"
