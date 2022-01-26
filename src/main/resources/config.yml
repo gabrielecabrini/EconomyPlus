@@ -15,7 +15,7 @@ Version: ${project.version}
 
 # What language file do you want to use?
 # You can select from the file in EconomyPlus/messages folder
-# for now is available EN, IT, RO, AL
+# for now is available EN, IT, RO, AL, DE
 Language: EN
 
 # bStats system (https://bstats.org/plugin/bukkit/EconomyPlus/11565)

@@ -141,7 +141,13 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§f-> §cClosing database connection");
 
         try {
+
+            if (dbType == DatabaseType.MySQL) {
+                CacheManager.dbUpdater.stop();
+            }
+
             dbType.close();
+            Bukkit.getScheduler().cancelTasks(plugin);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -228,11 +234,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         new CacheManager().startAutoSave();
 
-        if (getConfig().getBoolean("Bank.Interests.Enabled", true)) {
-            if (getConfig().getBoolean("Bank.Enabled", true)) {
-                new InterestsManager().startBankInterests();
-            }
-        }
+        new InterestsManager().startBankInterests();
     }
 
     private void loadEvents() {

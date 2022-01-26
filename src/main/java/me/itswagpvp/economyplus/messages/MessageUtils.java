@@ -16,6 +16,7 @@ public class MessageUtils {
         new DefaultFiles().createMessagesIT();
         new DefaultFiles().createMessagesRO();
         new DefaultFiles().createMessagesAL();
+        new DefaultFiles().createMessagesDE();
     }
 
     // Save the resource in /messages folder

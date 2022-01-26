@@ -5,5 +5,6 @@ public enum MessagesFile {
     IT,
     AL,
     RO,
+    DE,
     Undefined
 }

@@ -17,6 +17,7 @@ public class DefaultFiles {
     private FileConfiguration messagesConfigIT;
     private FileConfiguration messagesConfigRO;
     private FileConfiguration messagesConfigAL;
+    private FileConfiguration messagesConfigDE;
 
     // File instance for messages
     private final String path = plugin.getDataFolder() + "/messages";
@@ -24,6 +25,7 @@ public class DefaultFiles {
     private final File messagesENFile = new File(path, "EN.yml");
     private final File messagesROFile = new File(path, "RO.yml");
     private final File messagesALFile = new File(path, "AL.yml");
+    private final File messagesDEFile = new File(path, "DE.yml");
 
     /**
      * EN = English
@@ -117,6 +119,29 @@ public class DefaultFiles {
         }
     }
 
+    /**
+     * EN = English
+     */
+
+    public void createMessagesDE() {
+
+        if (!messagesDEFile.exists()) {
+            messagesDEFile.getParentFile().mkdirs();
+            new MessageUtils().saveResource("DE.yml", false);
+        }
+
+        loadMessagesDE();
+    }
+
+    private void loadMessagesDE () {
+        messagesConfigDE = new YamlConfiguration();
+        try {
+            messagesConfigDE.load(messagesDEFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Returns the config selected messages file
 
     public FileConfiguration getMessagesFile() {
@@ -143,6 +168,12 @@ public class DefaultFiles {
 
             loadMessagesAL();
             return this.messagesConfigAL;
+        }
+
+        if (EconomyPlus.messagesType == MessagesFile.DE) {
+
+            loadMessagesAL();
+            return this.messagesConfigDE;
         }
 
         return null;

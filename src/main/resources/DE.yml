@@ -1,0 +1,50 @@
+# Translated by blocki (https://github.com/blockiyt)
+#
+# Nachrichten Datei für EconomyPlus
+#
+# Du kannst die PLatzhalter %money% und %money_formatted% benutzen, wo du %money% sehen kannst.
+#
+# Allgemeine Nachrichten
+NoConsole: "&cDu kannst diesen Befehl nicht in der Konsole ausführen!"
+NoPlayer: "&cDu kannst diesen Befehl nicht aus dem Spiel ausführen!"
+NoPerms: "&cDu hast keine Berechtigung diesen Befehl auszuführen!"
+Reload: "&aPlugin innerhalb %time%ms neu geladen."
+PlayerNotFound: "&cSpieler nicht gefunden."
+
+# Nachrichten für falsche Argumente
+InvalidArgs:
+  Main: "&cFalsche Argumente! /economyplus <debug/help/reload/convert>"
+  Eco: "&cFalsche Argumente! /eco <player> <set/give/take/reset> <money>"
+  Balance: "&cFalsche Argumente! /bal <player>"
+  Pay: "&cFalsche Argumente! /pay <player> <money>"
+  Bank: "&cFalsche Argumente! /bank <withdraw/deposit/admin> <set/get> <player> <moneys>"
+
+# Geldaktualisierung
+Money:
+  Done: "&aErfolg!"
+  Refreshed: "&eDein Geld wurde neu geladen! Du hast jetzt %money%€."
+  Reset: "&cDein Geld wurde auf das Startguthaben zurückgesetzt."
+
+# /bal
+Balance:
+  Self: "&aDu hast %money%€."
+  Others: "&a%player% hat %money%€."
+
+# /pay
+Pay:
+  NoSelf: "&cDu kannst dir nicht selbst Geld senden!"
+  NoMoney: "&CDu hast nicht genügend Geld."
+  Self: "&7Du hast &c%money%€ &7an &c%player%&7 gesendet."
+  Target: "&7Du hast &a%money%€ &7von &a%player%&7 erhalten."
+
+# /bank
+Bank:
+  Disabled: "&cDie Bank ist deaktiviert!"
+  NoMoney: "&cDu hast nicht genügend Geld in der Bank!"
+  Deposit: "&eDu hast %money%€ eingezahlt."
+  Withdraw: "&eDu hast %money%€ ausgezahlt."
+  Self: "&aDu hast %money%€ in der Bank."
+  Admin:
+    Get: "&a%player% hat %money%€ in der Bank."
+    Set: "&eDu hast das Bankguthaben von %player% auf %money%€ gesetzt."
+    Refreshed: "&eDein Bankkonto hat sich auf %money%€ aktualisiert."

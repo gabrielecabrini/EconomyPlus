@@ -16,6 +16,9 @@ public class InterestsManager {
         long time = plugin.getConfig().getLong("Bank.Interests.Time", 300) * 20L;
         int interest = plugin.getConfig().getInt("Bank.Interests.Percentage", 10);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+
+            if (!plugin.getConfig().getBoolean("Bank.Interests.Enabled", false)) return;
+
             for (String player : EconomyPlus.getDBType().getList()) {
 
                 Player p;
