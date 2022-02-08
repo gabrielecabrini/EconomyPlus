@@ -1,10 +1,10 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.mysql.MySQL;
-import me.itswagpvp.economyplus.database.sqlite.SQLite;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
+import me.itswagpvp.economyplus.database.mysql.MySQL;
+import me.itswagpvp.economyplus.database.sqlite.SQLite;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 

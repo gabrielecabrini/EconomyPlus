@@ -4,21 +4,20 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.other.InterestsManager;
-import me.itswagpvp.economyplus.database.cache.CacheManager;
 import me.itswagpvp.economyplus.commands.*;
+import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.misc.DatabaseType;
+import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
 import me.itswagpvp.economyplus.events.Join;
-import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.hooks.PlaceholderLoader;
+import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.messages.DefaultFiles;
 import me.itswagpvp.economyplus.messages.MessageUtils;
 import me.itswagpvp.economyplus.messages.MessagesFile;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.*;
-import me.itswagpvp.economyplus.database.misc.DatabaseType;
-import me.itswagpvp.economyplus.database.misc.StorageMode;
-import me.itswagpvp.economyplus.misc.StorageManager;
 import me.itswagpvp.economyplus.vault.VEconomy;
 import me.itswagpvp.economyplus.vault.VHook;
 import org.bukkit.Bukkit;
@@ -141,11 +140,6 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§f-> §cClosing database connection");
 
         try {
-
-            if (dbType == DatabaseType.MySQL) {
-                CacheManager.dbUpdater.stop();
-            }
-
             dbType.close();
             Bukkit.getScheduler().cancelTasks(plugin);
         } catch (SQLException throwables) {
@@ -228,7 +222,15 @@ public final class EconomyPlus extends JavaPlugin {
         }
 
         // Load the cache for the database - Vault API
-        int cachedAccounts = new CacheManager().cacheDatabase();
+        int cachedAccounts;
+        if (dbType == DatabaseType.MySQL) {
+            cachedAccounts = new CacheManager().cacheOnlineDatabase();
+            long period = plugin.getConfig().getLong("Database.Cache.MySQL", 10) * 20;
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> new CacheManager().cacheOnlineDatabase(), 0, period);
+        } else {
+            cachedAccounts = new CacheManager().cacheLocalDatabase();
+        }
+
         Bukkit.getConsoleSender().sendMessage("     - §fCached §c%accounts% §faccounts..."
                 .replace("%accounts%", "" + cachedAccounts));
 

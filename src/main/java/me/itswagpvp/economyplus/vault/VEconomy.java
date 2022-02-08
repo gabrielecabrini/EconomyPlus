@@ -79,8 +79,10 @@ public class VEconomy implements Economy {
 
     @Override
     public double getBalance(String playerName) {
+        if (CacheManager.getCache(1).get(playerName) == null) {
+            return 0D;
+        }
         return CacheManager.getCache(1).get(playerName);
-        //return EconomyPlus.getDBType().getToken(playerName);
     }
 
     @Override

@@ -2,12 +2,10 @@ package me.itswagpvp.economyplus.bank.other;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.cache.CacheManager;
-import me.itswagpvp.economyplus.database.misc.StorageMode;
+import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
@@ -15,18 +13,14 @@ public class InterestsManager {
     public void startBankInterests() {
         long time = plugin.getConfig().getLong("Bank.Interests.Time", 300) * 20L;
         int interest = plugin.getConfig().getInt("Bank.Interests.Percentage", 10);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 
-            if (!plugin.getConfig().getBoolean("Bank.Interests.Enabled", false)) return;
+        if (!plugin.getConfig().getBoolean("Bank.Interests.Enabled", false)) return;
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 
             for (String player : EconomyPlus.getDBType().getList()) {
 
-                Player p;
-                if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-                    p = Bukkit.getPlayer(UUID.fromString(player));
-                } else {
-                    p = Bukkit.getPlayer(player);
-                }
+                Player p = Selector.stringToPlayer(player);
 
                 if (plugin.getConfig().getBoolean("Bank.Interests.Online-Player", false)) {
                     if (p == null) {

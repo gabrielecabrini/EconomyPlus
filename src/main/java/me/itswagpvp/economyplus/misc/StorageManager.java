@@ -3,9 +3,10 @@ package me.itswagpvp.economyplus.misc;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
@@ -36,8 +37,7 @@ public class StorageManager {
             createStorageConfig();
         } else {
 
-            //plugin.getDataFolder().getParentFile().mkdirs();
-            plugin.saveResource("storage.yml", false);
+            saveResource("storage.yml", false);
 
             storageFile = new File(plugin.getDataFolder(), "storage.yml");
         }
@@ -52,6 +52,41 @@ public class StorageManager {
             storageConfig.load(storageFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void saveResource(@NotNull String resourcePath, boolean replace) {
+        if (resourcePath.equals("")) {
+            throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+        }
+
+        resourcePath = resourcePath.replace('\\', '/');
+        InputStream in = plugin.getResource(resourcePath);
+        if (in == null) {
+            throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found!");
+        }
+
+        File outFile = new File(plugin.getDataFolder(), resourcePath);
+        int lastIndex = resourcePath.lastIndexOf('/');
+        File outDir = new File(plugin.getDataFolder(), resourcePath.substring(0, Math.max(lastIndex, 0)));
+
+        if (!outDir.exists()) {
+            outDir.mkdirs();
+        }
+
+        try {
+            if (!outFile.exists() || replace) {
+                OutputStream out = new FileOutputStream(outFile);
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+            }
+        } catch (IOException ex) {
+            System.out.println("Could not save " + outFile.getName() + " to " + outFile);
         }
     }
 }

@@ -5,7 +5,6 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.cache.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Utils;
-import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

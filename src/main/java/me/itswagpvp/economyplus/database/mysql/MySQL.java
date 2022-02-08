@@ -21,8 +21,9 @@ public class MySQL {
     final String database = plugin.getConfig().getString("Database.Database");
     final String table = plugin.getConfig().getString("Database.Table");
     final boolean autoReconnect = plugin.getConfig().getBoolean("Database.AutoReconnect");
+    final boolean useSSL = plugin.getConfig().getBoolean("Database.useSSL", false);
 
-    final String url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=" + autoReconnect + "&useSSL=false&characterEncoding=utf8";
+    final String url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=" + autoReconnect + "&useSSL=" + useSSL + "&characterEncoding=utf8";
 
     static Connection connection;
 

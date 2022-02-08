@@ -1,9 +1,9 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.messages.MessageUtils;
 import me.itswagpvp.economyplus.messages.MessagesFile;
-import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;

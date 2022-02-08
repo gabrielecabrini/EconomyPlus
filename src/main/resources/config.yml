@@ -92,6 +92,9 @@ Database:
     # It's only for security purposes
     # Default: 300 = 5 Minutes
     Auto-Save: 300 # <- In seconds
+    # How many frequently the cache needs to be
+    # refreshed with the MySQL db?
+    MySQL: 10 # <- In seconds
   # You can choose one from UUID or NICKNAME
   Mode: "UUID"
   # H2 (database.db)
@@ -113,6 +116,9 @@ Database:
   Table: economy
   # If the plugin loses connection it will auto-reconnect to the database
   AutoReconnect: true
+  # Using an SSL certificate?
+  useSSL: false
+
 
 # This is the section where you can customize the /bank command
 Bank:

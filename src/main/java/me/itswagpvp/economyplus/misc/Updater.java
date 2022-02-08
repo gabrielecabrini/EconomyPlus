@@ -99,7 +99,7 @@ public class Updater implements Listener {
     public void checkForPlayerUpdate(Player e) {
         if (!enabled || alreadyDownloaded) return;
         if (ready && updateAvailable && plugin.getConfig().getBoolean("Updater", true)) {
-            if (!e.getPlayer().hasPermission("economyplus.update")) return;
+            if (!e.getPlayer().hasPermission("economyplus.update") || e.getPlayer().isOp()) return;
             e.getPlayer().sendMessage("" +
                     "§7An update is available for §dEconomyPlus§7! " +
                     "\n§7You can download it with §5/ep update");
