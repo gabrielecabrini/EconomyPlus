@@ -34,8 +34,8 @@ import java.sql.SQLException;
 public final class EconomyPlus extends JavaPlugin {
 
     // Database
-    private static DatabaseType dbType = DatabaseType.Undefined;
-    private static StorageMode storageMode = StorageMode.Undefined;
+    private static DatabaseType dbType = DatabaseType.UNDEFINED;
+    private static StorageMode storageMode = StorageMode.UNDEFINED;
     // YAML Database (data.yml)
     private File ymlFile;
     private FileConfiguration ymlConfig;
@@ -118,7 +118,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
 
-        if (dbType == DatabaseType.Undefined) {
+        if (dbType == DatabaseType.UNDEFINED) {
             Bukkit.getConsoleSender().sendMessage("§c[EconomyPlus] Unable to start the plugin without a valid database option!");
             getServer().getPluginManager().disablePlugin(this);
         }
@@ -136,6 +136,9 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§f-> §cUnhooking from Vault");
 
         hook.offHook();
+
+        Bukkit.getConsoleSender().sendMessage("§f-> §cStopping threads...");
+        ThreadsUtils.stopAllThreads();
 
         Bukkit.getConsoleSender().sendMessage("§f-> §cClosing database connection");
 
@@ -218,23 +221,20 @@ public final class EconomyPlus extends JavaPlugin {
         } else {
             String type = plugin.getConfig().getString("Database.Type");
             Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cInvalid database type: " + type);
-            dbType = DatabaseType.Undefined;
+            dbType = DatabaseType.UNDEFINED;
         }
 
         // Load the cache for the database - Vault API
-        int cachedAccounts;
         if (dbType == DatabaseType.MySQL) {
-            cachedAccounts = new CacheManager().cacheOnlineDatabase();
+            new CacheManager().cacheOnlineDatabase();
             long period = plugin.getConfig().getLong("Database.Cache.MySQL", 10) * 20;
             Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> new CacheManager().cacheOnlineDatabase(), 0, period);
         } else {
-            cachedAccounts = new CacheManager().cacheLocalDatabase();
+            new CacheManager().cacheLocalDatabase();
+            new CacheManager().startAutoSave();
         }
 
-        Bukkit.getConsoleSender().sendMessage("     - §fCached §c%accounts% §faccounts..."
-                .replace("%accounts%", "" + cachedAccounts));
-
-        new CacheManager().startAutoSave();
+        Bukkit.getConsoleSender().sendMessage("     - §fCaching accounts...");
 
         new InterestsManager().startBankInterests();
     }

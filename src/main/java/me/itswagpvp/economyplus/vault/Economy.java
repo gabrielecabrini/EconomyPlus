@@ -45,6 +45,9 @@ public class Economy extends VEconomy {
 
     // Returns the player bank
     public double getBank() {
+        if (CacheManager.getCache(2).get(Selector.playerToString(player)) == null) {
+            return 0D;
+        }
         return CacheManager.getCache(2).get(Selector.playerToString(player));
     }
 

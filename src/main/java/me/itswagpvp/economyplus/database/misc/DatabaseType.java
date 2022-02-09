@@ -130,7 +130,7 @@ public enum DatabaseType {
         @Override
         public void close() {}
     },
-    Undefined{
+    UNDEFINED {
         @Override
         public boolean contains(String playerName) {
             return false;

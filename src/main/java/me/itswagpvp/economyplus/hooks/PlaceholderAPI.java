@@ -113,21 +113,33 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
         // %economyplus_money%
         if(identifier.equals("money")){
+            if (CacheManager.getCache(1).get(Selector.playerToString(player)) == null) {
+                return new Utils().format(0D);
+            }
             return new Utils().format(CacheManager.getCache(1).get(Selector.playerToString(player)));
         }
 
         //%economyplus_money_formatted%
         if (identifier.equals("money_formatted")) {
+            if (CacheManager.getCache(1).get(Selector.playerToString(player)) == null) {
+                return new Utils().fixMoney(0D);
+            }
             return String.valueOf(utilities.fixMoney(CacheManager.getCache(1).get(Selector.playerToString(player))));
         }
 
         // %economyplus_bank%
         if(identifier.equals("bank")){
+            if (CacheManager.getCache(2).get(Selector.playerToString(player)) == null) {
+                return new Utils().format(0D);
+            }
             return new Utils().format(CacheManager.getCache(2).get(Selector.playerToString(player)));
         }
 
         //%economyplus_money_formatted%
         if (identifier.equals("bank_formatted")) {
+            if (CacheManager.getCache(2).get(Selector.playerToString(player)) == null) {
+                return new Utils().fixMoney(0D);
+            }
             return String.valueOf(utilities.fixMoney(CacheManager.getCache(2).get(Selector.playerToString(player))));
         }
 

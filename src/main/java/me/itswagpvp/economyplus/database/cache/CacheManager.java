@@ -4,21 +4,21 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import org.bukkit.Bukkit;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class CacheManager {
 
-    private static final ConcurrentHashMap<String, Double> cachedPlayersMoneys = new ConcurrentHashMap<>();
-    private static final ConcurrentHashMap<String, Double> cachedPlayersBanks = new ConcurrentHashMap<>();
+    private static final HashMap<String, Double> cachedPlayersMoneys = new HashMap<>();
+    private static final HashMap<String, Double> cachedPlayersBanks = new HashMap<>();
 
     /**
      * @param selector (1 = moneys, 2 = bank)
      * @return HashMap for moneys and banks
+     * @throws IllegalArgumentException when the selector is different from 1 or 2
      **/
-    public static ConcurrentHashMap<String, Double> getCache(int selector) {
+    public static HashMap<String, Double> getCache(int selector) {
         if (selector == 1) {
             return cachedPlayersMoneys;
         } else if (selector == 2) {
@@ -28,45 +28,39 @@ public class CacheManager {
         }
     }
 
-    public int cacheLocalDatabase() {
-        AtomicInteger i = new AtomicInteger();
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+    // Stores the db (YAML, H2) into the cache
+    public void cacheLocalDatabase() {
+        Thread t = new Thread(() -> {
+            Thread.currentThread().setName("cacheLocalDatabase-economyplus");
             for (String player : EconomyPlus.getDBType().getList()) {
                 cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
-                i.getAndIncrement();
-            }
-
-            for (String player : EconomyPlus.getDBType().getList()) {
                 cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
             }
         });
-        return i.get();
+        t.start();
     }
 
-    public int cacheOnlineDatabase() {
-        AtomicInteger i = new AtomicInteger();
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+    // Stores the db (MySQL) into the cache
+    public void cacheOnlineDatabase() {
+        Thread t = new Thread(() -> {
+            Thread.currentThread().setName("cacheOnlineDatabase-economyplus");
             for (String player : EconomyPlus.getDBType().getList()) {
                 cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
-                i.getAndIncrement();
-            }
-
-            for (String player : EconomyPlus.getDBType().getList()) {
                 cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
             }
         });
-        return i.get();
+        t.start();
     }
 
+    // Started only with H2 and YAML
     public void startAutoSave() {
         long refreshRate = plugin.getConfig().getLong("Database.Cache.Auto-Save", 300) * 20L;
 
         if (EconomyPlus.getDBType() != DatabaseType.MySQL) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-                int savedAccounts = cacheLocalDatabase();
                 if (EconomyPlus.debugMode) Bukkit.getConsoleSender().sendMessage(
-                        "[EconomyPlus-Debug] Cached §6%accounts% §7accounts..."
-                                .replace("%accounts%", "" + savedAccounts));
+                        "[EconomyPlus-Debug] Caching accounts...");
+                cacheLocalDatabase();
             }, 0L, refreshRate);
         }
     }
