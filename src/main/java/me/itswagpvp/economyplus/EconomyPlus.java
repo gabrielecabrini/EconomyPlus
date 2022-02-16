@@ -19,12 +19,12 @@ import me.itswagpvp.economyplus.messages.MessagesFile;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.*;
 import me.itswagpvp.economyplus.vault.VEconomy;
-import me.itswagpvp.economyplus.vault.VHook;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -36,16 +36,13 @@ public final class EconomyPlus extends JavaPlugin {
     // Database
     private static DatabaseType dbType = DatabaseType.UNDEFINED;
     private static StorageMode storageMode = StorageMode.UNDEFINED;
+
     // YAML Database (data.yml)
     private File ymlFile;
     private FileConfiguration ymlConfig;
 
     // Messages
-    public static MessagesFile messagesType = MessagesFile.Undefined;
-
-    // Economy
-    public static VEconomy veco;
-    public static VHook hook;
+    public static MessagesFile messagesType = MessagesFile.UNDEFINED;
 
     // BalTop
     public static BalTopManager balTopManager;
@@ -80,7 +77,7 @@ public final class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("§8");
             Bukkit.getConsoleSender().sendMessage("§f-> §cCan't find Vault!");
             Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
-            getServer().getPluginManager().disablePlugin(this);
+            getServer().getPluginManager().disablePlugin(plugin);
             return;
         }
 
@@ -120,7 +117,7 @@ public final class EconomyPlus extends JavaPlugin {
 
         if (dbType == DatabaseType.UNDEFINED) {
             Bukkit.getConsoleSender().sendMessage("§c[EconomyPlus] Unable to start the plugin without a valid database option!");
-            getServer().getPluginManager().disablePlugin(this);
+            getServer().getPluginManager().disablePlugin(plugin);
         }
 
     }
@@ -133,10 +130,6 @@ public final class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
         Bukkit.getConsoleSender().sendMessage("              §cDisabling");
         Bukkit.getConsoleSender().sendMessage("");
-        Bukkit.getConsoleSender().sendMessage("§f-> §cUnhooking from Vault");
-
-        hook.offHook();
-
         Bukkit.getConsoleSender().sendMessage("§f-> §cStopping threads...");
         ThreadsUtils.stopAllThreads();
 
@@ -156,17 +149,16 @@ public final class EconomyPlus extends JavaPlugin {
     // Hook into VaultEconomy
     private void loadEconomy() {
         try {
-            veco = new VEconomy(plugin);
-            hook = new VHook();
-
-            hook.onHook();
-        } catch (Exception e) {
+            Class.forName("net.milkbowl.vault.economy.Economy");
+            getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, new VEconomy(plugin), plugin, ServicePriority.Normal);
+        } catch (ClassNotFoundException e) {
             Bukkit.getConsoleSender().sendMessage("   - §fVault: §CError");
-            e.printStackTrace();
+            Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
         }
 
         Bukkit.getConsoleSender().sendMessage("   - §fVault: §6Hooked");
+
     }
 
     private void loadDatabase() {

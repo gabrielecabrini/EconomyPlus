@@ -73,7 +73,7 @@ public class Updater implements Listener {
                     Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You have §cv" + plugin.getDescription().getVersion());
                     Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Download it with /ep update!");
                 } else if (!ready) {
-                    Bukkit.getLogger().info("[EconomyPlus] You are up to date! §d(v" + latestVersion + ")");
+                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + latestVersion + ")");
                 }
 
                 ready = true;
