@@ -34,7 +34,12 @@ public class BalTopManager {
                 }
             }
 
-            double money = CacheManager.getCache(1).get(playerName);
+            double money;
+            if (CacheManager.getCache(1).get(playerName) == null) {
+                money = 0;
+            } else {
+                money = CacheManager.getCache(1).get(playerName);
+            }
 
             PlayerData pData = new PlayerData(playerName, money);
             getBalTop().add( pData );

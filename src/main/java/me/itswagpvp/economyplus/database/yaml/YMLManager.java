@@ -59,6 +59,13 @@ public class YMLManager {
         return true;
     }
 
+    public void removePlayer(String player) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+           plugin.getYMLData().set("Data." + player, null);
+           plugin.saveYMLConfig();
+        });
+    }
+
     public List<String> getList () {
         List<String> list = new ArrayList<>(plugin.getYMLData().getConfigurationSection("Data").getKeys(false));
         return list;

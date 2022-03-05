@@ -49,7 +49,9 @@ public class Main implements CommandExecutor {
 
                 if (!(sender instanceof ConsoleCommandSender)) {
 
-                    sender.sendMessage(plugin.getMessage("NoPlayer"));
+                    if (plugin.isMessageEnabled("NoPlayer")) {
+                        sender.sendMessage(plugin.getMessage("NoPlayer"));
+                    }
 
                     Utils.playErrorSound(sender);
                     return true;
@@ -139,8 +141,10 @@ public class Main implements CommandExecutor {
             if (args[0].equalsIgnoreCase("convert")) {
 
                 if (!(sender instanceof ConsoleCommandSender)) {
-                    sender.sendMessage(plugin.getMessage("NoPlayer"));
-                    Utils.playErrorSound(sender);
+                    if (plugin.isMessageEnabled("NoPlayer")) {
+                        sender.sendMessage(plugin.getMessage("NoPlayer"));
+                        Utils.playErrorSound(sender);
+                    }
                     return true;
                 }
 
@@ -158,8 +162,10 @@ public class Main implements CommandExecutor {
             if (args[0].equalsIgnoreCase("exclude")) {
 
                 if (!(sender instanceof ConsoleCommandSender)) {
-                    sender.sendMessage(plugin.getMessage("NoPlayer"));
-                    Utils.playErrorSound(sender);
+                    if (plugin.isMessageEnabled("NoPlayer")) {
+                        sender.sendMessage(plugin.getMessage("NoPlayer"));
+                        Utils.playErrorSound(sender);
+                    }
                     return true;
                 }
 

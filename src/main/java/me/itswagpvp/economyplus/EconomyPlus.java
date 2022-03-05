@@ -30,6 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public final class EconomyPlus extends JavaPlugin {
 
@@ -148,6 +149,7 @@ public final class EconomyPlus extends JavaPlugin {
 
     // Hook into VaultEconomy
     private void loadEconomy() {
+
         try {
             Class.forName("net.milkbowl.vault.economy.Economy");
             getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, new VEconomy(plugin), plugin, ServicePriority.Normal);
@@ -220,7 +222,7 @@ public final class EconomyPlus extends JavaPlugin {
         if (dbType == DatabaseType.MySQL) {
             new CacheManager().cacheOnlineDatabase();
             long period = plugin.getConfig().getLong("Database.Cache.MySQL", 10) * 20;
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> new CacheManager().cacheOnlineDatabase(), 0, period);
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> new CacheManager().cacheOnlineDatabase(), 120, period);
         } else {
             new CacheManager().cacheLocalDatabase();
             new CacheManager().startAutoSave();
@@ -299,16 +301,8 @@ public final class EconomyPlus extends JavaPlugin {
 
             if (new StorageManager().getStorageConfig().getString("Hologram.BalTop.World") != null) {
 
-                long refreshRate = plugin.getConfig().getLong("Baltop.Hologram.Refresh-Rate", 60) * 20L;
-
-                Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-
-                    for (Hologram hologram : HologramsAPI.getHolograms(plugin)) {
-                        hologram.delete();
-                    }
-
-                    new HolographicDisplays().refreshHologram();
-                }, 0L, refreshRate);
+                new HolographicDisplays().createHologram();
+                
             }
 
         } else {
@@ -365,6 +359,8 @@ public final class EconomyPlus extends JavaPlugin {
         String rawMessage = new DefaultFiles().getMessagesFile().getString(path);
 
         assert rawMessage != null;
+
+        //TODO Keep this only for implementing #isMessageEnabled
         if (rawMessage.equalsIgnoreCase("none")) {
             return "";
         }
@@ -375,6 +371,14 @@ public final class EconomyPlus extends JavaPlugin {
         }
 
         return ChatColor.translateAlternateColorCodes('&', rawMessage);
+    }
+
+    public boolean isMessageEnabled(String path) {
+        if (!new DefaultFiles().getMessagesFile().isString(path)) {
+            return false;
+        }
+
+        return !new DefaultFiles().getMessagesFile().getString(path).equalsIgnoreCase("none");
     }
 
     // Returns data.yml if DatabaseType is YAML

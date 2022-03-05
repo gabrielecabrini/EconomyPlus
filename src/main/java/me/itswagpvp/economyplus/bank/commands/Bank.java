@@ -1,8 +1,11 @@
 package me.itswagpvp.economyplus.bank.commands;
 
+import me.itswagpvp.economyplus.database.misc.Selector;
+import me.itswagpvp.economyplus.hooks.events.PlayerBankChangeEvent;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

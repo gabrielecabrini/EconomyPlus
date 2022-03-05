@@ -38,7 +38,7 @@ public class Updater implements Listener {
         currentVersion = plugin.getDescription().getVersion();
 
         check();
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::check, 5 * 60 * 20, (long) 3600 * 20); // Checks for an update every hour
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this::check, 5 * 60 * 20,3600 * 20); // Checks for an update every hour
     }
 
     public void check() {

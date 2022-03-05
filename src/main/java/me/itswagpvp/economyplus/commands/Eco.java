@@ -44,14 +44,18 @@ public class Eco implements CommandExecutor {
 
                 money.setBalance();
 
-                sender.sendMessage(plugin.getMessage("Money.Done"));
+                if (plugin.isMessageEnabled("Money.Done")) {
+                    sender.sendMessage(plugin.getMessage("Money.Done"));
+                }
 
                 if (p.getPlayer() != null)  {
-                    p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
-                            .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
-                            .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
+                    if (plugin.isMessageEnabled("Money.Refreshed")) {
+                        p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
+                                .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
+                                .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
 
-                    Utils.playSuccessSound(p.getPlayer());
+                        Utils.playSuccessSound(p.getPlayer());
+                    }
                 }
 
                 Utils.playSuccessSound(sender);
@@ -76,13 +80,17 @@ public class Eco implements CommandExecutor {
                     money.takeBalance();
                 }
 
-                sender.sendMessage(plugin.getMessage("Money.Done"));
+                if (plugin.isMessageEnabled("Money.Done")) {
+                    sender.sendMessage(plugin.getMessage("Money.Done"));
+                }
 
                 if (p.getPlayer() != null) {
-                    p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
-                            .replaceAll("%money%", "" + utility.format(res))
-                            .replaceAll("%money_formatted%", "" + utility.fixMoney(res)));
-                    Utils.playSuccessSound(p.getPlayer());
+                    if (plugin.isMessageEnabled("Money.Refreshed")) {
+                        p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
+                                .replaceAll("%money%", "" + utility.format(res))
+                                .replaceAll("%money_formatted%", "" + utility.fixMoney(res)));
+                        Utils.playSuccessSound(p.getPlayer());
+                    }
                 }
 
                 Utils.playSuccessSound(sender);
@@ -99,13 +107,17 @@ public class Eco implements CommandExecutor {
 
                 money.addBalance();
 
-                sender.sendMessage(plugin.getMessage("Money.Done"));
+                if (plugin.isMessageEnabled("Money.Done")) {
+                    sender.sendMessage(plugin.getMessage("Money.Done"));
+                }
 
                 if (p.getPlayer() != null) {
-                    p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
-                            .replaceAll("%money_formatted%", "" + utility.fixMoney(money.getBalance()))
-                            .replaceAll("%money%", "" + utility.format(money.getBalance())));
-                    Utils.playSuccessSound(p.getPlayer());
+                    if (plugin.isMessageEnabled("Money.Refreshed")) {
+                        p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
+                                .replaceAll("%money_formatted%", "" + utility.fixMoney(money.getBalance()))
+                                .replaceAll("%money%", "" + utility.format(money.getBalance())));
+                        Utils.playSuccessSound(p.getPlayer());
+                    }
                 }
 
                 Utils.playSuccessSound(sender);
@@ -131,7 +143,9 @@ public class Eco implements CommandExecutor {
                 Economy eco = new Economy(p, plugin.getConfig().getDouble("Starting-Balance"));
                 eco.setBalance();
 
-                sender.sendMessage(plugin.getMessage("Money.Done"));
+                if (plugin.isMessageEnabled("Money.Done")) {
+                    sender.sendMessage(plugin.getMessage("Money.Done"));
+                }
 
                 if (p.getPlayer() != null) {
                     p.getPlayer().sendMessage(plugin.getMessage("Money.Reset"));

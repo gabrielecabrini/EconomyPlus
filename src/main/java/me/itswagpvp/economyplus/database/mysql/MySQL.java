@@ -227,6 +227,19 @@ public class MySQL {
     }
 
     // Remove a user (UUID/NICKNAME) from the database
+    public void removeUser(String user) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            String sql = "DELETE FROM " + table + " where player = '" + user + "'";
+            try {
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ps.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    // Convert a user (UUID/NICKNAME) from the database
     public void changeUser(OfflinePlayer user, String convertTo) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 

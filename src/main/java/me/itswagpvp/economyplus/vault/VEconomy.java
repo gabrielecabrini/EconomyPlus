@@ -8,6 +8,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -126,8 +127,12 @@ public class VEconomy implements Economy {
         double tokens = 0D;
         try {
             tokens = getBalance(playerName) - amount;
-            CacheManager.getCache(1).put(playerName, tokens);
-            EconomyPlus.getDBType().setTokens(playerName, tokens);
+            if (tokens >= 0) {
+                CacheManager.getCache(1).put(playerName, tokens);
+                EconomyPlus.getDBType().setTokens(playerName, tokens);
+            } else {
+                return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Not enough moneys!");
+            }
         } catch (Exception e) {
             return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Error while removing moneys from the player " + playerName);
         }
@@ -236,7 +241,7 @@ public class VEconomy implements Economy {
 
     @Override
     public List<String> getBanks() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
