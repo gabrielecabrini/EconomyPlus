@@ -30,7 +30,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 public final class EconomyPlus extends JavaPlugin {
 

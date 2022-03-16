@@ -61,6 +61,7 @@ public class SQLite extends Database {
             s.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            return;
         }
         initialize();
     }

@@ -24,7 +24,7 @@ public class InterestsManager {
                     Player p = Selector.stringToPlayer(player);
 
                     if (plugin.getConfig().getBoolean("Bank.Interests.Online-Player", false)) {
-                        if (p == null) {
+                        if (p == null || !p.isOnline()) {
                             continue;
                         }
                     }
