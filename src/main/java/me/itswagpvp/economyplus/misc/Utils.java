@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,11 +103,23 @@ public class Utils {
     }
 
     public String format(double d) {
-        if (plugin.getConfig().getBoolean("Decimals")) {
-            return String.format("%.2f", d);
+
+        double value;
+
+        if (plugin.getConfig().getBoolean("Decimals")) value = Double.parseDouble(String.format("%.2f", d));
+        else value = Double.parseDouble(String.format("%.0f", d));
+
+        if (plugin.getConfig().getBoolean("Baltop.Pattern.Enabled", false)) {
+
+            String pattern = plugin.getConfig().getString("Baltop.Pattern.Value", "###.###,##");
+
+            DecimalFormat decimalFormat = new DecimalFormat();
+            decimalFormat.applyPattern(pattern);
+            return decimalFormat.format(value);
         } else {
-            return String.format("%.0f", d);
+            return String.valueOf(value);
         }
+
     }
 
     public String fixMoney(double d) {

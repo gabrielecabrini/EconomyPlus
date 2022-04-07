@@ -23,6 +23,9 @@ public class Join implements Listener {
             double startingBank = EconomyPlus.plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00D);
             CacheManager.getCache(1).put(playerName, startingBalance);
             CacheManager.getCache(2).put(playerName, startingBank);
+            //
+            EconomyPlus.getDBType().setTokens(playerName, startingBalance);
+            EconomyPlus.getDBType().setBank(playerName, startingBank);
         }
     }
 }

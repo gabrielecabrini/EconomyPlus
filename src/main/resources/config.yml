@@ -65,6 +65,10 @@ Decimals: true
 
 # Baltop configuration
 Baltop:
+  # This will work only with %money% and not with %money_formatted%
+  Pattern:
+    Enabled: false
+    Value: "###.###,##"
   Chat:
     # Like 1) _ItsWagPvP: 100$
     Player-Format: "&6%number%) &f%player%: &c%money%$"
