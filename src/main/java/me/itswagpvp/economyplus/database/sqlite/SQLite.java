@@ -19,6 +19,7 @@ public class SQLite extends Database {
     }
 
     // SQL Query
+    // Prepare the table for the database
     public String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS data (" +
             "`player` varchar(32) NOT NULL," +
             "`moneys` double(32) NOT NULL," +
@@ -37,12 +38,9 @@ public class SQLite extends Database {
             }
         }
         try {
-            if(connection!=null&&!connection.isClosed()){
-                return connection;
-            }
+            if(connection!=null && !connection.isClosed()) return connection;
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
-            return connection;
+            return DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE,"SQLite exception on initialize", ex);
         } catch (ClassNotFoundException ex) {
