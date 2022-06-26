@@ -20,20 +20,20 @@ InvalidArgs:
 # Soldi aggiornati
 Money:
   Done: "&aAzione eseguita con successo!"
-  Refreshed: "&eI tuoi soldi sono stati aggiornati! Ora hai %money%$!"
+  Refreshed: "&eI tuoi soldi sono stati aggiornati! Ora hai $%money%!"
   Reset: "&cI tuoi soldi sono stati riportati al bilancio iniziale!"
 
 # /bal
 Balance:
-  Self: "&aHai %money%$!"
-  Others: "&a%player% ha %money%$!"
+  Self: "&aHai $%money%!"
+  Others: "&a%player% ha $%money%!"
 
 # /pay
 Pay:
   NoSelf: "&cNon puoi pagarti da solo!"
   NoMoney: "&CNon hai abbastanza soldi!"
-  Self: "&7Hai mandato &c%money%$ &7a &c%player%&7!"
-  Target: "&7Hai ricevuto &a%money%$ &7da &a%player%&7!"
+  Self: "&7Hai mandato &c$%money% &7a &c%player%&7!"
+  Target: "&7Hai ricevuto &a$%money% &7da &a%player%&7!"
   DisabledPayments: "&cIl giocatore ha disattivato i pagamenti in entrata"
   Toggle:
     Enabled: "&cHai disattivato i pagamenti in entrata!"
@@ -43,11 +43,11 @@ Pay:
 Bank:
   Disabled: "&cLa banca è disattivata!"
   NoMoney: "&cNon hai abbastanza soldi in banca!"
-  Deposit: "&eHai depositato %money%$!"
-  Withdraw: "&eHai prelevato %money%$!"
-  Self: "&aHai %money%$ in banca!"
+  Deposit: "&eHai depositato $%money%!"
+  Withdraw: "&eHai prelevato $%money%!"
+  Self: "&aHai $%money% in banca!"
   Interests: "&aHai ricevuto gli interessi della banca del %percentage%%!"
   Admin:
-    Get: "&a%player% ha %money% in banca!"
-    Set: "&eHai impostato la banca di %player% a %money%"
-    Refreshed: "&eLa tua banca ora ha %money%$ soldi"
+    Get: "&a%player% ha$%money% in banca!"
+    Set: "&eHai impostato la banca di %player% a $%money%"
+    Refreshed: "&eLa tua banca ora ha $%money% soldi"
