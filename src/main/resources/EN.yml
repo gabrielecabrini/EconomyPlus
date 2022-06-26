@@ -20,20 +20,20 @@ InvalidArgs:
 # Moneys refreshed
 Money:
   Done: "&aAction executed with success!"
-  Refreshed: "&eYour money has been refreshed! Now you have %money%$!"
+  Refreshed: "&eYour money has been refreshed! Now you have $%money%!"
   Reset: "&cYour money has been restored to the starting balance!"
 
 # /bal
 Balance:
-  Self: "&aYou have %money%$!"
-  Others: "&a%player% has %money%$!"
+  Self: "&aYou have $%money%!"
+  Others: "&a%player% has $%money%!"
 
 # /pay
 Pay:
   NoSelf: "&cYou can't send money to yourself!"
   NoMoney: "&CYou do not have enough moneys!"
-  Self: "&7You have sent &c%money%$ &7to &c%player%&7!"
-  Target: "&7You have received &a%money%$ &7from &a%player%&7!"
+  Self: "&7You have sent &c$%money% &7to &c%player%&7!"
+  Target: "&7You have received &a$%money% &7from &a%player%&7!"
   DisabledPayments: "&cThe player doesn't accept incoming payments"
   Toggle:
     Enabled: "&cYou have disabled your incoming payments!"
@@ -43,11 +43,11 @@ Pay:
 Bank:
   Disabled: "&cThe bank is disabled!"
   NoMoney: "&cYou don't have enough money in the bank!"
-  Deposit: "&eYou have deposited %money%$!"
-  Withdraw: "&eYou have withdrawn %money%$!"
-  Self: "&aYou have %money%$ in your bank!"
+  Deposit: "&eYou have deposited $%money%!"
+  Withdraw: "&eYou have withdrawn $%money%!"
+  Self: "&aYou have $%money% in your bank!"
   Interests: "&aYou've received an interest of %percentage%%!"
   Admin:
-    Get: "&a%player% has %money% in bank!"
-    Set: "&eYou have set %player%'s bank to %money%"
-    Refreshed: "&eYour bank has been refreshed to %money%"
+    Get: "&a%player% has $%money% in bank!"
+    Set: "&eYou have set %player%'s bank to $%money%"
+    Refreshed: "&eYour bank has been refreshed to $%money%"
