@@ -70,8 +70,8 @@ Baltop:
     Enabled: false
     Value: "###.###,##"
   Chat:
-    # Like 1) _ItsWagPvP: 100$
-    Player-Format: "&6%number%) &f%player%: &c%money%$"
+    # Like 1) _ItsWagPvP: $100
+    Player-Format: "&6%number%) &f%player%: &c$%money%"
     # The header of /baltop
     Header:
       - '&8&m-----------------'
@@ -81,7 +81,7 @@ Baltop:
   Hologram:
     # Refresh rate of holograms!
     Refresh-Rate: 60 # <- In seconds
-    Player-Format: "&6%number%) &f%player%: &c%money%$"
+    Player-Format: "&6%number%) &f%player%: &c$%money%"
     Header:
       - '&8&m-----------------'
       - '&d&lBalTop'
