@@ -20,20 +20,20 @@ InvalidArgs:
 # Banii s-au reîmprospătat
 Money:
   Done: "&aAcțiune executată cu succes!"
-  Refreshed: "&eBanii tăi au fost actualizați! Acum ai %money%$!"
+  Refreshed: "&eBanii tăi au fost actualizați! Acum ai $%money%!"
   Reset: "&cBanii tăi au fost restabiliți la soldul inițial!"
 
 # /bal
 Balance:
-  Self: "&aAveți%$!"
-  Others: "&a%player% are %money%$!"
+  Self: "&aAveți $%money%!"
+  Others: "&a%player% are $%money%!"
 
 # /pay
 Pay:
   NoSelf: "&cNu poți trimite bani către tine!"
   NoMoney: "&CNu aveți destui bani!"
-  Self: "&7Ai trimis &c%money%$ &7to &c%player%&7!"
-  Target: "&7Le-ai primit &a%money%$ &7din &a%player%&7!"
+  Self: "&7Ai trimis &c$%money% &7to &c%player%&7!"
+  Target: "&7Le-ai primit &a$%money% &7din &a%player%&7!"
   DisabledPayments: "&cJucătorul a dezactivat plățile primite"
   Toggle:
     Enabled: "&cAți dezactivat plățile primite"
@@ -43,11 +43,11 @@ Pay:
 Bank:
   Disabled: "&cBanca este dezactivată!"
   NoMoney: "&cNu ai destui bani în bancă!"
-  Deposit: "&eAți depus %money%$!"
-  Withdraw: "&eTe-ai retras %money%$!"
-  Self: "&aAveți %money%$ în banca !"
+  Deposit: "&eAți depus $%money%!"
+  Withdraw: "&eTe-ai retras $%money%!"
+  Self: "&aAveți $%money% în banca !"
   Interests: "&aAi primit dobanda bancara de %percentage%%!"
   Admin:
-    Get: "&a%player% are %money% în banca!"
-    Set: "&eAți stabilit %player%'sbanca la %money%"
-    Refreshed: "&eBanca ta fost actualizată la %money%"
+    Get: "&a%player% are $%money% în banca!"
+    Set: "&eAți stabilit %player%'sbanca la $%money%"
+    Refreshed: "&eBanca ta fost actualizată la $%money%"
