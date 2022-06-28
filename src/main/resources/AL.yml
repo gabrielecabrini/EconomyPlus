@@ -20,20 +20,20 @@ InvalidArgs:
 # Rifreskimi i parave
 Money:
   Done: "&aAksioni u krye me sukses!"
-  Refreshed: "&eParatë tuaja janë rifreskuar! Tani ke %money%$!"
+  Refreshed: "&eParatë tuaja janë rifreskuar! Tani ke $%money%!"
   Reset: "&cParatë tuaja janë rikthyer në bilancin fillestar!"
 
 # /bal
 Balance:
-  Self: "&aTi ke %money%$!"
-  Others: "&a%player% ka %money%$!"
+  Self: "&aTi ke $%money%!"
+  Others: "&a%player% ka $%money%!"
 
 # /pay
 Pay:
   NoSelf: "&cJu nuk mund t'i dërgoni para vetes!"
   NoMoney: "&cNuk keni para të mjaftueshme!"
-  Self: "&7Keni dërguar &c%player% &c%money%$&7!"
-  Target: "&a%player% &7te dërgoi &a%money%$&7!"
+  Self: "&7Keni dërguar &c%player% &c$%money%&7!"
+  Target: "&a%player% &7te dërgoi &a$%money%&7!"
   DisabledPayments: "&cX nuk pranon pagesa"
   Toggle:
     Enabled: "&cKeni çaktivizuar pagesat në hyrje"
@@ -43,11 +43,11 @@ Pay:
 Bank:
   Disabled: "&cBanka është e disabilituar!"
   NoMoney: "&cJu nuk keni para të mjaftueshme në bankë!"
-  Deposit: "&eKeni depozituar %money%$!"
-  Withdraw: "&eKeni tërhequr %money%$ &7nga bankë!"
-  Self: "&aKeni %money%$ ne bankë!"
+  Deposit: "&eKeni depozituar $%money%!"
+  Withdraw: "&eKeni tërhequr $%money% &7nga bankë!"
+  Self: "&aKeni $%money% ne bankë!"
   Interests: "&aJu keni marrë një interes të %percentage%%!"
   Admin:
-    Get: "&a%player% ka %money% ne bankë!"
-    Set: "&eKeni vendosur bankën e %player% në %money%"
-    Refreshed: "&eBankë e jote u karikua me %money%"
+    Get: "&a%player% ka $%money% ne bankë!"
+    Set: "&eKeni vendosur bankën e %player% në $%money%"
+    Refreshed: "&eBankë e jote u karikua me $%money%"
