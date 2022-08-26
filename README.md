@@ -4,7 +4,7 @@
  
 This page is under construction
 
-If you need support > **https://discord.itswagpvp.eu**
+If you need support > **https://discord.itswagpvp.dev**
 
 ## License
 
