@@ -58,7 +58,7 @@ public class Updater implements Listener {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                URL url = new URL("https://dev.itswagpvp.eu/api/EconomyPlus/version.html");
+                URL url = new URL("https://www.itswagpvp.dev/api/EconomyPlus/version.html");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                 InputStream inputStream = connection.getInputStream();
@@ -138,7 +138,7 @@ public class Updater implements Listener {
         }
 
         try {
-            URL website = new URL("https://dev.itswagpvp.eu/plugins/jar/EconomyPlus.jar");
+            URL website = new URL("https://wwww.itswagpvp.dev/plugins/jar/EconomyPlus.jar");
             HttpURLConnection con = (HttpURLConnection) website.openConnection();
 
             ReadableByteChannel rbc = Channels.newChannel(con.getInputStream());

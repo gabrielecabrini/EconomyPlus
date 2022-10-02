@@ -10,7 +10,7 @@ public class ThreadsUtils {
             Set<Thread> threads = Thread.getAllStackTraces().keySet();
             for (Thread t : threads) {
                 if (t.getName().endsWith("-economyplus")) {
-                    t.stop();
+                    t.interrupt();
                 }
             }
         } catch (Exception ignored) {
@@ -18,16 +18,4 @@ public class ThreadsUtils {
 
     }
 
-    // Stop a single thread
-    public static void stopThread(String threadName) {
-        try {
-            Set<Thread> threads = Thread.getAllStackTraces().keySet();
-            for (Thread t : threads) {
-                if (t.getName().equals(threadName)) {
-                    t.stop();
-                }
-            }
-        } catch (Exception ignored) {
-        }
-    }
 }

@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.nio.file.Files;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
@@ -75,7 +76,7 @@ public class StorageManager {
 
         try {
             if (!outFile.exists() || replace) {
-                OutputStream out = new FileOutputStream(outFile);
+                OutputStream out = Files.newOutputStream(outFile.toPath());
                 byte[] buf = new byte[1024];
                 int len;
                 while ((len = in.read(buf)) > 0) {
