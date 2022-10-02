@@ -3,12 +3,13 @@ package me.itswagpvp.economyplus.messages;
 import org.bukkit.Bukkit;
 
 import java.io.*;
+import java.nio.file.Files;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class MessageUtils {
 
-    private File file = null;
+    private final File file = null;
 
     // Create every file
     public void initialize() {
@@ -41,7 +42,7 @@ public class MessageUtils {
 
         try {
             if (!outFile.exists() || replace) {
-                OutputStream out = new FileOutputStream(outFile);
+                OutputStream out = Files.newOutputStream(outFile.toPath());
                 byte[] buf = new byte[1024];
                 int len;
                 while ((len = in.read(buf)) > 0) {

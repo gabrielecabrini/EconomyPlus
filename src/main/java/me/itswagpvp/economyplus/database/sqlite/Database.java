@@ -16,16 +16,15 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public abstract class Database {
 
-    Connection connection;
-
     // The name of the table we created back in SQLite class.
     public String table = "data";
+    Connection connection;
 
     public abstract Connection getSQLiteConnection();
 
     public abstract void load();
 
-    public void initialize () {
+    public void initialize() {
         connection = getSQLiteConnection();
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
@@ -33,7 +32,7 @@ public abstract class Database {
 
             updateTable();
 
-            close(ps,rs);
+            close(ps, rs);
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
@@ -66,11 +65,11 @@ public abstract class Database {
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
             Connection conn = getSQLiteConnection();
             try (
-                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
                     ResultSet rs = ps.executeQuery()
             ) {
-                while(rs.next()){
-                    if(rs.getString("player").equalsIgnoreCase(player)){
+                while (rs.next()) {
+                    if (rs.getString("player").equalsIgnoreCase(player)) {
                         return rs.getDouble("moneys");
                     }
                 }
@@ -90,12 +89,12 @@ public abstract class Database {
     }
 
     // Save the balance to the player's database
-    public void setTokens (String player, double tokens) {
+    public void setTokens(String player, double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-            ){
+            ) {
 
                 ps.setString(1, player);
 
@@ -111,16 +110,16 @@ public abstract class Database {
     }
 
     // Retrieve the bank of the player
-    public double getBank (String player) {
+    public double getBank(String player) {
 
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
             Connection conn = getSQLiteConnection();
             try (
-                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '"+player+"';");
+                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
                     ResultSet rs = ps.executeQuery()
             ) {
-                while(rs.next()){
-                    if(rs.getString("player").equalsIgnoreCase(player)){
+                while (rs.next()) {
+                    if (rs.getString("player").equalsIgnoreCase(player)) {
                         return rs.getDouble("bank");
                     }
                 }
@@ -140,12 +139,12 @@ public abstract class Database {
     }
 
     // Save the balance to the player's database
-    public void setBank (String player, double tokens) {
+    public void setBank(String player, double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
-            ){
+            ) {
 
                 ps.setString(1, player);
 
@@ -161,7 +160,7 @@ public abstract class Database {
     }
 
     // Gets the list of the players in the database
-    public List<String> getList () {
+    public List<String> getList() {
         CompletableFuture<List<String>> getList = CompletableFuture.supplyAsync(() -> {
             Connection conn = getSQLiteConnection();
             List<String> list = new ArrayList<>();
@@ -212,7 +211,7 @@ public abstract class Database {
     }
 
     // Closes the database connection
-    public void close(PreparedStatement ps, ResultSet rs){
+    public void close(PreparedStatement ps, ResultSet rs) {
         try {
             if (ps != null)
                 ps.close();

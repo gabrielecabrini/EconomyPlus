@@ -1,7 +1,7 @@
-package me.itswagpvp.economyplus.events;
+package me.itswagpvp.economyplus.listener;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Updater;
 import org.bukkit.event.EventHandler;
@@ -9,10 +9,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class Join implements Listener {
+public class PlayerHandler implements Listener {
 
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onPlayerJoin (PlayerJoinEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerJoin(PlayerJoinEvent event) {
 
         new Updater(EconomyPlus.plugin).checkForPlayerUpdate(event.getPlayer());
 

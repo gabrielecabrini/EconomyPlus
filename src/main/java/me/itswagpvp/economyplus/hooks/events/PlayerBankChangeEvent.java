@@ -11,7 +11,7 @@ public class PlayerBankChangeEvent extends Event implements Cancellable {
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 
-    private String player;
+    private final String player;
     private double newBank;
 
     public PlayerBankChangeEvent(String player, double newBank) {
@@ -20,12 +20,12 @@ public class PlayerBankChangeEvent extends Event implements Cancellable {
         this.isCancelled = false;
     }
 
-    @Override
-    public HandlerList getHandlers() {
+    public static HandlerList getHandlerList() {
         return HANDLERS_LIST;
     }
 
-    public static HandlerList getHandlerList() {
+    @Override
+    public HandlerList getHandlers() {
         return HANDLERS_LIST;
     }
 
@@ -39,12 +39,12 @@ public class PlayerBankChangeEvent extends Event implements Cancellable {
         isCancelled = cancel;
     }
 
-    public void setNewBank(double newBank) {
-        this.newBank = newBank;
-    }
-
     public double getNewBank() {
         return newBank;
+    }
+
+    public void setNewBank(double newBank) {
+        this.newBank = newBank;
     }
 
     public Player getPlayer() {

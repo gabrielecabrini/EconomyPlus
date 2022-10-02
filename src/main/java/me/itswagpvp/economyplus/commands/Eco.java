@@ -48,7 +48,7 @@ public class Eco implements CommandExecutor {
                     sender.sendMessage(plugin.getMessage("Money.Done"));
                 }
 
-                if (p.getPlayer() != null)  {
+                if (p.getPlayer() != null) {
                     if (plugin.isMessageEnabled("Money.Refreshed")) {
                         p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
                                 .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))

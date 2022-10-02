@@ -1,13 +1,12 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.hooks.events.PlayerBalanceChangeEvent;
 import me.itswagpvp.economyplus.hooks.events.PlayerBankChangeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.event.Event;
 
 public class Economy extends VEconomy {
 

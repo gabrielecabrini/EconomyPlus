@@ -1,18 +1,16 @@
 package me.itswagpvp.economyplus;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.other.InterestsManager;
 import me.itswagpvp.economyplus.commands.*;
-import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
-import me.itswagpvp.economyplus.events.Join;
 import me.itswagpvp.economyplus.hooks.PlaceholderLoader;
 import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
+import me.itswagpvp.economyplus.listener.PlayerHandler;
 import me.itswagpvp.economyplus.messages.DefaultFiles;
 import me.itswagpvp.economyplus.messages.MessageUtils;
 import me.itswagpvp.economyplus.messages.MessagesFile;
@@ -33,27 +31,38 @@ import java.sql.SQLException;
 
 public final class EconomyPlus extends JavaPlugin {
 
+    // Messages
+    public static MessagesFile messagesType = MessagesFile.UNDEFINED;
+    // BalTop
+    public static BalTopManager balTopManager;
+    // Plugin instance
+    public static EconomyPlus plugin;
+    // Debug mode
+    public static boolean debugMode;
     // Database
     private static DatabaseType dbType = DatabaseType.UNDEFINED;
     private static StorageMode storageMode = StorageMode.UNDEFINED;
-
+    Updater updater;
     // YAML Database (data.yml)
     private File ymlFile;
     private FileConfiguration ymlConfig;
 
-    // Messages
-    public static MessagesFile messagesType = MessagesFile.UNDEFINED;
+    // Returns the DatabaseType (MYSQL/H2/YAML/Undefined)
+    public static DatabaseType getDBType() {
+        return dbType;
+    }
 
-    // BalTop
-    public static BalTopManager balTopManager;
+    // Returns the StorageMode (NICKNAME/UUID)
+    public static StorageMode getStorageMode() {
+        return storageMode;
+    }
 
-    // Plugin instance
-    public static EconomyPlus plugin;
-
-    // Debug mode
-    public static boolean debugMode;
-
-    Updater updater;
+    // Made for /ep convert
+    public void setStorageMode(String newStorageMode) {
+        storageMode = StorageMode.valueOf(newStorageMode);
+        plugin.getConfig().set("Database.Mode", newStorageMode);
+        plugin.saveConfig();
+    }
 
     @Override
     public void onEnable() {
@@ -234,7 +243,7 @@ public final class EconomyPlus extends JavaPlugin {
 
     private void loadEvents() {
         try {
-            Bukkit.getPluginManager().registerEvents(new Join(), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerHandler(), this);
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §cError loading listeners");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
@@ -301,7 +310,7 @@ public final class EconomyPlus extends JavaPlugin {
             if (new StorageManager().getStorageConfig().getString("Hologram.BalTop.World") != null) {
 
                 new HolographicDisplays().createHologram();
-                
+
             }
 
         } else {
@@ -364,7 +373,7 @@ public final class EconomyPlus extends JavaPlugin {
             return "";
         }
 
-        if (Utils.supportHexColors()) {
+        if (Utils.supportRGBColors()) {
             String hexMessage = Utils.hexColor(rawMessage);
             return ChatColor.translateAlternateColorCodes('&', hexMessage);
         }
@@ -413,23 +422,6 @@ public final class EconomyPlus extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
-    }
-
-    // Returns the DatabaseType (MYSQL/H2/YAML/Undefined)
-    public static DatabaseType getDBType() {
-        return dbType;
-    }
-
-    // Returns the StorageMode (NICKNAME/UUID)
-    public static StorageMode getStorageMode() {
-        return storageMode;
-    }
-
-    // Made for /ep convert
-    public void setStorageMode(String newStorageMode) {
-        storageMode = StorageMode.valueOf(newStorageMode);
-        plugin.getConfig().set("Database.Mode", newStorageMode);
-        plugin.saveConfig();
     }
 
 }

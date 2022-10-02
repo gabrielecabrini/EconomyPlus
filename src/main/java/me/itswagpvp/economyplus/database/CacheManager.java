@@ -1,4 +1,4 @@
-package me.itswagpvp.economyplus.database.cache;
+package me.itswagpvp.economyplus.database;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
@@ -57,7 +57,7 @@ public class CacheManager {
         t.start();
 
         while (finished.get()) {
-            t.stop();
+            t.interrupt();
             return;
         }
 
@@ -69,28 +69,28 @@ public class CacheManager {
         AtomicBoolean finished = new AtomicBoolean(false);
         Thread t = new Thread(() -> {
             Thread.currentThread().setName("cacheOnlineDatabase-economyplus");
-                for (String player : EconomyPlus.getDBType().getList()) {
-                    try {
-                        num.getAndIncrement();
-                        cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
-                        cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
-                    } catch (Exception e) {
-                        EconomyPlus.getDBType().removePlayer(player);
-                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing MySQL: " + e.getMessage());
-                    }
+            for (String player : EconomyPlus.getDBType().getList()) {
+                try {
+                    num.getAndIncrement();
+                    cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
+                    cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
+                } catch (Exception e) {
+                    EconomyPlus.getDBType().removePlayer(player);
+                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing MySQL: " + e.getMessage());
                 }
+            }
 
-                finished.set(true);
+            finished.set(true);
 
-                if (EconomyPlus.debugMode) {
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num.get() + " accounts...");
-                }
+            if (EconomyPlus.debugMode) {
+                Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num.get() + " accounts...");
+            }
 
         });
         t.start();
 
         while (finished.get()) {
-            t.stop();
+            t.interrupt();
             return;
         }
     }

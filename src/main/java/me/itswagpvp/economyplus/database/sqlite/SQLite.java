@@ -13,11 +13,6 @@ import java.util.logging.Level;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class SQLite extends Database {
-    String dbname;
-    public SQLite() {
-        dbname = "database";
-    }
-
     // SQL Query
     // Prepare the table for the database
     public String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS data (" +
@@ -26,11 +21,16 @@ public class SQLite extends Database {
             "`bank` double(32) NOT NULL," +
             "PRIMARY KEY (`player`)" +
             ");";
+    String dbname;
+
+    public SQLite() {
+        dbname = "database";
+    }
 
     // Creates the SQL database file
     public Connection getSQLiteConnection() {
-        File dataFolder = new File(EconomyPlus.plugin.getDataFolder(), dbname+".db");
-        if (!dataFolder.exists()){
+        File dataFolder = new File(EconomyPlus.plugin.getDataFolder(), dbname + ".db");
+        if (!dataFolder.exists()) {
             try {
                 dataFolder.createNewFile();
             } catch (IOException e) {
@@ -38,11 +38,11 @@ public class SQLite extends Database {
             }
         }
         try {
-            if(connection!=null && !connection.isClosed()) return connection;
+            if (connection != null && !connection.isClosed()) return connection;
             Class.forName("org.sqlite.JDBC");
             return DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE,"SQLite exception on initialize", ex);
+            plugin.getLogger().log(Level.SEVERE, "SQLite exception on initialize", ex);
         } catch (ClassNotFoundException ex) {
             plugin.getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it. Put it in /lib folder.");
         }

@@ -1,7 +1,7 @@
 package me.itswagpvp.economyplus.vault;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -16,7 +16,7 @@ public class VEconomy implements Economy {
 
     public EconomyPlus plugin;
 
-    public VEconomy (EconomyPlus plugin) {
+    public VEconomy(EconomyPlus plugin) {
         this.plugin = plugin;
     }
 

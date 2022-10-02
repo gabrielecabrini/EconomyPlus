@@ -102,11 +102,28 @@ public class Utils {
 
     }
 
+    public static String hexColor(String text) {
+        Pattern pattern = Pattern.compile("#[a-fA-f0-9]{6}");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            String color = text.substring(matcher.start(), matcher.end());
+            text = text.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
+        }
+        return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', text);
+    }
+
+    public static boolean supportRGBColors() {
+        return Bukkit.getVersion().contains("16")
+                || Bukkit.getVersion().contains("17")
+                || Bukkit.getVersion().contains("18")
+                || Bukkit.getVersion().contains("19");
+    }
+
     public String format(double d) {
 
         double value;
 
-        if (plugin.getConfig().getBoolean("Decimals")) value = Double.parseDouble(String.format("%.2f", d));
+        if (plugin.getConfig().getBoolean("Decimals")) value = d;
         else value = Double.parseDouble(String.format("%.0f", d));
 
         if (plugin.getConfig().getBoolean("Baltop.Pattern.Enabled", false)) {
@@ -144,20 +161,6 @@ public class Utils {
         }
 
         return format(d);
-    }
-
-    public static String hexColor(String text) {
-        Pattern pattern = Pattern.compile("#[a-fA-f0-9]{6}");
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            String color = text.substring(matcher.start(), matcher.end());
-            text = text.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
-        }
-        return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', text);
-    }
-
-    public static boolean supportHexColors() {
-        return Bukkit.getVersion().contains("16") || Bukkit.getVersion().contains("17");
     }
 
 }

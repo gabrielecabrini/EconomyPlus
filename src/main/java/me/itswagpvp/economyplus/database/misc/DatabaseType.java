@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum DatabaseType {
-    H2{
+    H2 {
         @Override
         public boolean contains(String playerName) {
             return new SQLite().getList().contains(playerName);
@@ -17,7 +17,7 @@ public enum DatabaseType {
 
         @Override
         public double getToken(String playerName) {
-            return  new SQLite().getTokens(playerName);
+            return new SQLite().getTokens(playerName);
         }
 
         @Override
@@ -37,7 +37,7 @@ public enum DatabaseType {
 
         @Override
         public List<String> getList() {
-            return  new SQLite().getList();
+            return new SQLite().getList();
         }
 
         @Override
@@ -55,7 +55,7 @@ public enum DatabaseType {
             new SQLite().getSQLiteConnection().close();
         }
     },
-    MySQL{
+    MySQL {
         @Override
         public boolean contains(String playerName) {
             return new MySQL().getList().contains(playerName);
@@ -101,7 +101,7 @@ public enum DatabaseType {
             new MySQL().closeConnection();
         }
     },
-    YAML{
+    YAML {
         @Override
         public boolean contains(String playerName) {
             return new YMLManager().contains(playerName);
@@ -143,7 +143,8 @@ public enum DatabaseType {
         }
 
         @Override
-        public void close() {}
+        public void close() {
+        }
     },
     UNDEFINED {
         @Override
@@ -157,10 +158,12 @@ public enum DatabaseType {
         }
 
         @Override
-        public void setTokens(String playerName, double tokens) {}
+        public void setTokens(String playerName, double tokens) {
+        }
 
         @Override
-        public void setBank(String playerName, double tokens) {}
+        public void setBank(String playerName, double tokens) {
+        }
 
         @Override
         public double getBank(String playerName) {
@@ -178,19 +181,29 @@ public enum DatabaseType {
         }
 
         @Override
-        public void removePlayer(String player) {}
+        public void removePlayer(String player) {
+        }
 
         @Override
-        public void close() {}
+        public void close() {
+        }
     };
 
     public abstract boolean contains(String playerName);
+
     public abstract double getToken(String playerName);
+
     public abstract void setTokens(String playerName, double tokens);
+
     public abstract void setBank(String playerName, double tokens);
+
     public abstract double getBank(String playerName);
+
     public abstract List<String> getList();
+
     public abstract boolean createPlayer(String player);
+
     public abstract void removePlayer(String player);
+
     public abstract void close() throws SQLException;
 }

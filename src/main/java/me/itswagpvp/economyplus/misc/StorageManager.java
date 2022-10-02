@@ -6,7 +6,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 

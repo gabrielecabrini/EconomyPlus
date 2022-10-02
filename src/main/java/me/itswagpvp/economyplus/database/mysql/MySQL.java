@@ -14,6 +14,7 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class MySQL {
 
+    static Connection connection;
     final String user = plugin.getConfig().getString("Database.User");
     final String password = plugin.getConfig().getString("Database.Password");
     final String host = plugin.getConfig().getString("Database.Host");
@@ -22,10 +23,7 @@ public class MySQL {
     final String table = plugin.getConfig().getString("Database.Table");
     final boolean autoReconnect = plugin.getConfig().getBoolean("Database.AutoReconnect");
     final boolean useSSL = plugin.getConfig().getBoolean("Database.useSSL", false);
-
     final String url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=" + autoReconnect + "&useSSL=" + useSSL + "&characterEncoding=utf8";
-
-    static Connection connection;
 
     // Connect to the database
     public void connect() {
@@ -59,7 +57,6 @@ public class MySQL {
                 + "moneys DOUBLE NOT NULL,"
                 + "bank DOUBLE NOT NULL,"
                 + "PRIMARY KEY (player))";
-
         try {
 
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -141,7 +138,6 @@ public class MySQL {
 
     // Retrieve the bank of the player
     public double getBank(String player) {
-
         CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
 
             try (

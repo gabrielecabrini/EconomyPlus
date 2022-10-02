@@ -12,13 +12,6 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class DefaultFiles {
 
-    // FileConfiguration for every file
-    private FileConfiguration messagesConfigEN;
-    private FileConfiguration messagesConfigIT;
-    private FileConfiguration messagesConfigRO;
-    private FileConfiguration messagesConfigAL;
-    private FileConfiguration messagesConfigDE;
-
     // File instance for messages
     private final String path = plugin.getDataFolder() + "/messages";
     private final File messagesITFile = new File(path, "IT.yml");
@@ -26,6 +19,12 @@ public class DefaultFiles {
     private final File messagesROFile = new File(path, "RO.yml");
     private final File messagesALFile = new File(path, "AL.yml");
     private final File messagesDEFile = new File(path, "DE.yml");
+    // FileConfiguration for every file
+    private FileConfiguration messagesConfigEN;
+    private FileConfiguration messagesConfigIT;
+    private FileConfiguration messagesConfigRO;
+    private FileConfiguration messagesConfigAL;
+    private FileConfiguration messagesConfigDE;
 
     /**
      * EN = English
@@ -41,7 +40,7 @@ public class DefaultFiles {
         loadMessagesEN();
     }
 
-    private void loadMessagesEN () {
+    private void loadMessagesEN() {
         messagesConfigEN = new YamlConfiguration();
         try {
             messagesConfigEN.load(messagesENFile);
@@ -51,7 +50,7 @@ public class DefaultFiles {
     }
 
     /**
-     *  IT = Italian
+     * IT = Italian
      */
 
     public void createMessagesIT() {
@@ -74,7 +73,7 @@ public class DefaultFiles {
     }
 
     /**
-     *  RO = Rumenian
+     * RO = Rumenian
      */
 
     public void createMessagesRO() {
@@ -97,7 +96,7 @@ public class DefaultFiles {
     }
 
     /**
-     *  AL = Albania
+     * AL = Albania
      */
 
     public void createMessagesAL() {
@@ -133,7 +132,7 @@ public class DefaultFiles {
         loadMessagesDE();
     }
 
-    private void loadMessagesDE () {
+    private void loadMessagesDE() {
         messagesConfigDE = new YamlConfiguration();
         try {
             messagesConfigDE.load(messagesDEFile);

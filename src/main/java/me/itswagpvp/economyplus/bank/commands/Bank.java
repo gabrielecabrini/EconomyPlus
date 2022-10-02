@@ -1,11 +1,8 @@
 package me.itswagpvp.economyplus.bank.commands;
 
-import me.itswagpvp.economyplus.database.misc.Selector;
-import me.itswagpvp.economyplus.hooks.events.PlayerBankChangeEvent;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -133,7 +130,7 @@ public class Bank implements CommandExecutor {
                     double bank = new Economy(target, 0).getBank();
 
                     p.sendMessage(plugin.getMessage("Bank.Admin.Get")
-                                    .replaceAll("%player%", "" + target.getName())
+                            .replaceAll("%player%", "" + target.getName())
                             .replaceAll("%money_formatted%", "" + utility.fixMoney(bank))
                             .replaceAll("%money%", "" + utility.format(bank)));
 

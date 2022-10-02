@@ -11,7 +11,7 @@ public class PlayerBalanceChangeEvent extends Event implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean isCancelled;
 
-    private String player;
+    private final String player;
     private double newBalance;
 
     public PlayerBalanceChangeEvent(String player, double newBalance) {
@@ -19,11 +19,11 @@ public class PlayerBalanceChangeEvent extends Event implements Cancellable {
         this.newBalance = newBalance;
     }
 
-    public HandlerList getHandlers() {
+    public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlers() {
         return HANDLERS;
     }
 
@@ -37,12 +37,12 @@ public class PlayerBalanceChangeEvent extends Event implements Cancellable {
         isCancelled = cancel;
     }
 
-    public void setNewBalance(double newBalance) {
-        this.newBalance = newBalance;
-    }
-
     public double getNewBalance() {
         return newBalance;
+    }
+
+    public void setNewBalance(double newBalance) {
+        this.newBalance = newBalance;
     }
 
     public Player getPlayer() {

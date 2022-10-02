@@ -38,7 +38,18 @@ public class Updater implements Listener {
         currentVersion = plugin.getDescription().getVersion();
 
         check();
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this::check, 5 * 60 * 20,3600 * 20); // Checks for an update every hour
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this::check, 5 * 60 * 20, 3600 * 20); // Checks for an update every hour
+    }
+
+    public static Updater getInstance() {
+        return instance;
+    }
+
+    public static Updater getInstance(EconomyPlus plugin) {
+        if (instance == null) {
+            new Updater(plugin);
+        }
+        return instance;
     }
 
     public void check() {
@@ -83,17 +94,6 @@ public class Updater implements Listener {
                 }
             }
         });
-    }
-
-    public static Updater getInstance() {
-        return instance;
-    }
-
-    public static Updater getInstance(EconomyPlus plugin) {
-        if (instance == null) {
-            new Updater(plugin);
-        }
-        return instance;
     }
 
     public void checkForPlayerUpdate(Player e) {

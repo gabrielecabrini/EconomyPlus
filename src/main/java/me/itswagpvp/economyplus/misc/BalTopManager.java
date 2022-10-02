@@ -1,7 +1,7 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import org.bukkit.Bukkit;
 
@@ -10,7 +10,7 @@ import java.util.*;
 public class BalTopManager {
 
     public List<PlayerData> balTop;
-    public Map<String,PlayerData> balTopName;
+    public Map<String, PlayerData> balTopName;
 
     public BalTopManager() {
         this.balTop = new ArrayList<>();
@@ -21,7 +21,7 @@ public class BalTopManager {
     private void loadFromDatabase() {
         getBalTop().clear();
 
-        for ( String playerName : EconomyPlus.getDBType().getList()) {
+        for (String playerName : EconomyPlus.getDBType().getList()) {
 
             if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
                 String convertedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerName)).getName();
@@ -42,8 +42,8 @@ public class BalTopManager {
             }
 
             PlayerData pData = new PlayerData(playerName, money);
-            getBalTop().add( pData );
-            getBalTopName().put( pData.getName(), pData );
+            getBalTop().add(pData);
+            getBalTopName().put(pData.getName(), pData);
 
         }
         getBalTop().sort(new PlayerComparator());
@@ -52,6 +52,7 @@ public class BalTopManager {
     public List<PlayerData> getBalTop() {
         return balTop;
     }
+
     public Map<String, PlayerData> getBalTopName() {
         return balTopName;
     }
@@ -60,11 +61,10 @@ public class BalTopManager {
             implements Comparator<PlayerData> {
 
         @Override
-        public int compare( PlayerData arg0, PlayerData arg1 )
-        {
-            int results = Double.compare( arg1.getMoney(), arg0.getMoney() );
-            if ( results == 0 ) {
-                results = arg0.getName().compareToIgnoreCase( arg1.getName() );
+        public int compare(PlayerData arg0, PlayerData arg1) {
+            int results = Double.compare(arg1.getMoney(), arg0.getMoney());
+            if (results == 0) {
+                results = arg0.getName().compareToIgnoreCase(arg1.getName());
             }
             return results;
         }

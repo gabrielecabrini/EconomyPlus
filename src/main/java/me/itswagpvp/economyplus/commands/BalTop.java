@@ -42,14 +42,14 @@ public class BalTop implements CommandExecutor {
 
             int start = (page - 1) * 10;
 
-            for(String message : header) {
+            for (String message : header) {
                 sender.sendMessage(message
                         .replaceAll("%page%", "" + page)
                         .replaceAll("&", "§"));
             }
 
 
-            for (int i = start; i < balTopManager.getBalTop().size() && i < start + 10; i++ ) {
+            for (int i = start; i < balTopManager.getBalTop().size() && i < start + 10; i++) {
                 BalTopManager.PlayerData pData = balTopManager.getBalTop().get(i);
 
                 String name = pData.getName();

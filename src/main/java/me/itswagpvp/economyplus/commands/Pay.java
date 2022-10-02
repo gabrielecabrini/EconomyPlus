@@ -71,7 +71,7 @@ public class Pay implements CommandExecutor {
             return true;
         }
 
-        if(Double.isNaN(money) || Double.isInfinite(money)) {
+        if (Double.isNaN(money) || Double.isInfinite(money)) {
             p.sendMessage(plugin.getMessage("InvalidArgs.Pay"));
             Utils.playErrorSound(p);
             return true;

@@ -2,7 +2,7 @@ package me.itswagpvp.economyplus.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.cache.CacheManager;
+import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.entity.Player;
@@ -21,10 +21,9 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * can simply use this method here to get an instance of our
      * plugin.
      *
-     * @param plugin
-     *        The instance of our plugin.
+     * @param plugin The instance of our plugin.
      */
-    public PlaceholderAPI(EconomyPlus plugin){
+    public PlaceholderAPI(EconomyPlus plugin) {
         this.plugin = plugin;
     }
 
@@ -36,7 +35,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return true to persist through reloads
      */
     @Override
-    public boolean persist(){
+    public boolean persist() {
         return true;
     }
 
@@ -47,7 +46,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return Always true since it's an internal class.
      */
     @Override
-    public boolean canRegister(){
+    public boolean canRegister() {
         return true;
     }
 
@@ -58,7 +57,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return The name of the author as a String.
      */
     @Override
-    public @NotNull String getAuthor(){
+    public @NotNull String getAuthor() {
         return plugin.getDescription().getAuthors().toString();
     }
 
@@ -72,20 +71,20 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return The identifier in {@code %<identifier>_<value>%} as String.
      */
     @Override
-    public @NotNull String getIdentifier(){
+    public @NotNull String getIdentifier() {
         return "economyplus";
     }
 
     /**
      * This is the version of the expansion.
      * <br>You don't have to use numbers, since it is set as a String.
-     *
+     * <p>
      * For convenience do we return the version from the plugin.yml
      *
      * @return The version as a String.
      */
     @Override
-    public @NotNull String getVersion(){
+    public @NotNull String getVersion() {
         return plugin.getDescription().getVersion();
     }
 
@@ -95,24 +94,21 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * <br>We specify the value identifier in this method.
      * <br>Since version 2.9.1 can you use OfflinePlayers in your requests.
      *
-     * @param  player
-     *         A {@link Player Player}.
-     * @param  identifier
-     *         A String containing the identifier/value.
-     *
+     * @param player     A {@link Player Player}.
+     * @param identifier A String containing the identifier/value.
      * @return possibly-null String of the requested identifier.
      */
 
-    public String onPlaceholderRequest(Player player, @NotNull String identifier){
+    public String onPlaceholderRequest(Player player, @NotNull String identifier) {
 
-        if(player == null){
+        if (player == null) {
             return "";
         }
 
         Utils utilities = new Utils();
 
         // %economyplus_money%
-        if(identifier.equals("money")){
+        if (identifier.equals("money")) {
             if (CacheManager.getCache(1).get(Selector.playerToString(player)) == null) {
                 return new Utils().format(0D);
             }
@@ -128,7 +124,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         }
 
         // %economyplus_bank%
-        if(identifier.equals("bank")){
+        if (identifier.equals("bank")) {
             if (CacheManager.getCache(2).get(Selector.playerToString(player)) == null) {
                 return new Utils().format(0D);
             }

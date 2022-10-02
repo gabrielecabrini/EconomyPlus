@@ -99,6 +99,7 @@ public class Main implements CommandExecutor {
 
                 if (!p.hasPermission("economyplus.hologram")) {
                     p.sendMessage(plugin.getMessage("NoPerms"));
+                    return true;
                 }
 
                 Location loc = p.getLocation();

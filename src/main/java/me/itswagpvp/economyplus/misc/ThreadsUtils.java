@@ -13,7 +13,8 @@ public class ThreadsUtils {
                     t.stop();
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
     }
 
@@ -26,6 +27,7 @@ public class ThreadsUtils {
                     t.stop();
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 }

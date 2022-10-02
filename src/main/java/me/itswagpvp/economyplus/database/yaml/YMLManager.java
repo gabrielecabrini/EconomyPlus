@@ -23,7 +23,7 @@ public class YMLManager {
         return false;
     }
 
-    public double getTokens (String name)  {
+    public double getTokens(String name) {
         CompletableFuture<Double> getTokens = CompletableFuture.supplyAsync(() -> plugin.getYMLData().getDouble("Data." + name + ".tokens"));
 
         try {
@@ -61,12 +61,12 @@ public class YMLManager {
 
     public void removePlayer(String player) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-           plugin.getYMLData().set("Data." + player, null);
-           plugin.saveYMLConfig();
+            plugin.getYMLData().set("Data." + player, null);
+            plugin.saveYMLConfig();
         });
     }
 
-    public List<String> getList () {
+    public List<String> getList() {
         List<String> list = new ArrayList<>(plugin.getYMLData().getConfigurationSection("Data").getKeys(false));
         return list;
     }
