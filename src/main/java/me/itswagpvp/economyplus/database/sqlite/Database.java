@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -61,30 +59,19 @@ public abstract class Database {
 
     // Retrieve the balance of the player
     public double getTokens(String player) {
-
-        CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
-            Connection conn = getSQLiteConnection();
-            try (
-                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
-                    ResultSet rs = ps.executeQuery()
-            ) {
-                while (rs.next()) {
-                    if (rs.getString("player").equalsIgnoreCase(player)) {
-                        return rs.getDouble("moneys");
-                    }
+        Connection conn = getSQLiteConnection();
+        try (
+                PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
+                ResultSet rs = ps.executeQuery()
+        ) {
+            while (rs.next()) {
+                if (rs.getString("player").equalsIgnoreCase(player)) {
+                    return rs.getDouble("moneys");
                 }
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
-            return 0.00;
-        });
-
-        try {
-            return getDouble.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
-
         return 0.00;
     }
 
@@ -111,30 +98,19 @@ public abstract class Database {
 
     // Retrieve the bank of the player
     public double getBank(String player) {
-
-        CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
-            Connection conn = getSQLiteConnection();
-            try (
-                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
-                    ResultSet rs = ps.executeQuery()
-            ) {
-                while (rs.next()) {
-                    if (rs.getString("player").equalsIgnoreCase(player)) {
-                        return rs.getDouble("bank");
-                    }
+        Connection conn = getSQLiteConnection();
+        try (
+                PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
+                ResultSet rs = ps.executeQuery()
+        ) {
+            while (rs.next()) {
+                if (rs.getString("player").equalsIgnoreCase(player)) {
+                    return rs.getDouble("bank");
                 }
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
-            return 0.00;
-        });
-
-        try {
-            return getDouble.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
-
         return 0.00;
     }
 
@@ -161,32 +137,22 @@ public abstract class Database {
 
     // Gets the list of the players in the database
     public List<String> getList() {
-        CompletableFuture<List<String>> getList = CompletableFuture.supplyAsync(() -> {
-            Connection conn = getSQLiteConnection();
-            List<String> list = new ArrayList<>();
-            try (
-                    PreparedStatement ps = conn.prepareStatement("SELECT player FROM 'data'");
-                    ResultSet rs = ps.executeQuery()
-            ) {
+        Connection conn = getSQLiteConnection();
+        List<String> list = new ArrayList<>();
+        try (
+                PreparedStatement ps = conn.prepareStatement("SELECT player FROM 'data'");
+                ResultSet rs = ps.executeQuery()
+        ) {
 
-                while (rs.next()) {
-                    list.add(rs.getString("player"));
-                }
-
-                return list;
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            while (rs.next()) {
+                list.add(rs.getString("player"));
             }
+
             return list;
-        });
-
-        try {
-            return getList.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-
-        return new ArrayList<>();
+        return list;
     }
 
     // Remove a user (UUID/NICKNAME) from the database

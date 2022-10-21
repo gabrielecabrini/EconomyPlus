@@ -6,8 +6,6 @@ import org.bukkit.OfflinePlayer;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -88,30 +86,18 @@ public class MySQL {
 
     // Retrieve the balance of the player
     public double getTokens(String player) {
-
-        CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
-
-            try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
-                    ResultSet rs = ps.executeQuery()
-            ) {
-                while (rs.next()) {
-                    if (rs.getString("player").equalsIgnoreCase(player)) {
-                        return rs.getDouble("moneys");
-                    }
+        try (
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
+                ResultSet rs = ps.executeQuery()
+        ) {
+            while (rs.next()) {
+                if (rs.getString("player").equalsIgnoreCase(player)) {
+                    return rs.getDouble("moneys");
                 }
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
-            return 0.00;
-        });
-
-        try {
-            return getDouble.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
-
         return 0.00;
     }
 
@@ -138,29 +124,18 @@ public class MySQL {
 
     // Retrieve the bank of the player
     public double getBank(String player) {
-        CompletableFuture<Double> getDouble = CompletableFuture.supplyAsync(() -> {
-
-            try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
-                    ResultSet rs = ps.executeQuery()
-            ) {
-                while (rs.next()) {
-                    if (rs.getString("player").equalsIgnoreCase(player)) {
-                        return rs.getDouble("bank");
-                    }
+        try (
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
+                ResultSet rs = ps.executeQuery()
+        ) {
+            while (rs.next()) {
+                if (rs.getString("player").equalsIgnoreCase(player)) {
+                    return rs.getDouble("bank");
                 }
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
-            return 0.00;
-        });
-
-        try {
-            return getDouble.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
-
         return 0.00;
     }
 
@@ -187,32 +162,21 @@ public class MySQL {
 
     // Get the list of the players saved
     public List<String> getList() {
-        CompletableFuture<List<String>> getList = CompletableFuture.supplyAsync(() -> {
+        List<String> list = new ArrayList<>();
+        try (
+                PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table);
+                ResultSet rs = ps.executeQuery()
+        ) {
 
-            List<String> list = new ArrayList<>();
-            try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table);
-                    ResultSet rs = ps.executeQuery()
-            ) {
-
-                while (rs.next()) {
-                    list.add(rs.getString("player"));
-                }
-
-                return list;
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            while (rs.next()) {
+                list.add(rs.getString("player"));
             }
+
             return list;
-        });
-
-        try {
-            return getList.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-
-        return new ArrayList<>();
+        return list;
     }
 
     // Create a player account
