@@ -1,6 +1,6 @@
 ***
 # EconomyPlus
- _Spigot plugin for 1.8 to 1.18_
+ _Spigot plugin for 1.8 to 1.19_
  
 This page is under construction
 
