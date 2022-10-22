@@ -11,12 +11,10 @@ import org.bukkit.OfflinePlayer;
 public class Economy extends VEconomy {
 
     private final OfflinePlayer player;
-    private final double money;
 
-    public Economy(OfflinePlayer player, double money) {
+    public Economy(OfflinePlayer player) {
         super(EconomyPlus.plugin);
         this.player = player;
-        this.money = money;
     }
 
     // Returns the money of a player
@@ -25,7 +23,7 @@ public class Economy extends VEconomy {
     }
 
     // Set the money of a player
-    public void setBalance() {
+    public void setBalance(double money) {
 
         PlayerBalanceChangeEvent event = new PlayerBalanceChangeEvent(Selector.playerToString(player), money);
         Bukkit.getPluginManager().callEvent(event);
@@ -37,7 +35,8 @@ public class Economy extends VEconomy {
     }
 
     // Add moneys to a player account
-    public void addBalance() {
+    public void addBalance(double money) {
+
         PlayerBalanceChangeEvent event = new PlayerBalanceChangeEvent(Selector.playerToString(player), getBalance() + money);
         Bukkit.getPluginManager().callEvent(event);
 
@@ -46,7 +45,8 @@ public class Economy extends VEconomy {
     }
 
     // Remove moneys from a player's account
-    public void takeBalance() {
+    public void takeBalance(double money) {
+
         PlayerBalanceChangeEvent event = new PlayerBalanceChangeEvent(Selector.playerToString(player), getBalance() - money);
         Bukkit.getPluginManager().callEvent(event);
 
@@ -55,7 +55,8 @@ public class Economy extends VEconomy {
     }
 
     // Set player's bank to the constructor value
-    public void setBank() {
+    public void setBank(double money) {
+
         PlayerBankChangeEvent event = new PlayerBankChangeEvent(Selector.playerToString(player), money);
         Bukkit.getPluginManager().callEvent(event);
 
@@ -73,7 +74,7 @@ public class Economy extends VEconomy {
     }
 
     // Controls if the player has enough moneys
-    public boolean detractable() {
+    public boolean detractable(double money) {
         return has(player, money);
     }
 }

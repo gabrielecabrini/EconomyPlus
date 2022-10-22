@@ -10,7 +10,8 @@
 # EconomyPlus made by _ItsWagPvP
 # Watch the full resource on https://github.com/ItsWagPvP/EconomyPlus
 
-# Do not change this
+# Do not change this!
+# This is used to verify your config version
 Version: ${project.version}
 
 # What language file do you want to use?
@@ -31,9 +32,22 @@ Hooks:
   HolographicDisplays: true
 
 # You want to enable the updater?
-# You will receive notifications in game and on the console if you have the permission (economyplus.update)
+# This will enable the update checker and alert you on new updates in console.
 Updater: true
 
+# You will receive update notifications in game when you join if you have the permission (economyplus.update)
+Updater-Notifications: true
+
+# Use permissions for commands not including administrative commands?
+# If false, Permission are not required for commands listed below
+# /pay, /paytoggle, /bal, /bal <others>, /baltop
+Use-Permissions: true
+
+# Whether the user gets alerted when his balance is updated/refreshed. (Includes sound)
+# Can be useful for developers hooking into this plugin for transactions.
+Alert-On-Refresh: true
+
+# Adds Use-Permissions option which allows user to remove the need for permission on specific default commands including:
 # Play to the player the sounds in front of success / error
 Sounds:
   Use: true

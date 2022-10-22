@@ -40,7 +40,7 @@ public class Bal implements CommandExecutor {
                 return true;
             }
 
-            Economy otherEco = new Economy(p2, 0);
+            Economy otherEco = new Economy(p2);
 
             sender.sendMessage(plugin.getMessage("Balance.Others")
                     .replaceAll("%money%", "" + new Utils().format(otherEco.getBalance()))
@@ -62,7 +62,7 @@ public class Bal implements CommandExecutor {
                 return true;
             }
 
-            Economy selfEco = new Economy(p, 0);
+            Economy selfEco = new Economy(p);
 
             p.sendMessage(plugin.getMessage("Balance.Self")
                     .replaceAll("%money%", "" + new Utils().format(selfEco.getBalance()))
@@ -85,7 +85,7 @@ public class Bal implements CommandExecutor {
 
             if (p2 == sender) {
 
-                Economy selfEco = new Economy(p, 0);
+                Economy selfEco = new Economy(p);
 
                 sender.sendMessage(plugin.getMessage("Balance.Self")
                         .replaceAll("%money%", "" + new Utils().format(selfEco.getBalance()))
@@ -96,7 +96,7 @@ public class Bal implements CommandExecutor {
                 return true;
             }
 
-            Economy otherEco = new Economy(p2, 0);
+            Economy otherEco = new Economy(p2);
 
             sender.sendMessage(plugin.getMessage("Balance.Others")
                     .replaceAll("%money%", "" + new Utils().format(otherEco.getBalance()))

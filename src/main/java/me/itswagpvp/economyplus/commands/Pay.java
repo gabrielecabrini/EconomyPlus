@@ -77,20 +77,20 @@ public class Pay implements CommandExecutor {
             return true;
         }
 
-        Economy selfEco = new Economy(p, money);
+        Economy selfEco = new Economy(p);
 
-        if (!selfEco.detractable()) {
+        if (!selfEco.detractable(money)) {
             p.sendMessage(plugin.getMessage("Pay.NoMoney"));
             Utils.playErrorSound(p);
             return true;
         }
 
-        Economy otherEco = new Economy(target, money);
+        Economy otherEco = new Economy(target);
 
         Utils utilities = new Utils();
 
-        selfEco.takeBalance();
-        otherEco.addBalance();
+        selfEco.takeBalance(money);
+        otherEco.addBalance(money);
 
         Utils.playSuccessSound(p);
         Utils.playSuccessSound(target);
