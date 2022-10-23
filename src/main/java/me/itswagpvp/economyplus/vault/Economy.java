@@ -54,6 +54,14 @@ public class Economy extends VEconomy {
         super.withdrawPlayer(Selector.playerToString(player), money);
     }
 
+    // Returns the player bank
+    public double getBank() {
+        if (CacheManager.getCache(2).get(Selector.playerToString(player)) == null) {
+            return 0D;
+        }
+        return CacheManager.getCache(2).get(Selector.playerToString(player));
+    }
+
     // Set player's bank to the constructor value
     public void setBank(Double money) {
 
@@ -63,14 +71,6 @@ public class Economy extends VEconomy {
         if (event.isCancelled()) return;
         CacheManager.getCache(2).put(Selector.playerToString(player), money);
         EconomyPlus.getDBType().setBank(Selector.playerToString(player), money);
-    }
-
-    // Returns the player bank
-    public double getBank() {
-        if (CacheManager.getCache(2).get(Selector.playerToString(player)) == null) {
-            return 0D;
-        }
-        return CacheManager.getCache(2).get(Selector.playerToString(player));
     }
 
     // Controls if the player has enough moneys

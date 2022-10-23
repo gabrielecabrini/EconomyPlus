@@ -9,9 +9,8 @@ import org.bukkit.event.HandlerList;
 public class PlayerBankChangeEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
-    private boolean isCancelled;
-
     private final String player;
+    private boolean isCancelled;
     private double newBank;
 
     public PlayerBankChangeEvent(String player, double newBank) {

@@ -156,10 +156,10 @@ public class EconomyPlus extends JavaPlugin {
             int outdated; //versions outdated value
 
             if (cver > pver) { //ahead versions (could auto fix maybe but prob not?)
-                outdated = Integer.parseInt(String.valueOf(Math.round((cver - pver)/0.1)).replace(".0", ""));
+                outdated = Integer.parseInt(String.valueOf(Math.round((cver - pver) / 0.1)).replace(".0", ""));
                 aorb = "ahead";
             } else { //behind versions (outdated)
-                outdated = Integer.parseInt(String.valueOf(Math.round((pver - cver)/0.1)).replace(".0", ""));
+                outdated = Integer.parseInt(String.valueOf(Math.round((pver - cver) / 0.1)).replace(".0", ""));
                 aorb = "behind";
             }
 
