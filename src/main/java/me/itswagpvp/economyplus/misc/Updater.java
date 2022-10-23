@@ -24,6 +24,9 @@ public class Updater implements Listener {
     static boolean enabled = plugin.getConfig().getBoolean("Updater");
 
     static boolean alreadyDownloaded = false;
+    static double cv = Double.parseDouble(plugin.getDescription().getVersion());
+    static double lv = 0;
+
     public static void check() {
 
         if (!enabled || alreadyDownloaded) return;
@@ -41,11 +44,9 @@ public class Updater implements Listener {
 
     }
 
-    static double cv = Double.parseDouble(plugin.getDescription().getVersion());
-    static double lv = 0;
     public static double getLatestVersion() {
 
-        if(!(lv == 0)) {
+        if (!(lv == 0)) {
             return lv;
         }
 
@@ -94,11 +95,7 @@ public class Updater implements Listener {
 
     private static boolean getUpdateAvailable() {
 
-        if(alreadyDownloaded || !(cv < lv)) {
-            return false;
-        }
-
-        return true;
+        return !alreadyDownloaded && cv < lv;
 
     }
 
@@ -115,7 +112,7 @@ public class Updater implements Listener {
         plugin.getLogger().info("notifications - " + notifications);
 
         if (notifications) {
-            behind = Integer.parseInt(String.valueOf(Math.round((getLatestVersion() - cv)/0.1)).replace(".0", ""));
+            behind = Integer.parseInt(String.valueOf(Math.round((getLatestVersion() - cv) / 0.1)).replace(".0", ""));
             e.getPlayer().sendMessage("" +
                     "§7An update is available for §dEconomyPlus§7! §d(v" + getLatestVersion() + ")" +
                     "\n§7You are §c" + behind + " §7versions behind! §c(v" + cv + ")" +

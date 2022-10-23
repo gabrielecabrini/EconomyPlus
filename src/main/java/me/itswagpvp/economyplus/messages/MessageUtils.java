@@ -2,7 +2,10 @@ package me.itswagpvp.economyplus.messages;
 
 import org.bukkit.Bukkit;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;

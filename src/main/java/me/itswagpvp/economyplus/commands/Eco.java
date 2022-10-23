@@ -165,7 +165,7 @@ public class Eco implements CommandExecutor {
             }
         }
 
-        if(!sender.hasPermission("economyplus.eco.reset") || !sender.hasPermission("economyplus.eco.give") || !sender.hasPermission("economyplus.eco.take") || !sender.hasPermission("economyplus.eco.set")) {
+        if (!sender.hasPermission("economyplus.eco.reset") || !sender.hasPermission("economyplus.eco.give") || !sender.hasPermission("economyplus.eco.take") || !sender.hasPermission("economyplus.eco.set")) {
             sender.sendMessage(plugin.getMessage("NoPerms"));
             Utils.playErrorSound(sender);
             return true;

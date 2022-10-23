@@ -16,8 +16,8 @@ public class PlayerHandler implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
 
         FileConfiguration config = EconomyPlus.plugin.getConfig();
-        if(config.get("Updater-Notifications") == null || config.getBoolean("Updater-Notifications", true)) {
-            if(event.getPlayer().hasPermission("economyplus.update") || event.getPlayer().isOp()) {
+        if (config.get("Updater-Notifications") == null || config.getBoolean("Updater-Notifications", true)) {
+            if (event.getPlayer().hasPermission("economyplus.update") || event.getPlayer().isOp()) {
                 Updater.checkForPlayerUpdate(event.getPlayer());
             }
         }
