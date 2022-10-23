@@ -4,6 +4,7 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Updater;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,7 +15,12 @@ public class PlayerHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
 
-        new Updater(EconomyPlus.plugin).checkForPlayerUpdate(event.getPlayer());
+        FileConfiguration config = EconomyPlus.plugin.getConfig();
+        if(config.get("Updater-Notifications") == null || config.getBoolean("Updater-Notifications", true)) {
+            if(event.getPlayer().hasPermission("economyplus.update") || event.getPlayer().isOp()) {
+                Updater.checkForPlayerUpdate(event.getPlayer());
+            }
+        }
 
         String playerName = Selector.playerToString(event.getPlayer());
 

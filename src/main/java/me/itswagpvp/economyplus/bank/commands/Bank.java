@@ -33,7 +33,7 @@ public class Bank implements CommandExecutor {
         if (args.length <= 0) {
 
             Utils utility = new Utils();
-            double bank = new Economy(p, 0).getBank();
+            double bank = new Economy(p).getBank();
 
             p.sendMessage(plugin.getMessage("Bank.Self")
                     .replaceAll("%money_formatted%", "" + utility.fixMoney(bank))
@@ -45,8 +45,8 @@ public class Bank implements CommandExecutor {
         if (args.length == 2) {
 
             double amount = Double.parseDouble(args[1]);
-            double balance = new Economy(p, 0).getBalance();
-            double bank = new Economy(p, 0).getBank();
+            double balance = new Economy(p).getBalance();
+            double bank = new Economy(p).getBank();
 
             if (args[0].equalsIgnoreCase("withdraw")) {
 
@@ -61,13 +61,13 @@ public class Bank implements CommandExecutor {
                     return true;
                 }
 
-                Economy eco = new Economy(p, amount);
-                eco.addBalance();
+                Economy eco = new Economy(p);
+                eco.addBalance(amount);
 
                 double value = eco.getBank();
 
-                Economy econ = new Economy(p, (value - amount));
-                econ.setBank();
+                Economy econ = new Economy(p);
+                econ.setBank(value - amount);
 
                 p.sendMessage(plugin.getMessage("Bank.Withdraw").replaceAll("%money%", "" + amount));
 
@@ -88,13 +88,13 @@ public class Bank implements CommandExecutor {
                     return true;
                 }
 
-                Economy eco = new Economy(p, amount);
-                eco.takeBalance();
+                Economy eco = new Economy(p);
+                eco.takeBalance(amount);
 
                 double value = eco.getBank();
 
-                Economy econ = new Economy(p, (amount + value));
-                econ.setBank();
+                Economy econ = new Economy(p);
+                econ.setBank(amount + value);
 
                 p.sendMessage(plugin.getMessage("Bank.Deposit").replaceAll("%money%", "" + amount));
 
@@ -127,7 +127,7 @@ public class Bank implements CommandExecutor {
                 if (args[1].equalsIgnoreCase("get")) {
 
                     Utils utility = new Utils();
-                    double bank = new Economy(target, 0).getBank();
+                    double bank = new Economy(target).getBank();
 
                     p.sendMessage(plugin.getMessage("Bank.Admin.Get")
                             .replaceAll("%player%", "" + target.getName())
@@ -175,7 +175,7 @@ public class Bank implements CommandExecutor {
                         return true;
                     }
 
-                    new Economy(target, bank).setBank();
+                    new Economy(target).setBank(bank);
 
                     p.sendMessage(plugin.getMessage("Bank.Admin.Set")
                             .replaceAll("%player%", "" + target.getName())

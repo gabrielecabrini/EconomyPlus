@@ -15,121 +15,145 @@ import java.util.regex.Matcher;
 
 public class Updater implements Listener {
 
-    static EconomyPlus plugin = null;
-    static Updater instance = null;
+    //Do we need to check for an update every hour? If it already alerts the user on join and on console start?
+    //Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this::check, 5 * 60 * 20, 3600 * 20); // Checks for an update every hour
 
-    boolean ready = false;
-    boolean updateAvailable = false;
-    boolean alreadyDownloaded = false;
+    static EconomyPlus plugin = EconomyPlus.plugin;
 
-    String latestVersion = "";
-    String currentVersion = "";
+    static int behind = 0;
+    static boolean enabled = plugin.getConfig().getBoolean("Updater");
 
-    boolean enabled;
-
-    public Updater(EconomyPlus plugin) {
-        instance = this;
-        enabled = plugin.getConfig().getBoolean("Updater", true);
-
-        if (!enabled) return;
-
-        Updater.plugin = plugin;
-
-        currentVersion = plugin.getDescription().getVersion();
-
-        check();
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this::check, 5 * 60 * 20, 3600 * 20); // Checks for an update every hour
-    }
-
-    public static Updater getInstance() {
-        return instance;
-    }
-
-    public static Updater getInstance(EconomyPlus plugin) {
-        if (instance == null) {
-            new Updater(plugin);
-        }
-        return instance;
-    }
-
-    public void check() {
+    static boolean alreadyDownloaded = false;
+    public static void check() {
 
         if (!enabled || alreadyDownloaded) return;
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                URL url = new URL("https://www.itswagpvp.dev/api/EconomyPlus/version.html");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        if (cv < getLatestVersion()) {
 
-                InputStream inputStream = connection.getInputStream();
+            behind = Integer.parseInt(String.valueOf(Math.round((getLatestVersion() - cv) / 0.1)).replace(".0", ""));
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
+            Bukkit.getConsoleSender().sendMessage("§f-> §dEconomy§5Plus §cis outdated! (" + "v" + cv + ")");
+            Bukkit.getConsoleSender().sendMessage("   - §fYou are §c" + behind + " §fversions!");
+            Bukkit.getConsoleSender().sendMessage("   - §fUpdate to §dv" + getLatestVersion() + " §fusing §d/ep update");
+            Bukkit.getConsoleSender().sendMessage("");
 
-                StringBuilder string = new StringBuilder();
-                while ((line = br.readLine()) != null) {
-                    string.append(line);
-                }
+        }
 
-                latestVersion = string.toString();
+    }
 
-                if (latestVersion.isEmpty()) return;
+    static double cv = Double.parseDouble(plugin.getDescription().getVersion());
+    static double lv = 0;
+    public static double getLatestVersion() {
 
-                if (!latestVersion.equals(currentVersion)) {
-                    updateAvailable = true;
-                }
+        if(!(lv == 0)) {
+            return lv;
+        }
 
-                if (updateAvailable && !ready) {
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] An update is available! §d(v" + latestVersion + ")");
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You have §cv" + plugin.getDescription().getVersion());
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Download it with /ep update!");
-                } else if (!ready) {
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + latestVersion + ")");
-                }
+        try {
 
-                ready = true;
-            } catch (IOException e) {
-                if (!e.getMessage().contains("HTTP response code: 503")) {
-                    plugin.getLogger().warning("Unable to check for an update! " + e.getMessage());
+            URL url = new URL("https://api.github.com/repos/ItsWagPvP/EconomyPlus/tags");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            InputStream inputStream = connection.getInputStream();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                if (line.contains("name")) {
+
+                    line = line.split(":")[1];
+
+                    line = line.replaceAll("\"", "");
+                    line = line.replace(",zipball_url", "");
+                    line = line.replaceAll("V", ""); //removes V in version if there is a V in the tag name
+                    line = line.replaceAll("v", ""); //removes V in version if there is a V in the tag name
+
+                    lv = Double.parseDouble(line);
+
                 }
             }
-        });
+
+            connection.disconnect();
+            inputStream.close();
+            br.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (lv == 0) {
+            plugin.getLogger().warning("Error with updater finding latest version!");
+            return cv;
+        }
+
+        return lv;
+
     }
 
-    public void checkForPlayerUpdate(Player e) {
+    private static boolean getUpdateAvailable() {
+
+        if(alreadyDownloaded || !(cv < lv)) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    public static void checkForPlayerUpdate(Player e) {
+
         if (!enabled || alreadyDownloaded) return;
-        if (ready && updateAvailable && plugin.getConfig().getBoolean("Updater", true)) {
-            if (!e.getPlayer().hasPermission("economyplus.update") || e.getPlayer().isOp()) return;
+
+        boolean notifications = plugin.getConfig().getBoolean("Updater-Notifications") || plugin.getConfig().get("Updater-Notifications") == null;
+
+        if (!getUpdateAvailable()) {
+            return;
+        }
+
+        plugin.getLogger().info("notifications - " + notifications);
+
+        if (notifications) {
+            behind = Integer.parseInt(String.valueOf(Math.round((getLatestVersion() - cv)/0.1)).replace(".0", ""));
             e.getPlayer().sendMessage("" +
-                    "§7An update is available for §dEconomyPlus§7! " +
+                    "§7An update is available for §dEconomyPlus§7! §d(v" + getLatestVersion() + ")" +
+                    "\n§7You are §c" + behind + " §7versions behind! §c(v" + cv + ")" +
                     "\n§7You can download it with §5/ep update");
         }
+
     }
 
-    public void downloadUpdate(CommandSender p) {
+    public static void downloadUpdate(CommandSender p) {
+
         if (!enabled) {
             p.sendMessage("§cThe updater is disabled.");
             Utils.playErrorSound(p);
             return;
         }
+
         if (!p.hasPermission("economyplus.update")) {
             p.sendMessage(plugin.getMessage("NoPerms"));
             return;
         }
-        if (!updateAvailable || alreadyDownloaded) {
+
+        if (!getUpdateAvailable() || alreadyDownloaded) {
             p.sendMessage(("§cThere is no update to download!"));
             Utils.playErrorSound(p);
             return;
         }
+
         String curJarName = "EconomyPlus.jar";
         String[] slashParts = plugin.getDataFolder().toString().split(Matcher.quoteReplacement(File.separator));
         StringBuilder pluginsPath = new StringBuilder();
+
         int i = 0;
         for (String part : slashParts) {
             pluginsPath.append(part).append(File.separator);
             i++;
             if (i + 1 >= slashParts.length) break;
         }
+
         File oldJar = new File(pluginsPath + curJarName);
         if (!oldJar.exists()) {
             Bukkit.getLogger().warning("[EconomyPlus] Unable to find jar " + pluginsPath + curJarName);
@@ -138,20 +162,22 @@ public class Updater implements Listener {
         }
 
         try {
-            URL website = new URL("https://wwww.itswagpvp.dev/plugins/jar/EconomyPlus.jar");
+            URL website = new URL("https://github.com/ItsWagPvP/EconomyPlus/releases/download/V" + getLatestVersion() + "/EconomyPlus.jar");
             HttpURLConnection con = (HttpURLConnection) website.openConnection();
 
             ReadableByteChannel rbc = Channels.newChannel(con.getInputStream());
             FileOutputStream fos = new FileOutputStream(pluginsPath + "EconomyPlus.jar");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            con.disconnect();
+            rbc.close();
             fos.close();
-            p.sendMessage("§aDone! §7Restart the server and the new version will be ready!");
-            updateAvailable = false;
+            p.sendMessage("§aDone! §c§nIt is recommended you restart your server now for the plugin to update.");
             alreadyDownloaded = true;
         } catch (Exception e) {
             p.sendMessage("§cAn error occurred while trying to download the newest version. Check console for more info");
             e.printStackTrace();
         }
+
     }
 
 }

@@ -42,7 +42,7 @@ public final class EconomyPlus extends JavaPlugin {
     // Database
     private static DatabaseType dbType = DatabaseType.UNDEFINED;
     private static StorageMode storageMode = StorageMode.UNDEFINED;
-    Updater updater;
+    //Updater updater;
     // YAML Database (data.yml)
     private File ymlFile;
     private FileConfiguration ymlConfig;
@@ -116,13 +116,35 @@ public final class EconomyPlus extends JavaPlugin {
 
         loadPlaceholders();
 
-        updater = Updater.getInstance(this);
+        double cver = Double.parseDouble(plugin.getConfig().getString("Version"));
+        double pver = Double.parseDouble(plugin.getDescription().getVersion());
 
-        if (!plugin.getDescription().getVersion().equals(plugin.getConfig().getString("Version"))) {
-            Bukkit.getConsoleSender().sendMessage("§f-> §eRemind to update config.yml! Your config version is outdated!");
+        if (!(cver == pver)) {
+
+            String aorb; //ahead or behind
+            int outdated; //versions outdated value
+
+            if (cver > pver) { //ahead versions (could auto fix maybe but prob not?)
+                outdated = Integer.parseInt(String.valueOf(Math.round((cver - pver)/0.1)).replace(".0", ""));
+                aorb = "ahead";
+            } else { //behind versions (outdated)
+                outdated = Integer.parseInt(String.valueOf(Math.round((pver - cver)/0.1)).replace(".0", ""));
+                aorb = "behind";
+            }
+
+            Bukkit.getConsoleSender().sendMessage("§f-> §eYour config.yml is outdated!");
+            Bukkit.getConsoleSender().sendMessage("   - §fConfig: " + "§c" + cver + " (" + outdated + " versions " + aorb + ")");
+            Bukkit.getConsoleSender().sendMessage("   - §fPlugin: " + "§d" + plugin.getDescription().getVersion());
+            Bukkit.getConsoleSender().sendMessage("");
         }
 
+        Updater.check();
+
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
+
+        if (cver >= Updater.getLatestVersion()) {
+            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + cver + ")");
+        }
 
         if (dbType == DatabaseType.UNDEFINED) {
             Bukkit.getConsoleSender().sendMessage("§c[EconomyPlus] Unable to start the plugin without a valid database option!");

@@ -131,7 +131,7 @@ public class Main implements CommandExecutor {
                     return true;
                 }
 
-                Updater.getInstance().downloadUpdate(sender);
+                Updater.downloadUpdate(sender);
 
                 return true;
             }

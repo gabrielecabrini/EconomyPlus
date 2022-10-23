@@ -3,6 +3,7 @@ package me.itswagpvp.economyplus.commands;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,9 +31,15 @@ public class Eco implements CommandExecutor {
                 arg = args[2];
             }
 
-            double value = Double.parseDouble(arg);
+            double value;
+            try {
+                value = Double.parseDouble(arg);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid number!"));
+                return true;
+            }
 
-            Economy money = new Economy(p, value);
+            Economy money = new Economy(p);
             Utils utility = new Utils();
 
             if (args[1].equalsIgnoreCase("set")) {
@@ -42,7 +49,7 @@ public class Eco implements CommandExecutor {
                     return true;
                 }
 
-                money.setBalance();
+                money.setBalance(value);
 
                 if (plugin.isMessageEnabled("Money.Done")) {
                     sender.sendMessage(plugin.getMessage("Money.Done"));
@@ -74,10 +81,10 @@ public class Eco implements CommandExecutor {
 
                 if (res < 0D) {
                     res = 0D;
-                    Economy eco = new Economy(p, 0D);
-                    eco.setBalance();
+                    Economy eco = new Economy(p);
+                    eco.setBalance(0);
                 } else {
-                    money.takeBalance();
+                    money.takeBalance(0);
                 }
 
                 if (plugin.isMessageEnabled("Money.Done")) {
@@ -105,7 +112,7 @@ public class Eco implements CommandExecutor {
                     return true;
                 }
 
-                money.addBalance();
+                money.addBalance(value);
 
                 if (plugin.isMessageEnabled("Money.Done")) {
                     sender.sendMessage(plugin.getMessage("Money.Done"));
@@ -140,8 +147,8 @@ public class Eco implements CommandExecutor {
                     return true;
                 }
 
-                Economy eco = new Economy(p, plugin.getConfig().getDouble("Starting-Balance"));
-                eco.setBalance();
+                Economy eco = new Economy(p);
+                eco.setBalance(plugin.getConfig().getDouble("Starting-Balance"));
 
                 if (plugin.isMessageEnabled("Money.Done")) {
                     sender.sendMessage(plugin.getMessage("Money.Done"));
@@ -156,6 +163,12 @@ public class Eco implements CommandExecutor {
 
                 return true;
             }
+        }
+
+        if(!sender.hasPermission("economyplus.eco.reset") || !sender.hasPermission("economyplus.eco.give") || !sender.hasPermission("economyplus.eco.take") || !sender.hasPermission("economyplus.eco.set")) {
+            sender.sendMessage(plugin.getMessage("NoPerms"));
+            Utils.playErrorSound(sender);
+            return true;
         }
 
         sender.sendMessage(plugin.getMessage("InvalidArgs.Eco"));
