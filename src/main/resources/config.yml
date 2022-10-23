@@ -43,10 +43,6 @@ Updater-Notifications: true
 # /pay, /paytoggle, /bal, /bal <others>, /baltop
 Use-Permissions: true
 
-# Whether the user gets alerted when his balance is updated/refreshed. (Includes sound)
-# Can be useful for developers hooking into this plugin for transactions.
-Alert-On-Refresh: true
-
 # Adds Use-Permissions option which allows user to remove the need for permission on specific default commands including:
 # Play to the player the sounds in front of success / error
 Sounds:
