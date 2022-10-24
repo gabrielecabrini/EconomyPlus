@@ -22,7 +22,6 @@ public class PlaceholderLoader {
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fPlaceholderAPI: §cError!");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
-            return;
         } finally {
             Bukkit.getConsoleSender().sendMessage("   - §fPlaceholderAPI: §aDone!");
         }

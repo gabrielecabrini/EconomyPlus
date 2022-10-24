@@ -1,0 +1,53 @@
+# Messages file for EconomyPlus
+#
+# You can use %money% and %money_formatted% (Where you see %money%)!
+#
+# General messages
+NoConsole: "&c此命令只能由玩家使用！"
+NoPlayer: "&c你命令只能由控制台使用！"
+NoPerms: "&c你没有权限！"
+Reload: "&a配置文件已重新加载，耗时%time%ms！"
+PlayerNotFound: "&c找不到玩家！"
+
+# Messages for the invalid args
+InvalidArgs:
+  Main: "&c无效参数！请使用: /economyplus <debug/help/reload/convert/exclude/hologram>"
+  Eco: "&c无效参数！请使用: /eco <player> <set/give/take/reset> <money>"
+  Balance: "&c无效参数！请使用: /bal <player>"
+  Pay: "&c无效参数！请使用: /pay <player> <money>"
+  Bank: "&c无效参数！请使用: /bank <withdraw/deposit/admin> <set/get> <player> <moneys>"
+
+# Moneys refreshed
+Money:
+  Done: "&a动作执行成功！"
+  Refreshed: "&e你的金钱余额已更新，现在你还有 &6%money%$&e！"
+  Reset: "&c你的金钱已重置！"
+
+# /bal
+Balance:
+  Self: "&a你还有 &6%money%$&a！"
+  Others: "&a%player% 还剩余 &6%money%$&a！"
+
+# /pay
+Pay:
+  NoSelf: "&c你不能给自己付款！"
+  NoMoney: "&c你没有足够的金钱！"
+  Self: "&7你已将 &6%money%$ &7给予 &c%player%&7！"
+  Target: "&7你已从 &a%player% &7收到 &6%money%$&7！"
+  DisabledPayments: "&c此玩家不接受收到的金钱！"
+  Toggle:
+    Enabled: "&c你已禁用传入付款！"
+    Disabled: "&a你已启用传入付款！"
+
+# /bank
+Bank:
+  Disabled: "&c银行已禁用！"
+  NoMoney: "&c你银行中没有足够的金钱！"
+  Deposit: "&e你已存入银行 &6%money%$&e！"
+  Withdraw: "&e你已从银行取出 &6%money%$&e！"
+  Self: "&a你的银行账户余额还剩余 &6%money%$&a！"
+  Interests: "&a你已收到 %percentage%% 的银行存款利息！"
+  Admin:
+    Get: "&a%player% 在银行中还有 &6%money%$&a！"
+    Set: "&e你已将 %player% 的银行账户余额设置为 &6%money%$&e！"
+    Refreshed: "&e你的银行余额已刷新为 &6%money%$&e！"

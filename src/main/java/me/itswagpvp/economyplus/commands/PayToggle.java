@@ -1,5 +1,6 @@
 package me.itswagpvp.economyplus.commands;
 
+import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.StorageManager;
 import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.command.Command;
@@ -13,6 +14,8 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class PayToggle implements CommandExecutor {
 
+    boolean useperms = EconomyPlus.getPlugin(EconomyPlus.class).getConfig().getBoolean("Use-Permissions") || EconomyPlus.getPlugin(EconomyPlus.class).getConfig().get("Use-Permissions") == null;
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
@@ -23,7 +26,7 @@ public class PayToggle implements CommandExecutor {
 
         Player p = (Player) sender;
 
-        if (!p.hasPermission("economyplus.paytoggle")) {
+        if (!p.hasPermission("economyplus.paytoggle") && useperms) {
             p.sendMessage(plugin.getMessage("NoPerms"));
             Utils.playErrorSound(p);
             return true;

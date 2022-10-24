@@ -2,8 +2,8 @@ package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
-import me.itswagpvp.economyplus.messages.MessageUtils;
-import me.itswagpvp.economyplus.messages.MessagesFile;
+import me.itswagpvp.economyplus.messages.Messages;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static me.itswagpvp.economyplus.EconomyPlus.log;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Utils {
@@ -33,9 +34,9 @@ public class Utils {
 
         try {
             Sound x = Sound.valueOf(plugin.getConfig().getString("Sounds.Error", "ENTITY_VILLAGER_NO"));
-            player.playSound(player.getPlayer().getLocation(), x, 1.0f, 1.0f);
+            player.playSound(player.getPlayer().getLocation(), x, 1, 1);
         } catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] §7Error on the §cplayErrorSound§7! Check your config!");
+            log("[EconomyPlus] &7Error on the &cplayErrorSound&7! Check your config!");
             e.printStackTrace();
         }
     }
@@ -55,9 +56,9 @@ public class Utils {
 
         try {
             Sound x = Sound.valueOf(plugin.getConfig().getString("Sounds.Success", "ENTITY_PLAYER_LEVELUP"));
-            player.playSound(player.getPlayer().getLocation(), x, 1.0f, 1.0f);
+            player.playSound(player.getPlayer().getLocation(), x, 1, 1);
         } catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] §7Error on the §cplaySuccessSound§7! Check your config!");
+            log("[EconomyPlus] &7Error on the &cplaySuccessSound§&! Check your config!");
             e.printStackTrace();
         }
     }
@@ -65,7 +66,7 @@ public class Utils {
     public static void reloadPlugin(CommandSender p) {
         long before = System.currentTimeMillis();
 
-        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] §aReloading the plugin! This action may take a while!");
+        log("[EconomyPlus] &aReloading the plugin! This action may take a while!");
 
         try {
 
@@ -81,24 +82,16 @@ public class Utils {
 
             new StorageManager().createStorageConfig();
 
-            String messages = plugin.getConfig().getString("Language");
-
-            try {
-                EconomyPlus.messagesType = MessagesFile.valueOf(messages);
-
-                new MessageUtils().initialize();
-            } catch (Exception e) {
-                EconomyPlus.messagesType = MessagesFile.EN;
-                return;
-            }
+            Messages.load();
 
         } catch (Exception e) {
             p.sendMessage("§cError on reloading the plugin! (" + e.getMessage() + ")");
-            return;
         } finally {
             p.sendMessage(plugin.getMessage("Reload")
                     .replaceAll("%time%", "" + (System.currentTimeMillis() - before)));
         }
+
+        log("&aReloaded!");
 
     }
 
@@ -128,7 +121,7 @@ public class Utils {
 
         if (plugin.getConfig().getBoolean("Baltop.Pattern.Enabled", false)) {
 
-            String pattern = plugin.getConfig().getString("Baltop.Pattern.Value", "###.###,##");
+            String pattern = plugin.getConfig().getString("Baltop.Pattern.Value", "###,###.##");
 
             DecimalFormat decimalFormat = new DecimalFormat();
             decimalFormat.applyPattern(pattern);
