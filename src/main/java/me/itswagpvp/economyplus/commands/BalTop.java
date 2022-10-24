@@ -14,10 +14,12 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class BalTop implements CommandExecutor {
 
+    boolean useperms = EconomyPlus.getPlugin(EconomyPlus.class).getConfig().getBoolean("Use-Permissions") || EconomyPlus.getPlugin(EconomyPlus.class).getConfig().get("Use-Permissions") == null;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!sender.hasPermission("economyplus.baltop")) {
+        if (!sender.hasPermission("economyplus.baltop") && useperms) {
             sender.sendMessage(plugin.getMessage("NoPerms"));
             return true;
         }

@@ -14,9 +14,9 @@
 # This is used to verify your config version
 Version: ${project.version}
 
-# What language file do you want to use?
-# You can select from the file in EconomyPlus/messages folder
-# for now is available EN, IT, RO, AL, DE
+# Languages are stored in the EconomyPlus/messages folder.
+# Credit to translaters for the assistance in creating these languages.
+# Available Languages include: EN, IT, RO, AL, DE, ZH
 Language: EN
 
 # bStats system (https://bstats.org/plugin/bukkit/EconomyPlus/11565)
@@ -34,6 +34,10 @@ Hooks:
 # You want to enable the updater?
 # This will enable the update checker and alert you on new updates in console.
 Updater: true
+
+# Round balances across the plugin to two decimal places? (Recommended)
+Rounding: true
+Rounding-Value: 2
 
 # You will receive update notifications in game when you join if you have the permission (economyplus.update)
 Updater-Notifications: true
@@ -78,7 +82,7 @@ Baltop:
   # This will work only with %money% and not with %money_formatted%
   Pattern:
     Enabled: false
-    Value: "###.###,##"
+    Value: "###,###.##"
   Chat:
     # Like 1) _ItsWagPvP: $100
     Player-Format: "&6%number%) &f%player%: &c$%money%"

@@ -1,5 +1,6 @@
 package me.itswagpvp.economyplus.commands;
 
+import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
@@ -13,6 +14,8 @@ import org.bukkit.entity.Player;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Bal implements CommandExecutor {
+
+    boolean useperms = EconomyPlus.getPlugin(EconomyPlus.class).getConfig().getBoolean("Use-Permissions") || EconomyPlus.getPlugin(EconomyPlus.class).getConfig().get("Use-Permissions") == null;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -56,7 +59,7 @@ public class Bal implements CommandExecutor {
 
         if (args.length == 0) {
 
-            if (!p.hasPermission("economyplus.balance")) {
+            if (!p.hasPermission("economyplus.balance") && useperms) {
                 sender.sendMessage(plugin.getMessage("NoPerms"));
                 Utils.playErrorSound(sender);
                 return true;
@@ -75,7 +78,7 @@ public class Bal implements CommandExecutor {
 
         if (args.length == 1) {
 
-            if (!p.hasPermission("economyplus.balance.others")) {
+            if (!p.hasPermission("economyplus.balance.others") && useperms) {
                 sender.sendMessage(plugin.getMessage("NoPerms"));
                 Utils.playErrorSound(sender);
                 return true;

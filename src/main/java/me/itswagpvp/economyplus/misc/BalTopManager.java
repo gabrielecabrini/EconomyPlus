@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 
 import java.util.*;
 
+import static me.itswagpvp.economyplus.vault.Economy.round;
+
 public class BalTopManager {
 
     public List<PlayerData> balTop;
@@ -38,7 +40,7 @@ public class BalTopManager {
             if (CacheManager.getCache(1).get(playerName) == null) {
                 money = 0;
             } else {
-                money = CacheManager.getCache(1).get(playerName);
+                money = round(CacheManager.getCache(1).get(playerName));
             }
 
             PlayerData pData = new PlayerData(playerName, money);

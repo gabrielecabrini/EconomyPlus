@@ -15,6 +15,7 @@ public class Eco implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
         if (args.length == 3) {
             OfflinePlayer p = Bukkit.getServer().getOfflinePlayer(args[0]);
 
