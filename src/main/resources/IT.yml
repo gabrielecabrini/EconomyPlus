@@ -49,5 +49,5 @@ Bank:
   Interests: "&aHai ricevuto gli interessi della banca del %percentage%%!"
   Admin:
     Get: "&a%player% ha $%money% in banca!"
-    Set: "&eHai impostato la banca di %player% a $%money%"
-    Refreshed: "&eLa tua banca ora ha $%money% soldi"
+    Set: "&eHai impostato la banca di %player% a $%money%!"
+    Refreshed: "&eLa tua banca ora ha $%money% soldi!"

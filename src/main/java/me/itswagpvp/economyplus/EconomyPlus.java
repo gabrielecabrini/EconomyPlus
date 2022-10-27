@@ -15,13 +15,11 @@ import me.itswagpvp.economyplus.messages.Messages;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.*;
 import me.itswagpvp.economyplus.vault.VEconomy;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -68,8 +66,8 @@ public class EconomyPlus extends JavaPlugin {
         saveConfig();
     }
 
-    @Override
     public void onEnable() {
+
         // Plugin startup logic
 
         plugin = this;
@@ -96,8 +94,8 @@ public class EconomyPlus extends JavaPlugin {
         }
 
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
-        Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
-        Bukkit.getConsoleSender().sendMessage("              §aEnabling");
+        Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus §dv" + Updater.getLatestVersion());
+        Bukkit.getConsoleSender().sendMessage("              §aEnabled");
         Bukkit.getConsoleSender().sendMessage("§8");
 
         Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core:");
@@ -265,7 +263,10 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("     - §fCaching accounts...");
 
-        new InterestsManager().startBankInterests();
+        if (!(plugin.getConfig().get("Bank.Interests.Enabled") == null) || plugin.getConfig().getBoolean("Bank.Interests.Enabled") == true) {
+            new InterestsManager().startBankInterests();
+        }
+
     }
 
     private void loadEvents() {

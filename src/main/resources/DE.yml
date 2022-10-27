@@ -45,6 +45,6 @@ Bank:
   Withdraw: "&eDu hast €%money% ausgezahlt."
   Self: "&aDu hast €%money% in der Bank."
   Admin:
-    Get: "&a%player% hat €%money% in der Bank."
-    Set: "&eDu hast das Bankguthaben von %player% auf €%money% gesetzt."
-    Refreshed: "&eDein Bankkonto hat sich auf €%money% aktualisiert."
+    Get: "&a%player% hat €%money% in der Bank!"
+    Set: "&eDu hast das Bankguthaben von %player% auf €%money% gesetzt!"
+    Refreshed: "&eDein Bankkonto hat sich auf €%money% aktualisiert!"

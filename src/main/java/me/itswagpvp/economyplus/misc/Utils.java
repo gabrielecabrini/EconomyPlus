@@ -3,19 +3,20 @@ package me.itswagpvp.economyplus.misc;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.messages.Messages;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static me.itswagpvp.economyplus.EconomyPlus.log;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
+import static me.itswagpvp.economyplus.vault.Economy.round;
 
 public class Utils {
 
@@ -114,25 +115,94 @@ public class Utils {
 
     public String format(double d) {
 
-        double value;
+        String value = String.valueOf(d);
+        if(value.contains("E")) {
+            value = String.valueOf(BigDecimal.valueOf(d).doubleValue());
 
-        if (plugin.getConfig().getBoolean("Decimals")) value = d;
-        else value = Double.parseDouble(String.format("%.0f", d));
+            if(!(value.contains("E"))) {
+                StringBuilder b = new StringBuilder(value);
+                b.replace(value.lastIndexOf("0"), value.lastIndexOf("0") + 1, "");
+                value = b.toString();
+            } else {
+                //needs work (formatting 0.00000005 returns E values
+                // trying to make a formatting system but i think my mind is actually going crazy. I am feeling something far from this reality
+                // when dealing with these issues. Ill have to come back to it feel free to make changes please.....
+                // this really is doing me.
+            }
+        }
 
-        if (plugin.getConfig().getBoolean("Baltop.Pattern.Enabled", false)) {
+        Bukkit.broadcastMessage("1 - " + value);
 
+        int decimal = 2;
+        if (!(plugin.getConfig().get("Formatting.Decimal-Places") == null)) {
+            decimal = plugin.getConfig().getInt("Formatting.Decimal-Places");
+        }
+
+        if (plugin.getConfig().getBoolean("Formatting.Use-Decimals")) {
+
+            Bukkit.broadcastMessage("2 - " + value);
+
+            if (plugin.getConfig().getBoolean("Formatting.Remove-Unnecessary-Values")) {
+
+                //split string from 10.20 to 10 and 20
+                String split = value.split("\\.")[1];
+                Bukkit.broadcastMessage("3 - " + value);
+
+                //if all chars are 0
+                int count = split.length() - split.replaceAll("0", "").length();
+
+                if (count == split.length()) {
+                    value = value.split("\\.")[0];
+                    Bukkit.broadcastMessage("4 - " + value);
+                } else {
+
+                    Bukkit.broadcastMessage("5 - " + value);
+
+                    //else ensure it is round decimal size
+                    if (!(split.length() == decimal)) {
+                        Bukkit.broadcastMessage("6 - " + value);
+
+                        if (split.length() < decimal) {
+
+                            Bukkit.broadcastMessage("7 - " + value);
+
+                            for (int i = 0; i < decimal - split.length(); i++) {
+                                value = value + "0";
+                            }
+
+                        } else {
+                            value = String.format("%." + decimal + "f", d);
+                            Bukkit.broadcastMessage("8 - " + value);
+                        }
+
+                    }
+
+                }
+
+            }
+
+        } else {
+            Bukkit.broadcastMessage("9 - " + value);
+            value = String.format("%.0f", d);
+        }
+
+        if (plugin.getConfig().getBoolean("Baltop.Pattern.Enabled")) {
+            Bukkit.broadcastMessage("10");
             String pattern = plugin.getConfig().getString("Baltop.Pattern.Value", "###,###.##");
 
             DecimalFormat decimalFormat = new DecimalFormat();
             decimalFormat.applyPattern(pattern);
             return decimalFormat.format(value);
         } else {
-            return String.valueOf(value);
+            Bukkit.broadcastMessage("11 - " + value);
+            return value;
         }
 
     }
 
     public String fixMoney(double d) {
+
+        Bukkit.broadcastMessage("fix: " + d);
 
         if (d < 1000L) {
             return format(d);

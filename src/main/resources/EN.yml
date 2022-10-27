@@ -49,5 +49,5 @@ Bank:
   Interests: "&aYou've received an interest of %percentage%%!"
   Admin:
     Get: "&a%player% has $%money% in bank!"
-    Set: "&eYou have set %player%'s bank to $%money%"
-    Refreshed: "&eYour bank has been refreshed to $%money%"
+    Set: "&eYou have set %player%'s bank to $%money%!"
+    Refreshed: "&eYour bank has been refreshed to $%money%!"

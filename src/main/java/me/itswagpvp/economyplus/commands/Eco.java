@@ -9,6 +9,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import java.math.BigDecimal;
+
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Eco implements CommandExecutor {
@@ -17,6 +19,7 @@ public class Eco implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (args.length == 3) {
+
             OfflinePlayer p = Bukkit.getServer().getOfflinePlayer(args[0]);
 
             if (args[2].startsWith("-")) {
@@ -25,16 +28,14 @@ public class Eco implements CommandExecutor {
                 return true;
             }
 
-            String arg;
-            if (args[2].contains(",")) {
-                arg = args[2].replaceAll(",", ".");
-            } else {
-                arg = args[2];
-            }
+            String arg = args[2].replace(",",".");
 
             double value;
             try {
-                value = Double.parseDouble(arg);
+                Bukkit.broadcastMessage("String - " + arg);
+                value = BigDecimal.valueOf(Double.parseDouble(arg)).doubleValue();
+                Bukkit.broadcastMessage("Value - " + value);
+                Bukkit.broadcastMessage("BigDecimal - " + BigDecimal.valueOf(Double.parseDouble(arg)));
             } catch (NumberFormatException e) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid number!"));
                 return true;
@@ -59,8 +60,8 @@ public class Eco implements CommandExecutor {
                 if (p.getPlayer() != null) {
                     if (plugin.isMessageEnabled("Money.Refreshed")) {
                         p.getPlayer().sendMessage(plugin.getMessage("Money.Refreshed")
-                                .replaceAll("%money_formatted%", "" + utility.fixMoney(Double.parseDouble(args[2])))
-                                .replaceAll("%money%", "" + utility.format(Double.parseDouble(args[2]))));
+                                .replaceAll("%money_formatted%", "" + utility.fixMoney(value))
+                                .replaceAll("%money%", "" + utility.format(value)));
 
                         Utils.playSuccessSound(p.getPlayer());
                     }
@@ -72,6 +73,7 @@ public class Eco implements CommandExecutor {
             }
 
             if (args[1].equalsIgnoreCase("take")) {
+
                 if (!sender.hasPermission("economyplus.eco.take")) {
                     sender.sendMessage(plugin.getMessage("NoPerms"));
                     Utils.playErrorSound(sender);
@@ -85,7 +87,7 @@ public class Eco implements CommandExecutor {
                     Economy eco = new Economy(p);
                     eco.setBalance(0);
                 } else {
-                    money.takeBalance(0);
+                    money.takeBalance(value);
                 }
 
                 if (plugin.isMessageEnabled("Money.Done")) {

@@ -5,8 +5,6 @@ import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 

@@ -49,5 +49,5 @@ Bank:
   Interests: "&aJu keni marrë një interes të %percentage%%!"
   Admin:
     Get: "&a%player% ka $%money% ne bankë!"
-    Set: "&eKeni vendosur bankën e %player% në $%money%"
-    Refreshed: "&eBankë e jote u karikua me $%money%"
+    Set: "&eKeni vendosur bankën e %player% në $%money%!"
+    Refreshed: "&eBankë e jote u karikua me $%money%!"

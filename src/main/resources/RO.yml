@@ -49,5 +49,5 @@ Bank:
   Interests: "&aAi primit dobanda bancara de %percentage%%!"
   Admin:
     Get: "&a%player% are $%money% în banca!"
-    Set: "&eAți stabilit %player%'sbanca la $%money%"
-    Refreshed: "&eBanca ta fost actualizată la $%money%"
+    Set: "&eAți stabilit %player%'sbanca la $%money%!"
+    Refreshed: "&eBanca ta fost actualizată la $%money%!"

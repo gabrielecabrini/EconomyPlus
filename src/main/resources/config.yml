@@ -35,10 +35,6 @@ Hooks:
 # This will enable the update checker and alert you on new updates in console.
 Updater: true
 
-# Round balances across the plugin to two decimal places? (Recommended)
-Rounding: true
-Rounding-Value: 2
-
 # You will receive update notifications in game when you join if you have the permission (economyplus.update)
 Updater-Notifications: true
 
@@ -54,6 +50,12 @@ Sounds:
   Success: ENTITY_PLAYER_LEVELUP
   Error: ENTITY_VILLAGER_NO
 
+# Round balances across the plugin to two decimal places? (Recommended)
+Formatting:
+  Use-Decimals: true # Use the decimal, If true it's 0.*, if false is 0  (* = Amount of Decimal Places)
+  Decimal-Places: 2 # Default value (MAX VALUE 15) - IT WILL ROUND AFTER 15 DECIMALS TO MAKE 15 DECIMALS
+  Remove-Unnecessary-Values: true # 10.0 > 10   12,402.00 > 12,402   10.03 > 10.03
+
 # Used to format the %economyplus_money_formatted% placeholder
 # 1000 = 1k
 # 1000000 = 1M
@@ -68,14 +70,10 @@ Format:
   Q: "Q"
 
 # Set a user balance on join
-Starting-Balance: 0.00
+Starting-Balance: 0
 
 # Set a user bank on join
-Starting-Bank-Balance: 0.00
-
-# Use the decimal
-# If true it's 0.00, if false is 0
-Decimals: true
+Starting-Bank-Balance: 0
 
 # Baltop configuration
 Baltop:

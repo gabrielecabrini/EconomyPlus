@@ -7,17 +7,19 @@ import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import static me.itswagpvp.economyplus.EconomyPlus.getDBType;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class InterestsManager {
+
     public void startBankInterests() {
+
         long time = plugin.getConfig().getLong("Bank.Interests.Time", 300) * 20L;
         int interest = plugin.getConfig().getInt("Bank.Interests.Percentage", 10);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            for (String player : EconomyPlus.getDBType().getList()) {
 
-                if (!plugin.getConfig().getBoolean("Bank.Interests.Enabled", false)) continue;
+            for (String player : EconomyPlus.getDBType().getList()) {
 
                 Player p = Selector.stringToPlayer(player);
 
@@ -27,7 +29,7 @@ public class InterestsManager {
                     }
                 }
 
-                double bankValue = 0;
+                double bankValue = getDBType().getBank(player);
                 if (CacheManager.getCache(2).get(player) == null) {
                     continue;
                 } else {
