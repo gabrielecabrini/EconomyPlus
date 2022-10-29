@@ -98,7 +98,7 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
         Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
-        Bukkit.getConsoleSender().sendMessage("            §aEnabled §dv" + cver);
+        Bukkit.getConsoleSender().sendMessage("            §aEnabled §dv" + pver);
         Bukkit.getConsoleSender().sendMessage("§8");
 
         Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core:");
