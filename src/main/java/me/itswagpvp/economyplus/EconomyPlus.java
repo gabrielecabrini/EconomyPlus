@@ -72,6 +72,9 @@ public class EconomyPlus extends JavaPlugin {
 
         plugin = this;
 
+        double cver = Double.parseDouble(getConfig().getString("Version"));
+        double pver = Double.parseDouble(getDescription().getVersion());
+
         long before = System.currentTimeMillis();
 
         saveDefaultConfig();
@@ -94,8 +97,8 @@ public class EconomyPlus extends JavaPlugin {
         }
 
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
-        Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus §dv" + Updater.getLatestVersion());
-        Bukkit.getConsoleSender().sendMessage("              §aEnabled");
+        Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
+        Bukkit.getConsoleSender().sendMessage("            §aEnabled §dv" + cver);
         Bukkit.getConsoleSender().sendMessage("§8");
 
         Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core:");
@@ -118,9 +121,6 @@ public class EconomyPlus extends JavaPlugin {
         loadHolograms();
 
         loadPlaceholders();
-
-        double cver = Double.parseDouble(getConfig().getString("Version"));
-        double pver = Double.parseDouble(getDescription().getVersion());
 
         if (!(cver == pver)) {
 

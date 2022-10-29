@@ -40,7 +40,7 @@ Updater-Notifications: true
 
 # Use permissions for commands not including administrative commands?
 # If false, Permission are not required for commands listed below
-# /pay, /paytoggle, /bal, /bal <others>, /baltop
+# /pay, /paytoggle, /bal, /bal <others>, /baltop, /bank, /bank deposit & /bank withdraw
 Use-Permissions: true
 
 # Adds Use-Permissions option which allows user to remove the need for permission on specific default commands including:
@@ -51,10 +51,14 @@ Sounds:
   Error: ENTITY_VILLAGER_NO
 
 # Round balances across the plugin to two decimal places? (Recommended)
-Formatting:
-  Use-Decimals: true # Use the decimal, If true it's 0.*, if false is 0  (* = Amount of Decimal Places)
-  Decimal-Places: 2 # Default value (MAX VALUE 15) - IT WILL ROUND AFTER 15 DECIMALS TO MAKE 15 DECIMALS
-  Remove-Unnecessary-Values: true # 10.0 > 10   12,402.00 > 12,402   10.03 > 10.03
+Use-Decimals: true # Use the decimal, If true it's 0.**, if false is 0  (* = Amount of Decimal Places)
+Remove-Naughts: true # 10.0 > 10   12,402.00 > 12,402   10.03 > 10.03
+
+# This will work only with %money% and not with %money_formatted%
+# This affects baltop and balances globally
+Pattern:
+  Enabled: true
+  Value: "###,###.##"
 
 # Used to format the %economyplus_money_formatted% placeholder
 # 1000 = 1k
@@ -77,10 +81,6 @@ Starting-Bank-Balance: 0
 
 # Baltop configuration
 Baltop:
-  # This will work only with %money% and not with %money_formatted%
-  Pattern:
-    Enabled: false
-    Value: "###,###.##"
   Chat:
     # Like 1) _ItsWagPvP: $100
     Player-Format: "&6%number%) &f%player%: &c$%money%"

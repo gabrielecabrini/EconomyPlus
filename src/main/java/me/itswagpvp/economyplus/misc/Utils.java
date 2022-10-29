@@ -10,13 +10,17 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static me.itswagpvp.economyplus.EconomyPlus.log;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
-import static me.itswagpvp.economyplus.vault.Economy.round;
 
 public class Utils {
 
@@ -65,6 +69,7 @@ public class Utils {
     }
 
     public static void reloadPlugin(CommandSender p) {
+
         long before = System.currentTimeMillis();
 
         log("[EconomyPlus] &aReloading the plugin! This action may take a while!");
@@ -113,96 +118,50 @@ public class Utils {
                 || Bukkit.getVersion().contains("19");
     }
 
-    public String format(double d) {
+    public String format(Double d) {
 
-        String value = String.valueOf(d);
-        if(value.contains("E")) {
-            value = String.valueOf(BigDecimal.valueOf(d).doubleValue());
+        DecimalFormat df = new DecimalFormat("#.##"); //NUMBER CANNOT GO ABOVE BILLION DUE TO IT BEING A DOUBLE
+        if (plugin.getConfig().getBoolean("Pattern.Enabled")) {
+            df = new DecimalFormat(plugin.getConfig().getString("Pattern.Value", "###,###.##"));
+        }
 
-            if(!(value.contains("E"))) {
-                StringBuilder b = new StringBuilder(value);
-                b.replace(value.lastIndexOf("0"), value.lastIndexOf("0") + 1, "");
-                value = b.toString();
-            } else {
-                //needs work (formatting 0.00000005 returns E values
-                // trying to make a formatting system but i think my mind is actually going crazy. I am feeling something far from this reality
-                // when dealing with these issues. Ill have to come back to it feel free to make changes please.....
-                // this really is doing me.
+        String value = df.format(d);
+
+        if(!(value.contains("."))) {
+            value = value + "." + 00;
+        }
+
+        if (plugin.getConfig().getBoolean("Use-Decimals", true)) {
+
+            if(value.split("\\.")[1].length() == 1) {
+                value = value + "0";
             }
-        }
 
-        Bukkit.broadcastMessage("1 - " + value);
+            if (plugin.getConfig().getBoolean("Remove-Naughts", true)) {
 
-        int decimal = 2;
-        if (!(plugin.getConfig().get("Formatting.Decimal-Places") == null)) {
-            decimal = plugin.getConfig().getInt("Formatting.Decimal-Places");
-        }
-
-        if (plugin.getConfig().getBoolean("Formatting.Use-Decimals")) {
-
-            Bukkit.broadcastMessage("2 - " + value);
-
-            if (plugin.getConfig().getBoolean("Formatting.Remove-Unnecessary-Values")) {
-
-                //split string from 10.20 to 10 and 20
-                String split = value.split("\\.")[1];
-                Bukkit.broadcastMessage("3 - " + value);
-
-                //if all chars are 0
-                int count = split.length() - split.replaceAll("0", "").length();
-
-                if (count == split.length()) {
+                if(value.split("\\.")[1].matches("00")) {
+                    //value = value.replace(".00", "");
                     value = value.split("\\.")[0];
-                    Bukkit.broadcastMessage("4 - " + value);
-                } else {
+                }
 
-                    Bukkit.broadcastMessage("5 - " + value);
+            } else {
 
-                    //else ensure it is round decimal size
-                    if (!(split.length() == decimal)) {
-                        Bukkit.broadcastMessage("6 - " + value);
-
-                        if (split.length() < decimal) {
-
-                            Bukkit.broadcastMessage("7 - " + value);
-
-                            for (int i = 0; i < decimal - split.length(); i++) {
-                                value = value + "0";
-                            }
-
-                        } else {
-                            value = String.format("%." + decimal + "f", d);
-                            Bukkit.broadcastMessage("8 - " + value);
-                        }
-
-                    }
-
+                if(!(value.contains("."))) {
+                    value = value + ".00";
                 }
 
             }
 
         } else {
-            Bukkit.broadcastMessage("9 - " + value);
-            value = String.format("%.0f", d);
+            value = df.format(Math.round(d));
+            //add pattern
         }
 
-        if (plugin.getConfig().getBoolean("Baltop.Pattern.Enabled")) {
-            Bukkit.broadcastMessage("10");
-            String pattern = plugin.getConfig().getString("Baltop.Pattern.Value", "###,###.##");
-
-            DecimalFormat decimalFormat = new DecimalFormat();
-            decimalFormat.applyPattern(pattern);
-            return decimalFormat.format(value);
-        } else {
-            Bukkit.broadcastMessage("11 - " + value);
-            return value;
-        }
+        return value;
 
     }
 
-    public String fixMoney(double d) {
-
-        Bukkit.broadcastMessage("fix: " + d);
+    public String fixMoney(Double d) {
 
         if (d < 1000L) {
             return format(d);

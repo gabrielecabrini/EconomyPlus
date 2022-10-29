@@ -1,5 +1,6 @@
 package me.itswagpvp.economyplus.bank.commands;
 
+import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
@@ -9,9 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.math.BigDecimal;
+
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Bank implements CommandExecutor {
+
+    boolean useperms = EconomyPlus.getPlugin(EconomyPlus.class).getConfig().getBoolean("Use-Permissions") || EconomyPlus.getPlugin(EconomyPlus.class).getConfig().get("Use-Permissions") == null;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -30,7 +35,12 @@ public class Bank implements CommandExecutor {
 
         Player p = (Player) sender;
 
-        if (args.length <= 0) {
+        if (args.length == 0) {
+
+            if (!p.hasPermission("economyplus.bank.view") && useperms) {
+                p.sendMessage(plugin.getMessage("NoPerms"));
+                return true;
+            }
 
             Utils utility = new Utils();
             double bank = new Economy(p).getBank();
@@ -49,6 +59,11 @@ public class Bank implements CommandExecutor {
             double bank = new Economy(p).getBank();
 
             if (args[0].equalsIgnoreCase("withdraw")) {
+
+                if (!p.hasPermission("economyplus.bank.withdraw")  && useperms) {
+                    p.sendMessage(plugin.getMessage("NoPerms"));
+                    return true;
+                }
 
                 if (args[1].contains("-")) {
                     p.sendMessage(plugin.getMessage("InvalidArgs.Bank"));
@@ -76,6 +91,11 @@ public class Bank implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("deposit")) {
+
+                if (!p.hasPermission("economyplus.bank.deposit") && useperms) {
+                    p.sendMessage(plugin.getMessage("NoPerms"));
+                    return true;
+                }
 
                 if (args[1].contains("-")) {
                     p.sendMessage(plugin.getMessage("InvalidArgs.Bank"));
@@ -108,6 +128,7 @@ public class Bank implements CommandExecutor {
         }
 
         if (args.length == 3) {
+
             if (args[0].equalsIgnoreCase("admin")) {
 
                 if (!p.hasPermission("economyplus.bank.admin")) {
@@ -127,7 +148,7 @@ public class Bank implements CommandExecutor {
                 if (args[1].equalsIgnoreCase("get")) {
 
                     Utils utility = new Utils();
-                    double bank = new Economy(target).getBank();
+                    Double bank = new Economy(target).getBank();
 
                     p.sendMessage(plugin.getMessage("Bank.Admin.Get")
                             .replaceAll("%player%", "" + target.getName())

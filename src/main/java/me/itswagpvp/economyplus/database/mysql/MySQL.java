@@ -85,7 +85,7 @@ public class MySQL {
     }
 
     // Retrieve the balance of the player
-    public double getTokens(String player) {
+    public Double getTokens(String player) {
         try (
                 PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
                 ResultSet rs = ps.executeQuery()
@@ -102,7 +102,7 @@ public class MySQL {
     }
 
     // Save the balance to the player's database
-    public void setTokens(String player, double tokens) {
+    public void setTokens(String player, Double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             try (
@@ -140,7 +140,7 @@ public class MySQL {
     }
 
     // Save the balance to the player's database
-    public void setBank(String player, double tokens) {
+    public void setBank(String player, Double tokens) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             try (

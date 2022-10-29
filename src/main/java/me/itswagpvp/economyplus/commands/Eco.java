@@ -32,10 +32,7 @@ public class Eco implements CommandExecutor {
 
             double value;
             try {
-                Bukkit.broadcastMessage("String - " + arg);
-                value = BigDecimal.valueOf(Double.parseDouble(arg)).doubleValue();
-                Bukkit.broadcastMessage("Value - " + value);
-                Bukkit.broadcastMessage("BigDecimal - " + BigDecimal.valueOf(Double.parseDouble(arg)));
+                value = Double.parseDouble(arg);
             } catch (NumberFormatException e) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid number!"));
                 return true;
@@ -85,7 +82,7 @@ public class Eco implements CommandExecutor {
                 if (res < 0D) {
                     res = 0D;
                     Economy eco = new Economy(p);
-                    eco.setBalance(0);
+                    eco.setBalance(0D);
                 } else {
                     money.takeBalance(value);
                 }

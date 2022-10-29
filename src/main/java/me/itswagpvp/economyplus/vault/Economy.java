@@ -11,6 +11,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class Economy extends VEconomy {
 
@@ -22,12 +24,12 @@ public class Economy extends VEconomy {
     }
 
     // Returns the money of a player
-    public double getBalance() {
+    public Double getBalance() {
         return super.getBalance(Selector.playerToString(player));
     }
 
     // Set the money of a player
-    public void setBalance(double money) {
+    public void setBalance(Double money) {
 
         PlayerBalanceChangeEvent event = new PlayerBalanceChangeEvent(Selector.playerToString(player), money);
         Bukkit.getPluginManager().callEvent(event);
@@ -39,7 +41,7 @@ public class Economy extends VEconomy {
     }
 
     // Add moneys to a player account
-    public void addBalance(double money) {
+    public void addBalance(Double money) {
 
         PlayerBalanceChangeEvent event = new PlayerBalanceChangeEvent(Selector.playerToString(player), getBalance() + money);
         Bukkit.getPluginManager().callEvent(event);
@@ -49,7 +51,7 @@ public class Economy extends VEconomy {
     }
 
     // Remove moneys from a player's account
-    public void takeBalance(double money) {
+    public void takeBalance(Double money) {
 
         PlayerBalanceChangeEvent event = new PlayerBalanceChangeEvent(Selector.playerToString(player), getBalance() - money);
         Bukkit.getPluginManager().callEvent(event);
@@ -59,7 +61,7 @@ public class Economy extends VEconomy {
     }
 
     // Set player's bank to the constructor value
-    public void setBank(double money) {
+    public void setBank(Double money) {
 
         PlayerBankChangeEvent event = new PlayerBankChangeEvent(Selector.playerToString(player), money);
         Bukkit.getPluginManager().callEvent(event);
@@ -78,21 +80,8 @@ public class Economy extends VEconomy {
     }
 
     // Controls if the player has enough moneys
-    public boolean detractable(double money) {
+    public boolean detractable(Double money) {
         return has(player, money);
     }
 
-    //method that rounds to a certain dec places
-    public static Double round(double val) { //known issue with trying to get data config
-
-        File file = new File(EconomyPlus.plugin.getDataFolder(), "data.yml");
-        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-
-        int round = 2;
-        if(!(config.get("Formatting.Decimal-Places") == null)) {
-            round = config.getInt("Formatting.Decimal-Places");
-        }
-
-        return Double.parseDouble(String.format("%." + round + "f", val));
-    }
 }
