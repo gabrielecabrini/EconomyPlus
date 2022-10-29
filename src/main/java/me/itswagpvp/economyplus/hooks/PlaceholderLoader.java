@@ -8,6 +8,7 @@ public class PlaceholderLoader {
 
     // Load PlaceholderAPI
     public void loadPlaceholderAPI() {
+
         if (!plugin.getConfig().getBoolean("Hooks.PlaceholderAPI")) {
             return;
         }
@@ -18,12 +19,25 @@ public class PlaceholderLoader {
         }
 
         try {
-            new PlaceholderAPI(plugin).register();
+            new PlaceholderAPI(plugin).canRegister();
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fPlaceholderAPI: §cError!");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
         } finally {
             Bukkit.getConsoleSender().sendMessage("   - §fPlaceholderAPI: §aDone!");
         }
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new PlaceholderAPI(plugin).register();
+                } catch (Exception e) {
+                    Bukkit.getConsoleSender().sendMessage(e.getMessage());
+                }
+            }
+        }, 1L);
+
+
     }
 }

@@ -145,8 +145,8 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
 
-        if (cver >= Updater.getLatestVersion()) {
-            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + cver + ")");
+        if (pver >= Updater.getLatestVersion()) {
+            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + pver + ")");
         }
 
         if (dbType == DatabaseType.UNDEFINED) {
@@ -263,7 +263,7 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("     - §fCaching accounts...");
 
-        if (!(plugin.getConfig().get("Bank.Interests.Enabled") == null) || plugin.getConfig().getBoolean("Bank.Interests.Enabled") == true) {
+        if (!(plugin.getConfig().get("Bank.Interests.Enabled") == null) && plugin.getConfig().getBoolean("Bank.Interests.Enabled") == true) {
             new InterestsManager().startBankInterests();
         }
 
