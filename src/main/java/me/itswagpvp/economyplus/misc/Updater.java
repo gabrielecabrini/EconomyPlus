@@ -33,7 +33,7 @@ public class Updater implements Listener {
             behind = Integer.parseInt(String.valueOf(Math.round((getLatestVersion() - cv) / 0.1)).replace(".0", ""));
 
             Bukkit.getConsoleSender().sendMessage("§f-> §dEconomy§5Plus §cis outdated! (" + "v" + cv + ")");
-            Bukkit.getConsoleSender().sendMessage("   - §fYou are §c" + behind + " §fversions!");
+            Bukkit.getConsoleSender().sendMessage("   - §fYou are behind §c" + behind + " §fversions!");
             Bukkit.getConsoleSender().sendMessage("   - §fUpdate to §dv" + getLatestVersion() + " §fusing §d/ep update");
             Bukkit.getConsoleSender().sendMessage("");
 
