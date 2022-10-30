@@ -122,7 +122,6 @@ public class Utils {
 
         if (plugin.getConfig().get("Rounding") != null && plugin.getConfig().getBoolean("Rounding", false) == false) {
             df.setRoundingMode(RoundingMode.DOWN);
-            Bukkit.broadcastMessage("round down!");
         }
 
         String value = df.format(d);
