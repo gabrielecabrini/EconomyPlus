@@ -120,10 +120,9 @@ public class Utils {
             df = new DecimalFormat(plugin.getConfig().getString("Pattern.Value", "###,###.###"));
         }
 
-        if (!(plugin.getConfig().get("Rounding") == null)) {
-            if (plugin.getConfig().getBoolean("Rounding", false) == false) {
-                df.setRoundingMode(RoundingMode.DOWN);
-            }
+        if (plugin.getConfig().get("Rounding") != null && plugin.getConfig().getBoolean("Rounding", false) == false) {
+            df.setRoundingMode(RoundingMode.DOWN);
+            Bukkit.broadcastMessage("round down!");
         }
 
         String value = df.format(d);
@@ -141,7 +140,6 @@ public class Utils {
             if (plugin.getConfig().getBoolean("Remove-Naughts", true)) {
 
                 if(value.split("\\.")[1].matches("00")) {
-                    //value = value.replace(".00", "");
                     value = value.split("\\.")[0];
                 }
 
