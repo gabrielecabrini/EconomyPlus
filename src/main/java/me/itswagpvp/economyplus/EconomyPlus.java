@@ -113,8 +113,12 @@ public class EconomyPlus extends JavaPlugin {
 
         loadMessages();
 
-        Bukkit.getConsoleSender().sendMessage("§8");
-        Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
+        loadMetrics();
+
+        if(plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
+            Bukkit.getConsoleSender().sendMessage("§8");
+            Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
+        }
 
         loadMetrics();
 

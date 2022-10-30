@@ -9,13 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,9 +117,10 @@ public class Utils {
 
         DecimalFormat df = new DecimalFormat("#.##"); //NUMBER CANNOT GO ABOVE BILLION DUE TO IT BEING A DOUBLE
         if (plugin.getConfig().getBoolean("Pattern.Enabled")) {
-            df = new DecimalFormat(plugin.getConfig().getString("Pattern.Value", "###,###.##"));
+            df = new DecimalFormat(plugin.getConfig().getString("Pattern.Value", "###,###.###"));
         }
 
+        df.setRoundingMode(RoundingMode.DOWN);
         String value = df.format(d);
 
         if(!(value.contains("."))) {
@@ -153,7 +149,7 @@ public class Utils {
             }
 
         } else {
-            value = df.format(Math.round(d));
+            value = new DecimalFormat("#").format(d);
             //add pattern
         }
 
