@@ -52,6 +52,7 @@ Sounds:
 
 Use-Decimals: true # If true it's 0.00, if false is 0
 Remove-Naughts: true # 10.0 > 10   12,402.00 > 12,402   10.03 > 10.03
+Rounding: false # 10.005 = 10.01, if false: 10.005 = 10.00 (RECOMMENDED FALSE)
 
 # This will work only with %money% and not with %money_formatted%
 # This affects baltop and balances globally
