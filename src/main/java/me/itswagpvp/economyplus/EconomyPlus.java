@@ -267,8 +267,12 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("     - §fCaching accounts...");
 
-        if (!(plugin.getConfig().get("Bank.Interests.Enabled") == null) && plugin.getConfig().getBoolean("Bank.Interests.Enabled") == true) {
-            new InterestsManager().startBankInterests();
+        if (plugin.getConfig().get("Bank.Enabled") != null && plugin.getConfig().getBoolean("Bank.Enabled") == true) {
+
+            if (plugin.getConfig().get("Bank.Interests.Enabled") != null && plugin.getConfig().getBoolean("Bank.Interests.Enabled") == true) {
+                new InterestsManager().startBankInterests();
+            }
+
         }
 
     }
