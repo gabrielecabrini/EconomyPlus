@@ -1,5 +1,6 @@
 package me.itswagpvp.economyplus;
 
+import java.util.logging.Level;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.other.InterestsManager;
 import me.itswagpvp.economyplus.commands.*;
@@ -79,7 +80,10 @@ public class EconomyPlus extends JavaPlugin {
 
         saveDefaultConfig();
 
-        if (getConfig().getBoolean("Debug-Mode", false)) debugMode = true;
+        if (getConfig().getBoolean("Debug-Mode", false)) {
+            debugMode = true;
+            getLogger().setLevel(Level.FINEST);
+        }
 
         getConfig().options().copyDefaults(true);
 
@@ -126,7 +130,7 @@ public class EconomyPlus extends JavaPlugin {
 
         loadPlaceholders();
 
-        if (!(cver == pver)) {
+        if (cver != pver) {
 
             String aorb; //ahead or behind
             int outdated; //versions outdated value
@@ -267,9 +271,9 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("     - §fCaching accounts...");
 
-        if (plugin.getConfig().get("Bank.Enabled") != null && plugin.getConfig().getBoolean("Bank.Enabled") == true) {
+        if (plugin.getConfig().get("Bank.Enabled") != null && plugin.getConfig().getBoolean("Bank.Enabled")) {
 
-            if (plugin.getConfig().get("Bank.Interests.Enabled") != null && plugin.getConfig().getBoolean("Bank.Interests.Enabled") == true) {
+            if (plugin.getConfig().get("Bank.Interests.Enabled") != null && plugin.getConfig().getBoolean("Bank.Interests.Enabled")) {
                 new InterestsManager().startBankInterests();
             }
 
