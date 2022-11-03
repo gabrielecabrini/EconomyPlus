@@ -1,5 +1,6 @@
 package me.itswagpvp.economyplus;
 
+import java.util.logging.Level;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.other.InterestsManager;
 import me.itswagpvp.economyplus.commands.*;
@@ -66,7 +67,7 @@ public class EconomyPlus extends JavaPlugin {
         saveConfig();
     }
 
-    public void onEnable() {
+    public void onLoad() {
 
         // Plugin startup logic
 
@@ -79,19 +80,17 @@ public class EconomyPlus extends JavaPlugin {
 
         saveDefaultConfig();
 
-        if (getConfig().getBoolean("Debug-Mode", false)) debugMode = true;
+        if (getConfig().getBoolean("Debug-Mode", false)) {
+            debugMode = true;
+            getLogger().setLevel(Level.FINEST);
+        }
 
         getConfig().options().copyDefaults(true);
 
         new StorageManager().createStorageConfig();
 
         if (!setupEconomy()) {
-            Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
-            Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
-            Bukkit.getConsoleSender().sendMessage("              §cDisabling");
-            Bukkit.getConsoleSender().sendMessage("§8");
-            Bukkit.getConsoleSender().sendMessage("§f-> §cCan't find Vault!");
-            Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
+            vaultError("Can't find Vault!");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -107,26 +106,11 @@ public class EconomyPlus extends JavaPlugin {
 
         loadEconomy();
 
-        loadEvents();
-
-        loadCommands();
-
         loadMessages();
 
         loadMetrics();
 
-        if(plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
-            Bukkit.getConsoleSender().sendMessage("§8");
-            Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
-        }
-
-        loadMetrics();
-
-        loadHolograms();
-
-        loadPlaceholders();
-
-        if (!(cver == pver)) {
+        if (cver != pver) {
 
             String aorb; //ahead or behind
             int outdated; //versions outdated value
@@ -158,6 +142,26 @@ public class EconomyPlus extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
 
+    }
+
+    @Override
+    public void onEnable() {
+        sanityCheck();
+
+        enableDatabase();
+
+        loadEvents();
+
+        loadCommands();
+
+        if(plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
+            Bukkit.getConsoleSender().sendMessage("§8");
+            Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
+        }
+
+        loadHolograms();
+
+        loadPlaceholders();
     }
 
     @Override
@@ -255,6 +259,13 @@ public class EconomyPlus extends JavaPlugin {
             dbType = DatabaseType.UNDEFINED;
         }
 
+        if (plugin.getConfig().getBoolean("Bank.Enabled", true) && plugin.getConfig().getBoolean("Bank.Interests.Enabled", true)) {
+            new InterestsManager().startBankInterests();
+        }
+
+    }
+
+    private void enableDatabase() {
         // Load the cache for the database - Vault API
         if (dbType == DatabaseType.MySQL) {
             new CacheManager().cacheOnlineDatabase();
@@ -266,15 +277,6 @@ public class EconomyPlus extends JavaPlugin {
         }
 
         Bukkit.getConsoleSender().sendMessage("     - §fCaching accounts...");
-
-        if (plugin.getConfig().get("Bank.Enabled") != null && plugin.getConfig().getBoolean("Bank.Enabled") == true) {
-
-            if (plugin.getConfig().get("Bank.Interests.Enabled") != null && plugin.getConfig().getBoolean("Bank.Interests.Enabled") == true) {
-                new InterestsManager().startBankInterests();
-            }
-
-        }
-
     }
 
     private void loadEvents() {
@@ -387,7 +389,23 @@ public class EconomyPlus extends JavaPlugin {
 
     // Controls if there's Vault installed
     private boolean setupEconomy() {
-        return getServer().getPluginManager().isPluginEnabled("Vault");
+        return getServer().getPluginManager().getPlugin("Vault") != null;
+    }
+
+    private void sanityCheck() {
+        if (getServer().getPluginManager().isPluginEnabled("Vault")) return;
+
+        vaultError("Vault is not enabled.");
+        getServer().getPluginManager().disablePlugin(this);
+    }
+
+    private void vaultError(String specific) {
+        Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
+        Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
+        Bukkit.getConsoleSender().sendMessage("              §cDisabling");
+        Bukkit.getConsoleSender().sendMessage("§8");
+        Bukkit.getConsoleSender().sendMessage("§f-> §c" + specific);
+        Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
     }
 
     // Get the string from /messages/file.yml and format it with color codes (hex for 1.16+)
