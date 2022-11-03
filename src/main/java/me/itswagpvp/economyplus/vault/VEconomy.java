@@ -32,7 +32,7 @@ public class VEconomy implements Economy {
 
     @Override
     public boolean hasBankSupport() {
-        return true;
+        return plugin.getConfig().getBoolean("Bank.Enabled", true);
     }
 
     @Override
