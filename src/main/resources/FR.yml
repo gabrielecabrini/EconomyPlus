@@ -1,0 +1,55 @@
+# Traduit par Sandro642 (https://github.com/Sandro642)
+#
+# Fichier Message pour EconomyPlus
+#
+# vous pouvez utiliser %money% et %money_formatted% (où vous voyez %money%)!
+#
+# General messages
+NoConsole: "&cVous ne pouvez pas faire cela depuis la console!"
+NoPlayer: "&cVous ne pouvez pas faire cela depuis le jeu!"
+NoPerms: "&cVous n'avez pas assez d'autorisations!"
+Reload: "&aPlugin recharger en %time%ms!"
+PlayerNotFound: "&cJoueur non trouvé!"
+
+# Messages for the invalid args
+InvalidArgs:
+  Main: "&cArguments invalides! /economyplus <debug/help/reload/convert/exclude/hologram>"
+  Eco: "&cArguments invalides! /eco <player> <set/give/take/reset> <money>"
+  Balance: "&cArguments invalides! /bal <player>"
+  Pay: "&cArguments invalides! /pay <player> <money>"
+  Bank: "&cArguments invalides! /bank <withdraw/deposit/admin> <set/get> <player> <moneys>"
+
+# Moneys refreshed
+Money:
+  Done: "&aAction exécutée avec succès !"
+  Refreshed: "&eVotre argent a été rafraîchi! Vous avez maintenant $%money%!"
+  Reset: "&cVotre argent a été restauré au solde de départ!"
+
+# /bal
+Balance:
+  Self: "&aVous avez $%money%!"
+  Others: "&a%player% a $%money%!"
+
+# /pay
+Pay:
+  NoSelf: "&cVous ne pouvez pas envoyer d'argent à vous-même!"
+  NoMoney: "&CVous n'avez pas assez d'argent"
+  Self: "&7Vous avez envoyé &c$%money% &7a &c%player%&7!"
+  Target: "&7Vous avez reçu $%money% &7de &a%player%&7!"
+  DisabledPayments: "&cLe joueur n'accepte pas les paiements entrants"
+  Toggle:
+    Enabled: "&cVous avez désactivé vos encaissements!"
+    Disabled: "&aVous avez activé vos encaissements!"
+
+# /bank
+Bank:
+  Disabled: "&cLa banque est désactivé!"
+  NoMoney: "&cVous n'avez pas assez d'argent à la banque!"
+  Deposit: "&eVous avez déposé $%money%!"
+  Withdraw: "&eVous avez retiré $%money%!"
+  Self: "&aVous avez $%money% dans votre banque!"
+  Interests: "&aVous avez reçu un intérêt de %percentage%%!"
+  Admin:
+    Get: "&a%player% a $%money% en banque!"
+    Set: "&eVous avez mis la banque de %player% à $%money%!"
+    Refreshed: "&eVotre banque a été actualisée à $%money%!"

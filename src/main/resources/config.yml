@@ -16,7 +16,7 @@ Version: ${project.version}
 
 # Languages are stored in the EconomyPlus/messages folder.
 # Credit to translaters for the assistance in creating these languages.
-# Available Languages include: EN, IT, RO, AL, DE, ZH
+# Available Languages include: EN, IT, RO, AL, DE, ZH, FR
 Language: EN
 
 # bStats system (https://bstats.org/plugin/bukkit/EconomyPlus/11565)
