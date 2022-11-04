@@ -120,7 +120,7 @@ public class Utils {
             df = new DecimalFormat(plugin.getConfig().getString("Pattern.Value", "###,###.###"));
         }
 
-        if (plugin.getConfig().get("Rounding") != null && plugin.getConfig().getBoolean("Rounding", false) == false) {
+        if (plugin.getConfig().get("Rounding") != null && !plugin.getConfig().getBoolean("Rounding", false)) {
             df.setRoundingMode(RoundingMode.DOWN);
         }
 

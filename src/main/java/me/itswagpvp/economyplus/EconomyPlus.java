@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus;
 
-import java.util.logging.Level;
 import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.bank.other.InterestsManager;
 import me.itswagpvp.economyplus.commands.*;
@@ -27,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.messages.Messages.getMessageConfig;
 
@@ -67,16 +67,15 @@ public class EconomyPlus extends JavaPlugin {
         saveConfig();
     }
 
+    long before;
+
     public void onLoad() {
 
         // Plugin startup logic
 
         plugin = this;
 
-        double cver = Double.parseDouble(getConfig().getString("Version"));
-        double pver = Double.parseDouble(getDescription().getVersion());
-
-        long before = System.currentTimeMillis();
+        before = System.currentTimeMillis();
 
         saveDefaultConfig();
 
@@ -95,6 +94,25 @@ public class EconomyPlus extends JavaPlugin {
             return;
         }
 
+        loadDatabase();
+
+        loadEconomy();
+
+        if (dbType == DatabaseType.UNDEFINED) {
+            Bukkit.getConsoleSender().sendMessage("§c[EconomyPlus] Unable to start the plugin without a valid database option!");
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
+    }
+
+    String vault = "";
+
+    @Override
+    public void onEnable() {
+
+        double cver = Double.parseDouble(getConfig().getString("Version"));
+        double pver = Double.parseDouble(getDescription().getVersion());
+
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
         Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
         Bukkit.getConsoleSender().sendMessage("            §aEnabled §dv" + pver);
@@ -102,13 +120,32 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core:");
 
-        loadDatabase();
+        Bukkit.getConsoleSender().sendMessage("   - §fStorage-Mode: §a" + storageMode.toString());
+        //
 
-        loadEconomy();
+        Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (" + dbType.toString().replace("H2", "SQLite") + ")");
+
+        enableDatabase();
+
+        Bukkit.getConsoleSender().sendMessage("   - §fVault: " + vault);
+
+        loadCommands();
 
         loadMessages();
 
         loadMetrics();
+
+        sanityCheck();
+
+        loadEvents();
+
+        Bukkit.getConsoleSender().sendMessage("§8");
+
+        if(plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
+            Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
+            loadHolograms();
+            loadPlaceholders();
+        }
 
         if (cver != pver) {
 
@@ -137,31 +174,7 @@ public class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + pver + ")");
         }
 
-        if (dbType == DatabaseType.UNDEFINED) {
-            Bukkit.getConsoleSender().sendMessage("§c[EconomyPlus] Unable to start the plugin without a valid database option!");
-            getServer().getPluginManager().disablePlugin(this);
-        }
-
-    }
-
-    @Override
-    public void onEnable() {
-        sanityCheck();
-
-        enableDatabase();
-
-        loadEvents();
-
-        loadCommands();
-
-        if(plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
-            Bukkit.getConsoleSender().sendMessage("§8");
-            Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
-        }
-
-        loadHolograms();
-
-        loadPlaceholders();
+        //
     }
 
     @Override
@@ -195,12 +208,11 @@ public class EconomyPlus extends JavaPlugin {
             Class.forName("net.milkbowl.vault.economy.Economy");
             getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, new VEconomy(this), this, ServicePriority.Normal);
         } catch (ClassNotFoundException e) {
-            Bukkit.getConsoleSender().sendMessage("   - §fVault: §CError");
-            Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            vault = "§CError\n" + e.getMessage();
             return;
         }
 
-        Bukkit.getConsoleSender().sendMessage("   - §fVault: §6Hooked");
+        vault = "§6Hooked";
 
     }
 
@@ -209,13 +221,10 @@ public class EconomyPlus extends JavaPlugin {
         // Select how the plugin needs to storage the player datas
         if (getConfig().getString("Database.Mode", "NICKNAME").equalsIgnoreCase("UUID")) {
             storageMode = StorageMode.UUID;
-            Bukkit.getConsoleSender().sendMessage("   - §fStorage-Mode: §aUUID");
         } else if (getConfig().getString("Database.Mode", "NICKNAME").equalsIgnoreCase("NICKNAME")) {
             storageMode = StorageMode.NICKNAME;
-            Bukkit.getConsoleSender().sendMessage("   - §fStorage-Mode: §aNICKNAME");
         } else {
             storageMode = StorageMode.UUID;
-            Bukkit.getConsoleSender().sendMessage("   - §fStorage-Mode: §aUUID");
         }
 
         // Detect and set the type of database
@@ -225,37 +234,32 @@ public class EconomyPlus extends JavaPlugin {
                 new MySQL().createTable();
                 new MySQL().updateTable();
             } catch (Exception e) {
-                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (MySQL)");
+                Bukkit.getConsoleSender().sendMessage("§fDatabase: §cError (MySQL)");
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
                 return;
             }
             dbType = DatabaseType.MySQL;
-            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (MySQL)");
         } else if (getConfig().getString("Database.Type").equalsIgnoreCase("H2")) {
             try {
                 new SQLite().load();
             } catch (Exception e) {
-                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (SQLite)");
+                Bukkit.getConsoleSender().sendMessage("§fDatabase: §cError (SQLite)");
                 e.printStackTrace();
                 return;
             }
 
             dbType = DatabaseType.H2;
-            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (SQLite)");
         } else if (getConfig().getString("Database.Type").equalsIgnoreCase("YAML")) {
             try {
                 createYMLStorage();
             } catch (Exception e) {
-                Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cError (YAML)");
+                Bukkit.getConsoleSender().sendMessage("§fDatabase: §cError (YAML)");
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
                 return;
             }
 
             dbType = DatabaseType.YAML;
-            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (YAML)");
         } else {
-            String type = getConfig().getString("Database.Type");
-            Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §cInvalid database type: " + type);
             dbType = DatabaseType.UNDEFINED;
         }
 
@@ -442,7 +446,7 @@ public class EconomyPlus extends JavaPlugin {
 
     // Returns data.yml if DatabaseType is YAML
     public FileConfiguration getYMLData() {
-        return this.ymlConfig;
+        return ymlConfig;
     }
 
     // Safe-save data.yml

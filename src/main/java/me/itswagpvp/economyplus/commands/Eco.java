@@ -2,14 +2,13 @@ package me.itswagpvp.economyplus.commands;
 
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
-import java.math.BigDecimal;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
@@ -77,12 +76,11 @@ public class Eco implements CommandExecutor {
                     return true;
                 }
 
-                double res = money.getBalance() - value;
+                double res = money.getBalance(p) - value;
 
                 if (res < 0D) {
                     res = 0D;
-                    Economy eco = new Economy(p);
-                    eco.setBalance(0D);
+                    money.setBalance(0D);
                 } else {
                     money.takeBalance(value);
                 }

@@ -14,7 +14,7 @@ public class PlaceholderLoader {
         }
 
         if (!Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            Bukkit.getConsoleSender().sendMessage("   - §fPlaceholderAPI: §cNot found!");
+            Bukkit.getConsoleSender().sendMessage("   - §fPlaceholderAPI: §cCan't find the jar!");
             return;
         }
 

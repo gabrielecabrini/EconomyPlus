@@ -16,10 +16,10 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Messages {
 
-    private static String path = plugin.getDataFolder() + "/messages";
+    private static final String path = plugin.getDataFolder() + "/messages";
 
     //Could change to loop through recourses folder but decided not to because of other files that would conflict.
-    private static List<String> list = Arrays.asList("EN", "IT", "RO", "AL", "DE", "ZH"); //language file names
+    private static final List<String> list = Arrays.asList("EN", "IT", "RO", "AL", "DE", "ZH"); //language file names
 
     public static void load() {
 

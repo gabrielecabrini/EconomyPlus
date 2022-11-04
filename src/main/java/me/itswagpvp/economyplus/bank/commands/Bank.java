@@ -10,8 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.math.BigDecimal;
-
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Bank implements CommandExecutor {
