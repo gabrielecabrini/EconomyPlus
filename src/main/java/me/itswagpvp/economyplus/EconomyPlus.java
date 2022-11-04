@@ -174,6 +174,10 @@ public class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + pver + ")");
         }
 
+        if (plugin.getConfig().getBoolean("Bank.Enabled", true) && plugin.getConfig().getBoolean("Bank.Interests.Enabled", true)) {
+            new InterestsManager().startBankInterests();
+        }
+
         //
     }
 
@@ -261,10 +265,6 @@ public class EconomyPlus extends JavaPlugin {
             dbType = DatabaseType.YAML;
         } else {
             dbType = DatabaseType.UNDEFINED;
-        }
-
-        if (plugin.getConfig().getBoolean("Bank.Enabled", true) && plugin.getConfig().getBoolean("Bank.Interests.Enabled", true)) {
-            new InterestsManager().startBankInterests();
         }
 
     }
