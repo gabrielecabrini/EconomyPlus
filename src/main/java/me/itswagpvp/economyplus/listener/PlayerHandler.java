@@ -1,7 +1,6 @@
 package me.itswagpvp.economyplus.listener;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.vault.Economy;

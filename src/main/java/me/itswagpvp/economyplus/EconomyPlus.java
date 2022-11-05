@@ -73,9 +73,9 @@ public class EconomyPlus extends JavaPlugin {
 
         // Plugin startup logic
 
-        plugin = this;
-
         before = System.currentTimeMillis();
+
+        plugin = this;
 
         saveDefaultConfig();
 
