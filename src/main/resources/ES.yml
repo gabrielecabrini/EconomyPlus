@@ -1,0 +1,55 @@
+# Traducido por Sandro642 (https://github.com/Sandro642)
+#
+# Ficha de mensajes para EconomyPlus
+#
+# Puedes usar %money% y %money_formatted% (Donde ves %money%)!
+#
+# General messages
+NoConsole: "&cNo puedes hacer esto desde la consola.!"
+NoPlayer: "&cNo puedes hacer esto desde el juego.!"
+NoPerms: "&cNo tienes suficientes permisos!"
+Reload: "&aComplemento recargado en %time%ms!"
+PlayerNotFound: "&cJugador no encontrado!"
+
+# Messages for the invalid args
+InvalidArgs:
+  Main: "&cArgs inválidos! /economyplus <debug/help/reload/convert/exclude/hologram>"
+  Eco: "&cArgs inválidos! /eco <player> <set/give/take/reset> <money>"
+  Balance: "&cArgs inválidos! /bal <player>"
+  Pay: "&cArgs inválidos! /pay <player> <money>"
+  Bank: "&cArgs inválidos! /bank <withdraw/deposit/admin> <set/get> <player> <moneys>"
+
+# Moneys refreshed
+Money:
+  Done: "&aAcción ejecutada con éxito!"
+  Refreshed: "&e¡Tu dinero ha sido renovado! Ahora tu tienes $%money%!"
+  Reset: "&cSu dinero ha sido restaurado al saldo inicial!"
+
+# /bal
+Balance:
+  Self: "&aTú tienes $%money%!"
+  Others: "&a%player% posee $%money%!"
+
+# /pay
+Pay:
+  NoSelf: "&cNo puedes enviarte dinero a ti mismo!"
+  NoMoney: "&Cno tienes suficiente dinero!"
+  Self: "&7Has enviado &c$%money% &7a &c%player%&7!"
+  Target: "&7Has recibido &a$%money% &7de &a%player%&7!"
+  DisabledPayments: "&cEl jugador no acepta pagos entrantes"
+  Toggle:
+    Enabled: "&cHas desactivado tus pagos entrantes!"
+    Disabled: "&aHabilitó sus pagos entrantes!"
+
+# /bank
+Bank:
+  Disabled: "&cEl banco está deshabilitado.!"
+  NoMoney: "&cNo tienes suficiente dinero en el banco!"
+  Deposit: "&ehas depositado $%money%!"
+  Withdraw: "&ete has retirado $%money%!"
+  Self: "&aTú tienes $%money% en tu banco!"
+  Interests: "&aHas recibido un interés de %percentage%%!"
+  Admin:
+    Get: "&a%player% posee $%money% en el banco!"
+    Set: "&e¡Ha configurado el banco de %player% en $%money%!"
+    Refreshed: "&eSu banco ha sido actualizado a $%money%!"

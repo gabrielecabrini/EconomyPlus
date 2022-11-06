@@ -19,7 +19,7 @@ public class Messages {
     private static final String path = plugin.getDataFolder() + "/messages";
 
     //Could change to loop through recourses folder but decided not to because of other files that would conflict.
-    private static final List<String> list = Arrays.asList("EN", "IT", "RO", "AL", "DE", "ZH", "FR", "RU"); //language file names
+    private static final List<String> list = Arrays.asList("EN", "IT", "RO", "AL", "DE", "ZH", "FR", "RU", "ES"); //language file names
 
     public static void load() {
 
