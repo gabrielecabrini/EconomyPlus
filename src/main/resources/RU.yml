@@ -1,0 +1,55 @@
+# Перевел Sandro642 (https://github.com/Sandro642)
+#
+# Файл сообщения для ЭкономПлюс
+#
+# вы можете использовать %money% и %money_formatted% (где ты видишь %money%)!
+#
+# General messages
+NoConsole: "&cВы не можете сделать это из консоли!"
+NoPlayer: "&cВы не можете сделать это из игры!"
+NoPerms: "&cУ вас недостаточно разрешений.!"
+Reload: "&aПлагин перезагрузить %time%ms!"
+PlayerNotFound: "&cПлеер не найден!"
+
+# Messages for the invalid args
+InvalidArgs:
+  Main: "&cНедопустимые аргументы! /economyplus <debug/help/reload/convert/exclude/hologram>"
+  Eco: "&cНедопустимые аргументы! /eco <player> <set/give/take/reset> <money>"
+  Balance: "&cНедопустимые аргументы! /bal <player>"
+  Pay: "&cНедопустимые аргументы! /pay <player> <money>"
+  Bank: "&cНедопустимые аргументы! /bank <withdraw/deposit/admin> <set/get> <player> <moneys>"
+
+# Moneys refreshed
+Money:
+  Done: "&aДействие выполнено успешно !"
+  Refreshed: "&eВаши деньги обновлены! Теперь у вас есть $%money%!"
+  Reset: "&cВаши деньги были восстановлены до начального баланса!"
+
+# /bal
+Balance:
+  Self: "&aУ вас есть $%money%!"
+  Others: "&a$%player% a $%money%!"
+
+# /pay
+Pay:
+  NoSelf: "&cВы не можете отправить деньги себе!"
+  NoMoney: "&CУ тебя не достаточно денег"
+  Self: "&7Ты отправил &c$%money% &7a &c%player%&7!"
+  Target: "&7Вы получили $%money% &7из &a%player%&7!"
+  DisabledPayments: "&c$%player% не принимает входящие платежи"
+  Toggle:
+    Enabled: "&cВы деактивировали квитанции!"
+    Disabled: "&aВы активировали квитанции!"
+
+# /bank
+Bank:
+  Disabled: "&cбанк отключен.!"
+  NoMoney: "&cУ вас недостаточно денег в банке!"
+  Deposit: "&eвы подали $%money%!"
+  Withdraw: "&eВы удалили $%money%!"
+  Self: "&aУ вас есть $%money% в вашем банке!"
+  Interests: "&aVous avez reçu un intérêt de %percentage%%!"
+  Admin:
+    Get: "&a%player% a $%money% в banque!"
+    Set: "&eВы установили банк $%player% на $%money%!"
+    Refreshed: "&eВаш банк обновлен до $%money%!"
