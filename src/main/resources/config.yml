@@ -149,3 +149,10 @@ Bank:
     Percentage: 10
     # The player needs to be online to receive the interest?
     Online-Player: false
+
+# This is the section where you can customize URL Webhook Discord
+DiscordWebhook:
+  # Enabled discord webhook?
+  Enabled: true
+  # Below you can modify the Discord URL
+  Url: https://discord.com/api/webhooks/1038198677702975498/SWaEPaOjr8V3p3I5JJbW18JR6gUbhZAFceWqfp7Yv7SBXdqz2idBubczotzt_TmDSdzM

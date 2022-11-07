@@ -9,6 +9,7 @@ import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
 import me.itswagpvp.economyplus.hooks.PlaceholderLoader;
+import me.itswagpvp.economyplus.hooks.discord.MessagesDiscord;
 import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import me.itswagpvp.economyplus.messages.Messages;
@@ -34,7 +35,6 @@ public class EconomyPlus extends JavaPlugin {
 
     // Plugin instance
     public static EconomyPlus plugin;
-
     // Messages
     public static String lang = "EN";
     // BalTop
@@ -178,7 +178,11 @@ public class EconomyPlus extends JavaPlugin {
             new InterestsManager().startBankInterests();
         }
 
-        //
+        if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+            MessagesDiscord.Enabled();
+        } else {
+            MessagesDiscord.Disabled();
+        }
     }
 
     @Override
@@ -483,5 +487,4 @@ public class EconomyPlus extends JavaPlugin {
     public static void log(String value) {
         Bukkit.getConsoleSender().sendMessage("[EconomyPlus] " + ChatColor.translateAlternateColorCodes('&', value));
     }
-
 }
