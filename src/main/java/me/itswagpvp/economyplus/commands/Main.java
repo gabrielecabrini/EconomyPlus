@@ -5,6 +5,7 @@ import me.itswagpvp.economyplus.misc.Converter;
 import me.itswagpvp.economyplus.misc.StorageManager;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.misc.Utils;
+import me.itswagpvp.economyplus.utils.DiscordWebhook;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -14,11 +15,14 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Main implements CommandExecutor {
+
+    public static String webhookURL = plugin.getConfig().getString("DiscordWebhook.Url");
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
@@ -41,6 +45,16 @@ public class Main implements CommandExecutor {
                 Utils.reloadPlugin(sender);
 
                 Utils.playSuccessSound(sender);
+
+                if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+                    DiscordWebhook webhook = new DiscordWebhook(webhookURL);
+                    webhook.addEmbed(new DiscordWebhook.EmbedObject().setDescription(sender.getName().toString() + "reloaded the plugin!"));
+                    try {
+                        webhook.execute();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
                 return true;
             }
@@ -132,6 +146,15 @@ public class Main implements CommandExecutor {
                 }
 
                 Updater.downloadUpdate(sender);
+                if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+                    DiscordWebhook webhook = new DiscordWebhook(webhookURL);
+                    webhook.addEmbed(new DiscordWebhook.EmbedObject().setDescription(sender.getName().toString() + "update the plugin!"));
+                    try {
+                        webhook.execute();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
                 return true;
             }

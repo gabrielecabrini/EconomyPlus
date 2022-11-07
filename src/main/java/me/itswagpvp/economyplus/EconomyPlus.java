@@ -334,12 +334,6 @@ public class EconomyPlus extends JavaPlugin {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            } else {
-                try {
-                    MessagesDiscord.Disabled();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
             }
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fWebhook: §cError");
