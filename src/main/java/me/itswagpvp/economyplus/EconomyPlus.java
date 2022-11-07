@@ -9,7 +9,7 @@ import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
 import me.itswagpvp.economyplus.hooks.PlaceholderLoader;
-import me.itswagpvp.economyplus.hooks.discord.MessagesDiscord;
+import me.itswagpvp.economyplus.discord.MessagesDiscord;
 import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import me.itswagpvp.economyplus.messages.Messages;
@@ -131,6 +131,8 @@ public class EconomyPlus extends JavaPlugin {
 
         loadCommands();
 
+        loadWebhookUrl();
+
         loadMessages();
 
         loadMetrics();
@@ -176,12 +178,6 @@ public class EconomyPlus extends JavaPlugin {
 
         if (plugin.getConfig().getBoolean("Bank.Enabled", true) && plugin.getConfig().getBoolean("Bank.Interests.Enabled", true)) {
             new InterestsManager().startBankInterests();
-        }
-
-        if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
-            MessagesDiscord.Enabled();
-        } else {
-            MessagesDiscord.Disabled();
         }
     }
 
@@ -328,6 +324,29 @@ public class EconomyPlus extends JavaPlugin {
             return;
         }
         Bukkit.getConsoleSender().sendMessage("   - §fCommands: §aLoaded");
+    }
+
+    private void loadWebhookUrl() {
+        try {
+            if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+                try {
+                    MessagesDiscord.Enabled();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    MessagesDiscord.Disabled();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage("   - §fWebhook: §cError");
+            Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            return;
+        }
+        Bukkit.getConsoleSender().sendMessage("   - §fWebhook: §aLoaded");
     }
 
     // Loads the bStats metrics
