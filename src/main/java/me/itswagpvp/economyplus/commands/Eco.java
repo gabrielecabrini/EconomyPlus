@@ -64,7 +64,7 @@ public class Eco implements CommandExecutor {
                                 .replaceAll("%money_formatted%", "" + utility.fixMoney(value))
                                 .replaceAll("%money%", "" + utility.format(value)));
                         Utils.playSuccessSound(p.getPlayer());
-                       if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+                       if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", false)) {
                             DiscordWebhook webhook = new DiscordWebhook(webhookURL);
                             webhook.addEmbed(new DiscordWebhook.EmbedObject().setDescription(p.getPlayer().getName() + " to set his money to " + value + "$ !"));
                             try {
@@ -108,7 +108,7 @@ public class Eco implements CommandExecutor {
                                 .replaceAll("%money%", "" + utility.format(res))
                                 .replaceAll("%money_formatted%", "" + utility.fixMoney(res)));
                         Utils.playSuccessSound(p.getPlayer());
-                        if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+                        if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", false)) {
                             DiscordWebhook webhook = new DiscordWebhook(webhookURL);
                             webhook.addEmbed(new DiscordWebhook.EmbedObject().setDescription(p.getPlayer().getName() + " took " + value + "$ !"));
                             try {
@@ -144,7 +144,7 @@ public class Eco implements CommandExecutor {
                                 .replaceAll("%money_formatted%", "" + utility.fixMoney(money.getBalance()))
                                 .replaceAll("%money%", "" + utility.format(money.getBalance())));
                         Utils.playSuccessSound(p.getPlayer());
-                        if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+                        if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", false)) {
                             DiscordWebhook webhook = new DiscordWebhook(webhookURL);
                             webhook.addEmbed(new DiscordWebhook.EmbedObject().setDescription(p.getPlayer().getName() + " it's giving " + value + "$ !"));
                             try {
@@ -190,7 +190,7 @@ public class Eco implements CommandExecutor {
                 }
 
                 Utils.playSuccessSound(sender);
-                if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+                if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", false)) {
                     DiscordWebhook webhook = new DiscordWebhook(webhookURL);
                     webhook.addEmbed(new DiscordWebhook.EmbedObject().setDescription(p.getPlayer().getName() + "reset his wallet!"));
                     try {

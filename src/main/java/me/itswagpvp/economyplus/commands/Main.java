@@ -146,7 +146,7 @@ public class Main implements CommandExecutor {
                 }
 
                 Updater.downloadUpdate(sender);
-                if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+                if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", false)) {
                     DiscordWebhook webhook = new DiscordWebhook(webhookURL);
                     webhook.addEmbed(new DiscordWebhook.EmbedObject().setDescription(sender.getName().toString() + "update the plugin!"));
                     try {

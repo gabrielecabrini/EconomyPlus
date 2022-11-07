@@ -328,7 +328,7 @@ public class EconomyPlus extends JavaPlugin {
 
     private void loadWebhookUrl() {
         try {
-            if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", true)) {
+            if (plugin.getConfig().getBoolean("DiscordWebhook.Enabled", false)) {
                 try {
                     MessagesDiscord.Enabled();
                 } catch (IOException e) {
