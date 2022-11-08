@@ -23,6 +23,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -332,11 +333,13 @@ public class EconomyPlus extends JavaPlugin {
                 try {
                     MessagesDiscord.Enabled();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("   - §fWebhook: §cError");
+            Bukkit.getConsoleSender().sendMessage("       -= §cYou entered a URL that either expired or is not the correct one.");
+            Bukkit.getConsoleSender().sendMessage("       -= §cLook at the issues on the EconomyPlus github, help is available.");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
             return;
         }
