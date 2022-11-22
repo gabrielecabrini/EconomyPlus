@@ -8,7 +8,6 @@ import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
-import me.itswagpvp.economyplus.hooks.Loader;
 import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
 import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
@@ -31,7 +30,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.messages.Messages.getMessageConfig;
-import static org.bukkit.Bukkit.getServer;
 
 public class EconomyPlus extends JavaPlugin {
 
@@ -113,7 +111,7 @@ public class EconomyPlus extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        new Loader().loadPlaceholderAPI();
+        loadPlaceholderAPI();
 
         double cver = Double.parseDouble(getConfig().getString("Version"));
         double pver = Double.parseDouble(getDescription().getVersion());
@@ -148,7 +146,7 @@ public class EconomyPlus extends JavaPlugin {
         if(plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
             Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
             loadHolograms();
-            Bukkit.getConsoleSender().sendMessage(new Loader().placeholder);
+            Bukkit.getConsoleSender().sendMessage(placeholder);
             Bukkit.getConsoleSender().sendMessage("§f");
         }
 
@@ -342,6 +340,30 @@ public class EconomyPlus extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("   - §cError loading bStats");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
         }
+    }
+
+    private static String placeholder = "   - §fPlaceholderAPI: §cCan't find the jar!";
+    private void loadPlaceholderAPI() {
+
+        if (!plugin.getConfig().getBoolean("Hooks.PlaceholderAPI")) {
+            Bukkit.getConsoleSender().sendMessage("boolean toggled");
+            return;
+        }
+
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            return;
+        }
+
+        try {
+            new PlaceholderAPI(plugin).register();
+        } catch (Exception e) {
+            placeholder = "   - §fPlaceholderAPI: §cError!";
+            Bukkit.getConsoleSender().sendMessage("§c[EconomyPlus] Error hooking into PlaceholderAPI:");
+            Bukkit.getConsoleSender().sendMessage(e.getMessage());
+        } finally {
+            placeholder = "   - §fPlaceholderAPI: §aHooked!";
+        }
+
     }
 
     private void loadHolograms() {

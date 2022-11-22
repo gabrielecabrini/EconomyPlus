@@ -21,6 +21,7 @@ public class Updater implements Listener {
     static EconomyPlus plugin = EconomyPlus.plugin;
 
     static int behind = 0;
+    static int ahead = 0;
     static boolean enabled = plugin.getConfig().getBoolean("Updater");
 
     static boolean alreadyDownloaded = false;
@@ -35,6 +36,15 @@ public class Updater implements Listener {
             Bukkit.getConsoleSender().sendMessage("§f-> §dEconomy§5Plus §cis outdated! (" + "v" + cv + ")");
             Bukkit.getConsoleSender().sendMessage("   - §fYou are behind §c" + behind + " §fversion/s!");
             Bukkit.getConsoleSender().sendMessage("   - §fUpdate to §dv" + getLatestVersion() + " §fusing §d/ep update");
+            Bukkit.getConsoleSender().sendMessage("");
+
+        } else if (cv > getLatestVersion()) {
+
+            ahead = Integer.parseInt(String.valueOf(Math.round((cv - getLatestVersion()) / 0.1)).replace(".0", ""));
+
+            Bukkit.getConsoleSender().sendMessage("§f-> §dEconomy§5Plus §cis over updated! (" + "v" + cv + ")");
+            Bukkit.getConsoleSender().sendMessage("   - §fYou are ahead §d" + ahead + " §fversion/s!");
+            Bukkit.getConsoleSender().sendMessage("   - §fDowngrade to §dv" + getLatestVersion() + " §ffor stable build.");
             Bukkit.getConsoleSender().sendMessage("");
 
         }

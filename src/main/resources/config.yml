@@ -38,8 +38,8 @@ Updater: true
 # You will receive update notifications in game when you join if you have the permission (economyplus.update)
 Updater-Notifications: true
 
-# Use permissions for commands not including administrative commands?
-# If false, Permission are not required for commands listed below
+# Use permissions for default commands not including administrative commands?
+# If false permissions are not required for commands listed below
 # /pay, /paytoggle, /bal, /bal <others>, /baltop, /bank, /bank deposit & /bank withdraw
 Use-Permissions: true
 
@@ -148,4 +148,4 @@ Bank:
     # Interest rate (%)
     Percentage: 10
     # The player needs to be online to receive the interest?
-    Online-Player: false
+    Online-Player: true
