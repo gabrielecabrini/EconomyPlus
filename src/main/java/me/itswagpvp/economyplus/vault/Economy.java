@@ -7,12 +7,6 @@ import me.itswagpvp.economyplus.hooks.events.PlayerBalanceChangeEvent;
 import me.itswagpvp.economyplus.hooks.events.PlayerBankChangeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 public class Economy extends VEconomy {
 

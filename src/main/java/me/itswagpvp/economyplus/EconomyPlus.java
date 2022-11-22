@@ -8,13 +8,15 @@ import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
-import me.itswagpvp.economyplus.hooks.PlaceholderLoader;
+import me.itswagpvp.economyplus.hooks.Loader;
+import me.itswagpvp.economyplus.hooks.PlaceholderAPI;
 import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import me.itswagpvp.economyplus.messages.Messages;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.*;
 import me.itswagpvp.economyplus.vault.VEconomy;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -29,6 +31,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.messages.Messages.getMessageConfig;
+import static org.bukkit.Bukkit.getServer;
 
 public class EconomyPlus extends JavaPlugin {
 
@@ -110,6 +113,8 @@ public class EconomyPlus extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        new Loader().loadPlaceholderAPI();
+
         double cver = Double.parseDouble(getConfig().getString("Version"));
         double pver = Double.parseDouble(getDescription().getVersion());
 
@@ -121,7 +126,6 @@ public class EconomyPlus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core:");
 
         Bukkit.getConsoleSender().sendMessage("   - §fStorage-Mode: §a" + storageMode.toString());
-        //
 
         Bukkit.getConsoleSender().sendMessage("   - §fDatabase: §bLoaded (" + dbType.toString().replace("H2", "SQLite") + ")");
 
@@ -144,7 +148,8 @@ public class EconomyPlus extends JavaPlugin {
         if(plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
             Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
             loadHolograms();
-            loadPlaceholders();
+            Bukkit.getConsoleSender().sendMessage(new Loader().placeholder);
+            Bukkit.getConsoleSender().sendMessage("§f");
         }
 
         if (cver != pver) {
@@ -343,30 +348,37 @@ public class EconomyPlus extends JavaPlugin {
 
         if (!getConfig().getBoolean("Hooks.HolographicDisplays")) return;
 
-        boolean useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+        if (getServer().getPluginManager().getPlugin("HolographicDisplays") == null) {
+            Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §cCan't find the jar!");
+            return;
+        }
 
-        if (useHolographicDisplays) {
-
-            Bukkit.getConsoleSender().sendMessage("   - HolographicDisplays: §aDone!");
+        try {
 
             if (new StorageManager().getStorageConfig().getString("Hologram.BalTop.World") != null) {
 
-                new HolographicDisplays().createHologram();
+                Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §aHooked!");
 
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        new HolographicDisplays().createHologram();
+                    }
+                }, 1);
+
+                return;
             }
 
-        } else {
-            Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §cCan't find the jar!");
+        } catch (Exception e) {
+
+            Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §cError!");
+            Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            return;
+
         }
 
-    }
+        Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §aHooked!");
 
-    // Loads the placeholder for PlaceholderAPI
-    private void loadPlaceholders() {
-
-        // PlaceholderAPI
-        new PlaceholderLoader().loadPlaceholderAPI();
-        Bukkit.getConsoleSender().sendMessage("§f");
     }
 
     private void loadMessages() {

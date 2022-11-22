@@ -1,11 +1,13 @@
 package me.itswagpvp.economyplus.commands;
 
+import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.misc.Converter;
 import me.itswagpvp.economyplus.misc.StorageManager;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -149,14 +151,34 @@ public class Main implements CommandExecutor {
                     return true;
                 }
 
-                String newStorageMode = args[1];
-                if (!(newStorageMode.equalsIgnoreCase("uuid") || newStorageMode.equalsIgnoreCase("nickname"))) {
+                int accounts;
+
+                String mode = args[1];
+                if (mode.equalsIgnoreCase("uuid")) {
+                    accounts = new Converter().NameToUUID();
+                } else if (mode.equalsIgnoreCase("nickname")) {
+                    accounts = new Converter().UUIDToName();
+                } else {
                     sender.sendMessage("§cYou have to set /ep convert <UUID/NICKNAME>");
                     return true;
                 }
 
-                int updatedAccounts = new Converter().convert();
-                sender.sendMessage("§aYou have converted " + updatedAccounts + " accounts to " + newStorageMode.toUpperCase(Locale.ROOT) + " storage mode!");
+                Bukkit.broadcastMessage(String.valueOf(accounts));
+
+                if (accounts == -1) {
+                    sender.sendMessage(ChatColor.RED + "Storage mode is already set to " + mode.toUpperCase());
+                } else {
+
+                    //wait a tick
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            sender.sendMessage("§aYou have converted " + accounts + " accounts to " + mode.toUpperCase() + " storage mode!");
+                        }
+                    }, 1);
+
+                }
+
                 return true;
             }
 

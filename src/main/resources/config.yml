@@ -16,7 +16,7 @@ Version: ${project.version}
 
 # Languages are stored in the EconomyPlus/messages folder.
 # Credit to translaters for the assistance in creating these languages.
-# Available Languages include: EN, IT, RO, AL, DE, ZH, FR, RU
+# Available Languages include: EN, IT, RO, AL, DE, ZH, FR, RU, ES
 Language: EN
 
 # bStats system (https://bstats.org/plugin/bukkit/EconomyPlus/11565)
@@ -50,9 +50,9 @@ Sounds:
   Success: ENTITY_PLAYER_LEVELUP
   Error: ENTITY_VILLAGER_NO
 
-Use-Decimals: true # If true it's 0.00, if false is 0
-Remove-Naughts: true # 10.0 > 10   12,402.00 > 12,402   10.03 > 10.03
-Rounding: false # 10.005 = 10.01, if false: 10.005 = 10.00 (RECOMMENDED FALSE)
+Use-Decimals: true # If true it will not use decimal values like 0.01
+Remove-Naughts: true # If true, it will remove unnecessary 0 decimal values. 12.00 will be 12 while 12.02 and 12.20 will stay the same.
+Rounding: false # If true it will round up decimals. 12.005 will be 12.01 (RECOMMENDED FALSE)
 
 # This will work only with %money% and not with %money_formatted%
 # This affects baltop and balances globally
