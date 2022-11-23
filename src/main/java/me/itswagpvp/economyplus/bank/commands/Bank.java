@@ -58,7 +58,7 @@ public class Bank implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("withdraw")) {
 
-                if (!p.hasPermission("economyplus.bank.withdraw")  && useperms) {
+                if (!p.hasPermission("economyplus.bank.withdraw") && useperms) {
                     p.sendMessage(plugin.getMessage("NoPerms"));
                     return true;
                 }

@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.commands;
 
-import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.hooks.holograms.HolographicDisplays;
 import me.itswagpvp.economyplus.misc.Converter;
 import me.itswagpvp.economyplus.misc.StorageManager;
@@ -15,8 +14,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Locale;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 

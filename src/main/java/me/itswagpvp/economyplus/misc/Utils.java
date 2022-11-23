@@ -126,25 +126,25 @@ public class Utils {
 
         String value = df.format(d);
 
-        if(!(value.contains("."))) {
+        if (!(value.contains("."))) {
             value = value + "." + 00;
         }
 
         if (plugin.getConfig().getBoolean("Use-Decimals", true)) {
 
-            if(value.split("\\.")[1].length() == 1) {
+            if (value.split("\\.")[1].length() == 1) {
                 value = value + "0";
             }
 
             if (plugin.getConfig().getBoolean("Remove-Naughts", true)) {
 
-                if(value.split("\\.")[1].matches("00")) {
+                if (value.split("\\.")[1].matches("00")) {
                     value = value.split("\\.")[0];
                 }
 
             } else {
 
-                if(!(value.contains("."))) {
+                if (!(value.contains("."))) {
                     value = value + ".00";
                 }
 

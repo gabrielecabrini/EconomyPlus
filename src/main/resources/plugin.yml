@@ -7,7 +7,6 @@ load: STARTUP
 softdepend:
   - Vault
   - PlaceholderAPI
-  - MVdWPlaceholderAPI
   - HolographicDisplays
 commands:
   economyplus:

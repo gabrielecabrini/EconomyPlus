@@ -2,7 +2,6 @@ package me.itswagpvp.economyplus.commands;
 
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -27,7 +26,7 @@ public class Eco implements CommandExecutor {
                 return true;
             }
 
-            String arg = args[2].replace(",",".");
+            String arg = args[2].replace(",", ".");
 
             double value;
             try {

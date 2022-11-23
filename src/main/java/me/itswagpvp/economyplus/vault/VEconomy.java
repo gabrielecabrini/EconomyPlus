@@ -1,8 +1,5 @@
 package me.itswagpvp.economyplus.vault;
 
-import java.util.Objects;
-import java.util.UUID;
-import java.util.function.Supplier;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
@@ -12,9 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.text.NumberFormat;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.function.Supplier;
 
 public class VEconomy implements Economy {
 
@@ -66,8 +62,8 @@ public class VEconomy implements Economy {
     public boolean hasAccount(String playerName) {
         final String actualInput = recoverType(playerName);
         return loggingAction(
-            actualInput + ".hasAccount",
-            () -> EconomyPlus.getDBType().contains(actualInput)
+                actualInput + ".hasAccount",
+                () -> EconomyPlus.getDBType().contains(actualInput)
         );
     }
 
@@ -90,13 +86,13 @@ public class VEconomy implements Economy {
     public double getBalance(String playerName) {
         final String actualInput = recoverType(playerName);
         return loggingAction(
-            actualInput + ".getBalance",
-            () -> {
-                if (CacheManager.getCache(1).get(actualInput) == null) {
-                    return 0D;
+                actualInput + ".getBalance",
+                () -> {
+                    if (CacheManager.getCache(1).get(actualInput) == null) {
+                        return 0D;
+                    }
+                    return CacheManager.getCache(1).get(actualInput);
                 }
-                return CacheManager.getCache(1).get(actualInput);
-            }
         );
     }
 
@@ -119,8 +115,8 @@ public class VEconomy implements Economy {
     public boolean has(String playerName, double amount) {
         final String actualInput = recoverType(playerName);
         return loggingAction(
-            actualInput + ".has",
-            () -> getBalance(actualInput) >= amount
+                actualInput + ".has",
+                () -> getBalance(actualInput) >= amount
         );
     }
 
@@ -143,23 +139,23 @@ public class VEconomy implements Economy {
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         final String actualInput = recoverType(playerName);
         return loggingAction(
-            actualInput + ".withdrawPlayer",
-            () -> {
-                double tokens = 0D;
-                try {
-                    tokens = getBalance(actualInput) - amount;
-                    if (tokens >= 0) {
-                        CacheManager.getCache(1).put(actualInput, tokens);
-                        EconomyPlus.getDBType().setTokens(actualInput, tokens);
-                    } else {
-                        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Not enough moneys!");
+                actualInput + ".withdrawPlayer",
+                () -> {
+                    double tokens = 0D;
+                    try {
+                        tokens = getBalance(actualInput) - amount;
+                        if (tokens >= 0) {
+                            CacheManager.getCache(1).put(actualInput, tokens);
+                            EconomyPlus.getDBType().setTokens(actualInput, tokens);
+                        } else {
+                            return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Not enough moneys!");
+                        }
+                    } catch (Exception e) {
+                        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Error while removing moneys from the player " + actualInput);
                     }
-                } catch (Exception e) {
-                    return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Error while removing moneys from the player " + actualInput);
-                }
 
-                return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
-            }
+                    return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Done");
+                }
         );
     }
 
@@ -182,19 +178,19 @@ public class VEconomy implements Economy {
     public EconomyResponse depositPlayer(String playerName, double amount) {
         final String actualInput = recoverType(playerName);
         return loggingAction(
-            actualInput + ".depositPlayer",
-            () -> {
-                double tokens = 0D;
-                try {
-                    tokens = getBalance(actualInput) + amount;
-                    CacheManager.getCache(1).put(actualInput, tokens);
-                    EconomyPlus.getDBType().setTokens(actualInput, tokens);
-                } catch (Exception e) {
-                    return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Can't add moneys to the player " + actualInput);
-                }
+                actualInput + ".depositPlayer",
+                () -> {
+                    double tokens = 0D;
+                    try {
+                        tokens = getBalance(actualInput) + amount;
+                        CacheManager.getCache(1).put(actualInput, tokens);
+                        EconomyPlus.getDBType().setTokens(actualInput, tokens);
+                    } catch (Exception e) {
+                        return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.FAILURE, "Can't add moneys to the player " + actualInput);
+                    }
 
-                return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Action done");
-            }
+                    return new EconomyResponse(amount, tokens, EconomyResponse.ResponseType.SUCCESS, "Action done");
+                }
         );
     }
 
@@ -277,8 +273,8 @@ public class VEconomy implements Economy {
     public boolean createPlayerAccount(String playerName) {
         final String actualInput = recoverType(playerName);
         return loggingAction(
-            actualInput + ".createPlayerAccount",
-            () -> EconomyPlus.getDBType().createPlayer(actualInput)
+                actualInput + ".createPlayerAccount",
+                () -> EconomyPlus.getDBType().createPlayer(actualInput)
         );
     }
 
@@ -298,8 +294,8 @@ public class VEconomy implements Economy {
     }
 
     private <T> T loggingAction(
-        String actionTrace,
-        Supplier<T> action
+            String actionTrace,
+            Supplier<T> action
     ) {
         if (EconomyPlus.debugMode) {
             plugin.getLogger().info(actionTrace);
@@ -314,7 +310,9 @@ public class VEconomy implements Economy {
         return result;
     }
 
-    /** Fixes if the supplied string is a user but was expecting a UUID */
+    /**
+     * Fixes if the supplied string is a user but was expecting a UUID
+     */
     private String recoverType(String input) {
         switch (EconomyPlus.getStorageMode()) {
             case NICKNAME:

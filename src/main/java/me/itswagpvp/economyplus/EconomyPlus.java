@@ -15,7 +15,6 @@ import me.itswagpvp.economyplus.messages.Messages;
 import me.itswagpvp.economyplus.metrics.bStats;
 import me.itswagpvp.economyplus.misc.*;
 import me.itswagpvp.economyplus.vault.VEconomy;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -43,13 +42,15 @@ public class EconomyPlus extends JavaPlugin {
 
     // Debug mode
     public static boolean debugMode;
+    public static FileConfiguration ymlConfig;
     // Database
     private static DatabaseType dbType = DatabaseType.UNDEFINED;
     private static StorageMode storageMode = StorageMode.UNDEFINED;
+    long before;
+    String vault = "";
     //Updater updater;
     // YAML Database (data.yml)
     private File ymlFile;
-    public static FileConfiguration ymlConfig;
 
     // Returns the DatabaseType (MYSQL/H2/YAML/Undefined)
     public static DatabaseType getDBType() {
@@ -68,7 +69,10 @@ public class EconomyPlus extends JavaPlugin {
         saveConfig();
     }
 
-    long before;
+    //log something
+    public static void log(String value) {
+        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] " + ChatColor.translateAlternateColorCodes('&', value));
+    }
 
     public void onLoad() {
 
@@ -106,12 +110,8 @@ public class EconomyPlus extends JavaPlugin {
 
     }
 
-    String vault = "";
-
     @Override
     public void onEnable() {
-
-        loadPlaceholderAPI();
 
         double cver = Double.parseDouble(getConfig().getString("Version"));
         double pver = Double.parseDouble(getDescription().getVersion());
@@ -143,10 +143,10 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§8");
 
-        if(plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
+        if (plugin.getConfig().getBoolean("Hooks.PlaceholderAPI", true) || plugin.getConfig().getBoolean("Hooks.HolographicDisplays", true)) {
             Bukkit.getConsoleSender().sendMessage("§f-> §cLoading hooks:");
             loadHolograms();
-            Bukkit.getConsoleSender().sendMessage(placeholder);
+            loadPlaceholderAPI();
             Bukkit.getConsoleSender().sendMessage("§f");
         }
 
@@ -342,26 +342,23 @@ public class EconomyPlus extends JavaPlugin {
         }
     }
 
-    private static String placeholder = "   - §fPlaceholderAPI: §cCan't find the jar!";
     private void loadPlaceholderAPI() {
 
-        if (!plugin.getConfig().getBoolean("Hooks.PlaceholderAPI")) {
-            Bukkit.getConsoleSender().sendMessage("boolean toggled");
-            return;
-        }
+        if (!plugin.getConfig().getBoolean("Hooks.PlaceholderAPI")) return;
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            Bukkit.getConsoleSender().sendMessage("   - §fPlaceholderAPI: §cCan't find the jar!");
             return;
         }
 
         try {
             new PlaceholderAPI(plugin).register();
         } catch (Exception e) {
-            placeholder = "   - §fPlaceholderAPI: §cError!";
             Bukkit.getConsoleSender().sendMessage("§c[EconomyPlus] Error hooking into PlaceholderAPI:");
             Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            return;
         } finally {
-            placeholder = "   - §fPlaceholderAPI: §aHooked!";
+            Bukkit.getConsoleSender().sendMessage("   - §fPlaceholderAPI: §aHooked!");
         }
 
     }
@@ -381,12 +378,7 @@ public class EconomyPlus extends JavaPlugin {
 
                 Bukkit.getConsoleSender().sendMessage("   - §fHolographicDisplays: §aHooked!");
 
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        new HolographicDisplays().createHologram();
-                    }
-                }, 1);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> new HolographicDisplays().createHologram(), 1);
 
                 return;
             }
@@ -408,7 +400,7 @@ public class EconomyPlus extends JavaPlugin {
         Messages.load();
 
         String messages = getConfig().getString("Language");
-        if(!(Messages.getMessageConfig(messages.toUpperCase()) == null)) {
+        if (!(Messages.getMessageConfig(messages.toUpperCase()) == null)) {
             lang = messages.toUpperCase();
         } else {
             Bukkit.getConsoleSender().sendMessage("   - §fMessages: §cInvalid file! (" + messages + "), using EN");
@@ -511,11 +503,6 @@ public class EconomyPlus extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
-    }
-
-    //log something
-    public static void log(String value) {
-        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] " + ChatColor.translateAlternateColorCodes('&', value));
     }
 
 }

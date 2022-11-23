@@ -1,11 +1,9 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -17,56 +15,54 @@ public class Converter {
 
     public int NameToUUID() {
 
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            return -1;
-        }
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) return -1;
 
         int accounts = 0;
 
         plugin.setStorageMode("UUID");
 
-        if (EconomyPlus.getDBType() == DatabaseType.YAML) { // YAML
+        switch (EconomyPlus.getDBType()) {
+            case YAML:
+                for (String user : plugin.getYMLData().getConfigurationSection("Data").getKeys(false)) {
 
-            for (String user : plugin.getYMLData().getConfigurationSection("Data").getKeys(false)) {
+                    double money = plugin.getYMLData().getDouble("Data." + user + ".tokens");
+                    double bank = plugin.getYMLData().getDouble("Data." + user + ".bank");
 
-                double money = plugin.getYMLData().getDouble("Data." + user + ".tokens");
-                double bank = plugin.getYMLData().getDouble("Data." + user + ".bank");
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(user);
 
-                OfflinePlayer p = Bukkit.getOfflinePlayer(user);
+                    plugin.getYMLData().set("Data." + user, null);
 
-                plugin.getYMLData().set("Data." + user, null);
+                    plugin.getYMLData().set("Data." + p.getUniqueId() + ".tokens", money);
+                    plugin.getYMLData().set("Data." + p.getUniqueId() + ".bank", bank);
+                    plugin.saveYMLConfig();
 
-                plugin.getYMLData().set("Data." + p.getUniqueId() + ".tokens", money);
-                plugin.getYMLData().set("Data." + p.getUniqueId() + ".bank", bank);
-                plugin.saveYMLConfig();
+                    accounts++;
 
-                accounts++;
+                }
+                break;
+            case MySQL:
+                for (String user : new MySQL().getList()) {
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(user);
+                    new MySQL().changeUser(p, "UUID");
+                    accounts++;
+                }
+                break;
+            case H2:
+                for (String user : new SQLite().getList()) {
 
-            }
+                    double money = new SQLite().getTokens(user);
+                    double bank = new SQLite().getBank(user);
 
-        } else if (EconomyPlus.getDBType() == DatabaseType.H2) { // SQLite
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(user);
+                    new SQLite().removeUser(user);
+                    new SQLite().setTokens(String.valueOf(p.getUniqueId()), money);
+                    new SQLite().setBank(String.valueOf(p.getUniqueId()), bank);
 
-            for (String user : new SQLite().getList()) {
+                    accounts++;
 
-                double money = new SQLite().getTokens(user);
-                double bank = new SQLite().getBank(user);
+                }
+                break;
 
-                OfflinePlayer p = Bukkit.getOfflinePlayer(user);
-                new SQLite().removeUser(user);
-                new SQLite().setTokens(String.valueOf(p.getUniqueId()), money);
-                new SQLite().setBank(String.valueOf(p.getUniqueId()), bank);
-
-                accounts++;
-
-            }
-
-        } else if (EconomyPlus.getDBType() == DatabaseType.MySQL) { // MySQL
-
-            for (String user : new MySQL().getList()) {
-                OfflinePlayer p = Bukkit.getOfflinePlayer(user);
-                new MySQL().changeUser(p, "UUID");
-                accounts++;
-            }
 
         }
 
@@ -75,52 +71,48 @@ public class Converter {
 
     public int UUIDToName() {
 
-        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-            return -1;
-        }
-
+        if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) return -1;
         int accounts = 0;
 
         plugin.setStorageMode("NICKNAME");
 
-        if (EconomyPlus.getDBType() == DatabaseType.YAML) { // YAML
+        switch (EconomyPlus.getDBType()) {
+            case YAML:
+                for (String user : plugin.getYMLData().getConfigurationSection("Data").getKeys(false)) {
+                    double money = plugin.getYMLData().getDouble("Data." + user + ".tokens");
+                    double bank = plugin.getYMLData().getDouble("Data." + user + ".bank");
 
-            for (String user : plugin.getYMLData().getConfigurationSection("Data").getKeys(false)) {
-                double money = plugin.getYMLData().getDouble("Data." + user + ".tokens");
-                double bank = plugin.getYMLData().getDouble("Data." + user + ".bank");
+                    plugin.getYMLData().set("Data." + user, null);
 
-                plugin.getYMLData().set("Data." + user, null);
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
+                    plugin.getYMLData().set("Data." + p.getName() + ".tokens", money);
+                    plugin.getYMLData().set("Data." + p.getName() + ".bank", bank);
+                    plugin.saveYMLConfig();
+                    accounts++;
+                }
+                break;
+            case H2:
+                for (String user : new SQLite().getList()) {
 
-                OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
-                plugin.getYMLData().set("Data." + p.getName() + ".tokens", money);
-                plugin.getYMLData().set("Data." + p.getName() + ".bank", bank);
-                plugin.saveYMLConfig();
-                accounts++;
-            }
+                    double money = new SQLite().getTokens(user);
+                    double bank = new SQLite().getBank(user);
 
-        } else if (EconomyPlus.getDBType() == DatabaseType.H2) { // SQLite
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
+                    new SQLite().removeUser(user);
+                    new SQLite().setTokens(String.valueOf(p.getName()), money);
+                    new SQLite().setBank(String.valueOf(p.getName()), bank);
+                    accounts++;
 
-            for (String user : new SQLite().getList()) {
+                }
+                break;
+            case MySQL:
 
-                double money = new SQLite().getTokens(user);
-                double bank = new SQLite().getBank(user);
-
-                OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
-                new SQLite().removeUser(user);
-                new SQLite().setTokens(String.valueOf(p.getName()), money);
-                new SQLite().setBank(String.valueOf(p.getName()), bank);
-                accounts++;
-
-            }
-
-        } else if (EconomyPlus.getDBType() == DatabaseType.MySQL) {  // MySQL
-
-            for (String user : new MySQL().getList()) {
-                OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
-                new MySQL().changeUser(p, "NICKNAME");
-                accounts++;
-            }
-
+                for (String user : new MySQL().getList()) {
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
+                    new MySQL().changeUser(p, "NICKNAME");
+                    accounts++;
+                }
+                break;
         }
 
         return accounts;
