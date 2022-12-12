@@ -4,9 +4,9 @@
 #
 # General messages
 NoConsole: "&c此命令只能由玩家使用！"
-NoPlayer: "&c你命令只能由控制台使用！"
+NoPlayer: "&c此命令只能由控制台使用！"
 NoPerms: "&c你没有权限！"
-Reload: "&a配置文件已重新加载，耗时%time%ms！"
+Reload: "&a配置文件已重新加载，耗时 %time%ms！"
 PlayerNotFound: "&c找不到玩家！"
 
 # Messages for the invalid args
