@@ -1,11 +1,13 @@
 package me.itswagpvp.economyplus.database.mysql;
 
+import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -201,9 +203,14 @@ public class MySQL {
 
     // Convert a user (UUID/NICKNAME) from the database
     public void changeUser(OfflinePlayer user, String convertTo) {
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            String playerName = user.getName();
+            String playerName = PlayerHandler.getName(user.getUniqueId(), true);
+            if (playerName.contains("-")) {
+                playerName = Bukkit.getOfflinePlayer(user.getUniqueId()).getName();
+            }
+
             String playerUuid = String.valueOf(user.getUniqueId());
 
             if (convertTo.equals("UUID")) {

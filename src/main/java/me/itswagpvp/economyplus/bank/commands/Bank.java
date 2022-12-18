@@ -1,8 +1,5 @@
 package me.itswagpvp.economyplus.bank.commands;
 
-import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.misc.Utils;
-import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,17 +7,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.misc.Utils;
+import me.itswagpvp.economyplus.vault.Economy;
+
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Bank implements CommandExecutor {
-
-    boolean useperms = EconomyPlus.getPlugin(EconomyPlus.class).getConfig().getBoolean("Use-Permissions") || EconomyPlus.getPlugin(EconomyPlus.class).getConfig().get("Use-Permissions") == null;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (!plugin.getConfig().getBoolean("Bank.Enabled")) {
-
             sender.sendMessage(plugin.getMessage("Bank.Disabled"));
             Utils.playErrorSound(sender);
             return true;
@@ -35,7 +33,7 @@ public class Bank implements CommandExecutor {
 
         if (args.length == 0) {
 
-            if (!p.hasPermission("economyplus.bank.view") && useperms) {
+            if (!p.hasPermission("economyplus.bank.view") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                 p.sendMessage(plugin.getMessage("NoPerms"));
                 return true;
             }
@@ -58,7 +56,7 @@ public class Bank implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("withdraw")) {
 
-                if (!p.hasPermission("economyplus.bank.withdraw") && useperms) {
+                if (!p.hasPermission("economyplus.bank.withdraw") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                     p.sendMessage(plugin.getMessage("NoPerms"));
                     return true;
                 }
@@ -90,7 +88,7 @@ public class Bank implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("deposit")) {
 
-                if (!p.hasPermission("economyplus.bank.deposit") && useperms) {
+                if (!p.hasPermission("economyplus.bank.deposit") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                     p.sendMessage(plugin.getMessage("NoPerms"));
                     return true;
                 }

@@ -4,8 +4,11 @@ import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
+
+import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -84,9 +87,15 @@ public class Converter {
 
                     plugin.getYMLData().set("Data." + user, null);
 
-                    OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
-                    plugin.getYMLData().set("Data." + p.getName() + ".tokens", money);
-                    plugin.getYMLData().set("Data." + p.getName() + ".bank", bank);
+                    String name = PlayerHandler.getName(UUID.fromString(user), true);
+                    if (name.contains("-")) {
+                        name = Bukkit.getOfflinePlayer(UUID.fromString(user)).getName();
+                        if (name == null) {
+                            break;
+                        }
+                    }
+                    plugin.getYMLData().set("Data." + name + ".tokens", money);
+                    plugin.getYMLData().set("Data." + name + ".bank", bank);
                     plugin.saveYMLConfig();
                     accounts++;
                 }
@@ -97,10 +106,17 @@ public class Converter {
                     double money = new SQLite().getTokens(user);
                     double bank = new SQLite().getBank(user);
 
-                    OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
+                    String name = PlayerHandler.getName(UUID.fromString(user), true);
+                    if (name.contains("-")) {
+                        name = Bukkit.getOfflinePlayer(UUID.fromString(user)).getName();
+                        if (name == null) {
+                            break;
+                        }
+                    }
+
                     new SQLite().removeUser(user);
-                    new SQLite().setTokens(String.valueOf(p.getName()), money);
-                    new SQLite().setBank(String.valueOf(p.getName()), bank);
+                    new SQLite().setTokens(name, money);
+                    new SQLite().setBank(name, bank);
                     accounts++;
 
                 }
@@ -108,10 +124,10 @@ public class Converter {
             case MySQL:
 
                 for (String user : new MySQL().getList()) {
-                    OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(user));
-                    new MySQL().changeUser(p, "NICKNAME");
+                    new MySQL().changeUser(Bukkit.getOfflinePlayer(user), "NICKNAME");
                     accounts++;
                 }
+
                 break;
         }
 

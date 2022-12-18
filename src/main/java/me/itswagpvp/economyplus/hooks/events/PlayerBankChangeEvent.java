@@ -1,10 +1,11 @@
 package me.itswagpvp.economyplus.hooks.events;
 
-import me.itswagpvp.economyplus.database.misc.Selector;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import me.itswagpvp.economyplus.database.misc.Selector;
 
 public class PlayerBankChangeEvent extends Event implements Cancellable {
 

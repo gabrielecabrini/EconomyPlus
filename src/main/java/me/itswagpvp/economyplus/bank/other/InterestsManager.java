@@ -1,11 +1,12 @@
 package me.itswagpvp.economyplus.bank.other;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import static me.itswagpvp.economyplus.EconomyPlus.getDBType;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;

@@ -3,6 +3,8 @@ package me.itswagpvp.economyplus.misc;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
+
+import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 
 import java.util.*;
@@ -84,13 +86,13 @@ public class BalTopManager {
         }
 
         public String getName() {
-            if (EconomyPlus.getStorageMode() == StorageMode.NICKNAME) {
-                return name;
-            } else if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-                if (Bukkit.getServer().getOfflinePlayer(UUID.fromString(name)).getName() == null) return "Invalid User";
-                return Bukkit.getServer().getOfflinePlayer(UUID.fromString(name)).getName();
+            if (EconomyPlus.getStorageMode() != StorageMode.NICKNAME) {
+                if (Bukkit.getOfflinePlayer(UUID.fromString(name)).getName() != null) {
+                    return Bukkit.getOfflinePlayer(UUID.fromString(name)).getName();
+                }
+                return PlayerHandler.getName(UUID.fromString(name), false);
             }
-            return "Invalid user";
+            return name;
         }
 
         public double getMoney() {

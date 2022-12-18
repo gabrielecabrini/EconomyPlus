@@ -1,16 +1,18 @@
 package me.itswagpvp.economyplus.vault;
 
-import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.CacheManager;
-import me.itswagpvp.economyplus.database.misc.Selector;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.function.Supplier;
+
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
+
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.CacheManager;
+import me.itswagpvp.economyplus.database.misc.Selector;
 
 public class VEconomy implements Economy {
 
@@ -320,7 +322,7 @@ public class VEconomy implements Economy {
             case UUID:
             default:
                 try {
-                    return UUID.fromString(input).toString();
+                    return input;
                 } catch (IllegalArgumentException e) {
                     return Objects.requireNonNull(Bukkit.getPlayer(input)).getUniqueId().toString();
                 }

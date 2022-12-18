@@ -2,13 +2,15 @@ package me.itswagpvp.economyplus.hooks.holograms;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.misc.BalTopManager;
-import me.itswagpvp.economyplus.misc.StorageManager;
-import me.itswagpvp.economyplus.misc.Utils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.misc.BalTopManager;
+import me.itswagpvp.economyplus.misc.StorageManager;
+import me.itswagpvp.economyplus.misc.Utils;;
 
 import java.util.List;
 

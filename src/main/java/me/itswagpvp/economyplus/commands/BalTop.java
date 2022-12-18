@@ -1,12 +1,13 @@
 package me.itswagpvp.economyplus.commands;
 
-import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.misc.BalTopManager;
-import me.itswagpvp.economyplus.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.misc.BalTopManager;
+import me.itswagpvp.economyplus.misc.Utils;
 
 import java.util.List;
 
@@ -14,12 +15,10 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class BalTop implements CommandExecutor {
 
-    boolean useperms = EconomyPlus.getPlugin(EconomyPlus.class).getConfig().getBoolean("Use-Permissions") || EconomyPlus.getPlugin(EconomyPlus.class).getConfig().get("Use-Permissions") == null;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!sender.hasPermission("economyplus.baltop") && useperms) {
+        if (!sender.hasPermission("economyplus.baltop") && plugin.REQUIRE_BASIC_PERMISSIONS) {
             sender.sendMessage(plugin.getMessage("NoPerms"));
             return true;
         }

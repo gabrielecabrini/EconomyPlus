@@ -1,8 +1,5 @@
 package me.itswagpvp.economyplus.misc;
 
-import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.database.misc.DatabaseType;
-import me.itswagpvp.economyplus.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -14,7 +11,10 @@ import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static me.itswagpvp.economyplus.EconomyPlus.log;
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.misc.DatabaseType;
+import me.itswagpvp.economyplus.messages.Messages;
+
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Utils {
@@ -36,7 +36,7 @@ public class Utils {
             Sound x = Sound.valueOf(plugin.getConfig().getString("Sounds.Error", "ENTITY_VILLAGER_NO"));
             player.playSound(player.getPlayer().getLocation(), x, 1, 1);
         } catch (Exception e) {
-            log("[EconomyPlus] &7Error on the &cplayErrorSound&7! Check your config!");
+            plugin.pluginLog("[EconomyPlus] &7Error on the &cplayErrorSound&7! Check your config!");
             e.printStackTrace();
         }
     }
@@ -58,7 +58,7 @@ public class Utils {
             Sound x = Sound.valueOf(plugin.getConfig().getString("Sounds.Success", "ENTITY_PLAYER_LEVELUP"));
             player.playSound(player.getPlayer().getLocation(), x, 1, 1);
         } catch (Exception e) {
-            log("[EconomyPlus] &7Error on the &cplaySuccessSound§&! Check your config!");
+            plugin.pluginLog("[EconomyPlus] &7Error on the &cplaySuccessSound§&! Check your config!");
             e.printStackTrace();
         }
     }
@@ -67,7 +67,7 @@ public class Utils {
 
         long before = System.currentTimeMillis();
 
-        log("[EconomyPlus] &aReloading the plugin! This action may take a while!");
+        plugin.pluginLog("[EconomyPlus] &aReloading the plugin! This action may take a while!");
 
         try {
 
@@ -92,7 +92,7 @@ public class Utils {
                     .replaceAll("%time%", "" + (System.currentTimeMillis() - before)));
         }
 
-        log("&aReloaded!");
+        plugin.pluginLog("&aReloaded!");
 
     }
 
@@ -117,10 +117,12 @@ public class Utils {
 
         DecimalFormat df = new DecimalFormat("#.##"); //NUMBER CANNOT GO ABOVE BILLION DUE TO IT BEING A DOUBLE
         if (plugin.getConfig().getBoolean("Pattern.Enabled")) {
-            df = new DecimalFormat(plugin.getConfig().getString("Pattern.Value", "###,###.###"));
+            df = new DecimalFormat(plugin.getConfig().getString("Pattern.Value", "###,###.##"));
         }
 
-        if (plugin.getConfig().get("Rounding") != null && !plugin.getConfig().getBoolean("Rounding", false)) {
+        if (plugin.getConfig().getBoolean("Formatting.Round-Decimals", false)) {
+            df.setRoundingMode(RoundingMode.HALF_UP);
+        } else {
             df.setRoundingMode(RoundingMode.DOWN);
         }
 
@@ -130,13 +132,13 @@ public class Utils {
             value = value + "." + 00;
         }
 
-        if (plugin.getConfig().getBoolean("Use-Decimals", true)) {
+        if (plugin.getConfig().getBoolean("Formatting.Use-Decimals", true)) {
 
             if (value.split("\\.")[1].length() == 1) {
                 value = value + "0";
             }
 
-            if (plugin.getConfig().getBoolean("Remove-Naughts", true)) {
+            if (!plugin.getConfig().getBoolean("Formatting.Have-Excessive-Zeros", false)) {
 
                 if (value.split("\\.")[1].matches("00")) {
                     value = value.split("\\.")[0];
@@ -152,7 +154,6 @@ public class Utils {
 
         } else {
             value = new DecimalFormat("#").format(d);
-            //add pattern
         }
 
         return value;
@@ -165,19 +166,19 @@ public class Utils {
             return format(d);
         }
         if (d < 1000000L) {
-            return format(d / 1000D) + plugin.getConfig().getString("Format.k");
+            return format(d / 1000D) + plugin.getConfig().get("Formatted-Placeholder.1000");
         }
         if (d < 1000000000L) {
-            return format(d / 1000000D) + plugin.getConfig().getString("Format.M");
+            return format(d / 1000000D) + plugin.getConfig().get("Formatted-Placeholder.1000000");
         }
         if (d < 1000000000000L) {
-            return format(d / 1000000000D) + plugin.getConfig().getString("Format.B");
+            return format(d / 1000000000D) + plugin.getConfig().get("Formatted-Placeholder.1000000000");
         }
         if (d < 1000000000000000L) {
-            return format(d / 1000000000000D) + plugin.getConfig().getString("Format.T");
+            return format(d / 1000000000000D) + plugin.getConfig().get("Formatted-Placeholder.1000000000000");
         }
         if (d < 1000000000000000000L) {
-            return format(d / 1000000000000000D) + plugin.getConfig().getString("Format.Q");
+            return format(d / 1000000000000000D) + plugin.getConfig().get("Formatted-Placeholder.1000000000000");
         }
 
         return format(d);

@@ -14,64 +14,60 @@
 # This is used to verify your config version
 Version: ${project.version}
 
-# Languages are stored in the EconomyPlus/messages folder.
-# Credit to translaters for the assistance in creating these languages.
-# Available Languages include: EN, IT, RO, AL, DE, ZH, FR, RU, ES
+# Credit to all translators for contributing.
+# EN, IT, RO, AL, DE, ZH, FR, RU, ES
 Language: EN
 
 # bStats system (https://bstats.org/plugin/bukkit/EconomyPlus/11565)
 Metrics: true
 
-# It will send to console plugin's internal logs
+# Will send plugin's internal logs to console
 Debug-Mode: false
 
-# Controls if EconomyPlus need to connect to another plugin for more features
+# Controls if EconomyPlus needs to connect to another plugin for more features
 Hooks:
   # Placeholders
   PlaceholderAPI: true
   HolographicDisplays: true
 
 # You want to enable the updater?
-# This will enable the update checker and alert you on new updates in console.
-Updater: true
+Updater:
+  Plugin-Updater: true # Whether you want to enable the plugin updater feature.
+  Notifications: true # You will receive notifications when you join if you have the permission (economyplus.update)
+  Config-Updater: true # Enables the config to be updated automatically.
+  Check-GitHub: 1 # Amount of days before the server will check for release on GitHub. #0 will check github every start up
 
-# You will receive update notifications in game when you join if you have the permission (economyplus.update)
-Updater-Notifications: true
-
-# Use permissions for default commands not including administrative commands?
-# If false permissions are not required for commands listed below
-# /pay, /paytoggle, /bal, /bal <others>, /baltop, /bank, /bank deposit & /bank withdraw
-Use-Permissions: true
-
-# Adds Use-Permissions option which allows user to remove the need for permission on specific default commands including:
-# Play to the player the sounds in front of success / error
+# Plays a sound to the player to indicate success / error upon an action
 Sounds:
   Use: true
   Success: ENTITY_PLAYER_LEVELUP
   Error: ENTITY_VILLAGER_NO
 
-Use-Decimals: true # If true it will not use decimal values like 0.01
-Remove-Naughts: true # If true, it will remove unnecessary 0 decimal values. 12.00 will be 12 while 12.02 and 12.20 will stay the same.
-Rounding: false # If true it will round up decimals. 12.005 will be 12.01 (RECOMMENDED FALSE)
+# Require permissions for commands that aren't administrative?
+Require-Basic-Permissions: true
 
-# This will work only with %money% and not with %money_formatted%
-# This affects baltop and balances globally
+# Invalid Users
+Invalid-Users:
+  Save-Names: true # Attempts to prevent "Invalid User" by saving usernames.
+  Modify-Balance: false # Modify balances of players who haven't joined.
+  Username-Limit: true # Limits the username to 16 char length and non symbols. (Excludes . for geyser plugin) (UNSAFE IF FALSE)
+
+Formatting:
+  Use-Decimals: true
+  Have-Excessive-Zeros: false # 12 = 12.00
+  Round-Decimals: false # 10.005 = 10.01
+
+Formatted-Placeholder: # Used to format the %economyplus_money_formatted% & %money_formatted% placeholder
+  1000: k
+  1000000: M
+  1000000000: B
+  1000000000000: T
+  1000000000000000: Q
+
+# This will only work with %money% and not with %money_formatted%
 Pattern:
   Enabled: true
-  Value: "###,###.##"
-
-# Used to format the %economyplus_money_formatted% placeholder
-# 1000 = 1k
-# 1000000 = 1M
-# 1000000000 = 1B
-# 1000000000000 = 1T
-# 1000000000000000 = 1Q
-Format:
-  k: "k"
-  M: "M"
-  B: "B"
-  T: "T"
-  Q: "Q"
+  Value: '###,###.##'
 
 # Set a user balance on join
 Starting-Balance: 0
@@ -83,7 +79,7 @@ Starting-Bank-Balance: 0
 Baltop:
   Chat:
     # Like 1) _ItsWagPvP: $100
-    Player-Format: "&6%number%) &f%player%: &c$%money%"
+    Player-Format: '&6%number%) &f%player%: &c$%money%'
     # The header of /baltop
     Header:
       - '&8&m-----------------'
@@ -93,7 +89,7 @@ Baltop:
   Hologram:
     # Refresh rate of holograms!
     Refresh-Rate: 60 # <- In seconds
-    Player-Format: "&6%number%) &f%player%: &c$%money%"
+    Player-Format: '&6%number%) &f%player%: &c$%money%'
     Header:
       - '&8&m-----------------'
       - '&d&lBalTop'
@@ -112,7 +108,7 @@ Database:
     # refreshed with the MySQL db?
     MySQL: 10 # <- In seconds
   # You can choose one from UUID or NICKNAME
-  Mode: "UUID"
+  Mode: UUID
   # H2 (database.db)
   # MySQL
   # YAML (data.yml)

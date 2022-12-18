@@ -10,24 +10,24 @@ softdepend:
   - HolographicDisplays
 commands:
   economyplus:
-    aliases:
-      - ep
+    description: Plugin command.
+    aliases: ep
     usage: /<command>
   eco:
-    usage: /<command>
+    aliases: economy
+    description: Modify other players balances.
   bal:
+    description: View your accounts balance.
     aliases:
       - balance
       - money
-    usage: /<command>
   pay:
-    usage: /<command>
+    description: Pay a player with money.
   paytoggle:
-    usage: /<command>
+    description: Toggle whether you want to recieve money.
   baltop:
-    usage: /<command>
+    description: View the top balanced players.
     aliases:
       - balancetop
   bank:
-    usage: /<command>
-    
+    description: Deposit, Withdraw or View your bank account.

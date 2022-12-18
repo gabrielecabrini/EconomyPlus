@@ -1,8 +1,10 @@
 package me.itswagpvp.economyplus.misc;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -11,54 +13,71 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 
-public class Updater implements Listener {
+import me.itswagpvp.economyplus.EconomyPlus;
 
-    //Do we need to check for an update every hour? If it already alerts the user on join and on console start?
-    //Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this::check, 5 * 60 * 20, 3600 * 20); // Checks for an update every hour
+public class Updater implements Listener {
 
     static EconomyPlus plugin = EconomyPlus.plugin;
 
     static int behind = 0;
     static int ahead = 0;
-    static boolean enabled = plugin.getConfig().getBoolean("Updater");
 
     static boolean alreadyDownloaded = false;
-    static double cv = Double.parseDouble(plugin.getDescription().getVersion());
-    static double lv = 0;
+    static double currentVersion = Double.parseDouble(plugin.getDescription().getVersion());
+    static double latestGitVersion = 0;
 
     public static void check() {
 
-        if (!enabled || alreadyDownloaded) return;
+        if (!plugin.PLUGIN_UPDATER || alreadyDownloaded) return;
 
-        if (cv < getLatestVersion()) {
+        if (currentVersion < getLatestGitVersion()) {
 
-            behind = Integer.parseInt(String.valueOf(Math.round((getLatestVersion() - cv) / 0.1)).replace(".0", ""));
+            behind = Integer.parseInt(String.valueOf(Math.round((getLatestGitVersion() - currentVersion) / 0.1)).replace(".0", ""));
 
-            Bukkit.getConsoleSender().sendMessage("§f-> §dEconomy§5Plus §cis outdated! (" + "v" + cv + ")");
+            Bukkit.getConsoleSender().sendMessage("§f-> §dEconomy§5Plus §cis outdated! (" + "v" + currentVersion + ")");
             Bukkit.getConsoleSender().sendMessage("   - §fYou are behind §c" + behind + " §fversion/s!");
-            Bukkit.getConsoleSender().sendMessage("   - §fUpdate to §dv" + getLatestVersion() + " §fusing §d/ep update");
+            Bukkit.getConsoleSender().sendMessage("   - §fUpdate to §dv" + getLatestGitVersion() + " §fusing §d/ep update");
             Bukkit.getConsoleSender().sendMessage("");
 
-        } else if (cv > getLatestVersion()) {
+        } else if (currentVersion > getLatestGitVersion()) {
 
-            ahead = Integer.parseInt(String.valueOf(Math.round((cv - getLatestVersion()) / 0.1)).replace(".0", ""));
+            ahead = Integer.parseInt(String.valueOf(Math.round((currentVersion - getLatestGitVersion()) / 0.1)).replace(".0", ""));
 
-            Bukkit.getConsoleSender().sendMessage("§f-> §dEconomy§5Plus §cis over updated! (" + "v" + cv + ")");
+            Bukkit.getConsoleSender().sendMessage("§f-> §dEconomy§5Plus §cis over updated! (" + "v" + currentVersion + ")");
             Bukkit.getConsoleSender().sendMessage("   - §fYou are ahead §d" + ahead + " §fversion/s!");
-            Bukkit.getConsoleSender().sendMessage("   - §fDowngrade to §dv" + getLatestVersion() + " §ffor stable build.");
+            Bukkit.getConsoleSender().sendMessage("   - §fDowngrade to §dv" + getLatestGitVersion() + " §ffor a stable build.");
             Bukkit.getConsoleSender().sendMessage("");
 
         }
 
     }
 
-    public static double getLatestVersion() {
+    public static double getLatestGitVersion() {
 
-        if (!(lv == 0)) {
-            return lv;
+        if (!(latestGitVersion == 0)) {
+            return latestGitVersion;
         }
+
+        File file = new File(plugin.getDataFolder() + File.separator + "storage.yml");
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+        int days = plugin.getConfig().getInt("Updater.Check-Github", 1);
+        if (days < 0) { days = 0; }
+
+        if (!(days == 0)) {
+            if (!(config.get("last-checked") == null && config.get("git-version") == null)) {
+                int checked = config.getInt("last-checked");
+                double version = config.getDouble("git-version");
+                if ((LocalDate.now().getDayOfYear() - checked) < days) {
+                    latestGitVersion = version;
+                    return version;
+                }
+            }
+        }
+
 
         try {
 
@@ -81,9 +100,10 @@ public class Updater implements Listener {
                     line = line.replaceAll("V", ""); //removes V in version if there is a V in the tag name
                     line = line.replaceAll("v", ""); //removes V in version if there is a V in the tag name
 
-                    lv = Double.parseDouble(line);
+                    latestGitVersion = Double.parseDouble(line);
 
                 }
+
             }
 
             connection.disconnect();
@@ -94,46 +114,51 @@ public class Updater implements Listener {
             e.printStackTrace();
         }
 
-        if (lv == 0) {
-            plugin.getLogger().warning("Error with updater finding latest version!");
-            return cv;
+        if (!(days == 0)) {
+            config.set("git-version", latestGitVersion);
+            config.set("last-checked", LocalDate.now().getDayOfYear());
+            try {
+                config.save(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        return lv;
+        if (latestGitVersion == 0) {
+            plugin.getLogger().warning("Error with updater finding latest version!");
+            return currentVersion;
+        }
+
+        return latestGitVersion;
 
     }
 
-    private static boolean getUpdateAvailable() {
+    private static boolean getUpdateAvailable() { return !alreadyDownloaded && currentVersion < getLatestGitVersion(); }
 
-        return !alreadyDownloaded && cv < lv;
+    public static void checkForPlayerUpdate(Player p) {
 
-    }
+        if (!plugin.PLUGIN_UPDATER || alreadyDownloaded) return;
 
-    public static void checkForPlayerUpdate(Player e) {
-
-        if (!enabled || alreadyDownloaded) return;
-
-        boolean notifications = plugin.getConfig().getBoolean("Updater-Notifications") || plugin.getConfig().get("Updater-Notifications") == null;
+        boolean notifications = plugin.getConfig().getBoolean("Updater.Notifications", true);
 
         if (!getUpdateAvailable()) {
             return;
         }
 
-        plugin.getLogger().info("notifications - " + notifications);
-
         if (notifications) {
-            behind = Integer.parseInt(String.valueOf(Math.round((getLatestVersion() - cv) / 0.1)).replace(".0", ""));
-            e.getPlayer().sendMessage("" +
-                    "§7An update is available for §dEconomyPlus§7! §d(v" + getLatestVersion() + ")" +
-                    "\n§7You are §c" + behind + " §7versions behind! §c(v" + cv + ")" +
-                    "\n§7You can download it with §5/ep update");
+            behind = Integer.parseInt(String.valueOf(Math.round((getLatestGitVersion() - currentVersion) / 0.1)).replace(".0", ""));
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
+            p.sendMessage("" +
+                    "§7An update is available for §dEconomyPlus§7! §d(v" + getLatestGitVersion() + ")" +
+                    "\n§7You are §c" + behind + " §7versions behind! §c(v" + currentVersion + ")" +
+                    "\n§7You can download it with §a/ep update");
         }
 
     }
 
     public static void downloadUpdate(CommandSender p) {
 
-        if (!enabled) {
+        if (!plugin.PLUGIN_UPDATER) {
             p.sendMessage("§cThe updater is disabled.");
             Utils.playErrorSound(p);
             return;
@@ -150,9 +175,10 @@ public class Updater implements Listener {
             return;
         }
 
-        String curJarName = "EconomyPlus.jar";
+        String jarName = "EconomyPlus.jar";
         String[] slashParts = plugin.getDataFolder().toString().split(Matcher.quoteReplacement(File.separator));
         StringBuilder pluginsPath = new StringBuilder();
+
 
         int i = 0;
         for (String part : slashParts) {
@@ -161,15 +187,15 @@ public class Updater implements Listener {
             if (i + 1 >= slashParts.length) break;
         }
 
-        File oldJar = new File(pluginsPath + curJarName);
+        File oldJar = new File(pluginsPath + jarName);
         if (!oldJar.exists()) {
-            Bukkit.getLogger().warning("[EconomyPlus] Unable to find jar " + pluginsPath + curJarName);
+            Bukkit.getLogger().warning("[EconomyPlus] Unable to find jar " + pluginsPath + jarName);
             p.sendMessage("§cUnable to find old jar! §7Please make sure it matches the format §fEconomyPlus.jar§7!");
             return;
         }
 
         try {
-            URL website = new URL("https://github.com/ItsWagPvP/EconomyPlus/releases/download/V" + getLatestVersion() + "/EconomyPlus.jar");
+            URL website = new URL("https://github.com/ItsWagPvP/EconomyPlus/releases/download/V" + getLatestGitVersion() + "/EconomyPlus.jar");
             HttpURLConnection con = (HttpURLConnection) website.openConnection();
 
             ReadableByteChannel rbc = Channels.newChannel(con.getInputStream());

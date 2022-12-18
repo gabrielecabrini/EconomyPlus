@@ -14,8 +14,6 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class PayToggle implements CommandExecutor {
 
-    boolean useperms = EconomyPlus.getPlugin(EconomyPlus.class).getConfig().getBoolean("Use-Permissions") || EconomyPlus.getPlugin(EconomyPlus.class).getConfig().get("Use-Permissions") == null;
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
@@ -26,7 +24,7 @@ public class PayToggle implements CommandExecutor {
 
         Player p = (Player) sender;
 
-        if (!p.hasPermission("economyplus.paytoggle") && useperms) {
+        if (!p.hasPermission("economyplus.paytoggle") && plugin.REQUIRE_BASIC_PERMISSIONS) {
             p.sendMessage(plugin.getMessage("NoPerms"));
             Utils.playErrorSound(p);
             return true;

@@ -1,8 +1,5 @@
 package me.itswagpvp.economyplus.commands;
 
-import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.misc.Utils;
-import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -11,11 +8,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.misc.Utils;
+import me.itswagpvp.economyplus.vault.Economy;
+
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Bal implements CommandExecutor {
-
-    boolean useperms = EconomyPlus.getPlugin(EconomyPlus.class).getConfig().getBoolean("Use-Permissions") || EconomyPlus.getPlugin(EconomyPlus.class).getConfig().get("Use-Permissions") == null;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,13 +26,11 @@ public class Bal implements CommandExecutor {
                 return true;
             }
 
-            OfflinePlayer p2 = Bukkit.getServer().getOfflinePlayer(args[0]);
+            OfflinePlayer p2 = Bukkit.getOfflinePlayer(args[0]);
 
             if (p2 == null) {
-
                 sender.sendMessage(plugin.getMessage("PlayerNotFound"));
                 return true;
-
             }
 
             if (p2 == sender) {
@@ -59,7 +56,7 @@ public class Bal implements CommandExecutor {
 
         if (args.length == 0) {
 
-            if (!p.hasPermission("economyplus.balance") && useperms) {
+            if (!p.hasPermission("economyplus.balance") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                 sender.sendMessage(plugin.getMessage("NoPerms"));
                 Utils.playErrorSound(sender);
                 return true;
@@ -78,13 +75,13 @@ public class Bal implements CommandExecutor {
 
         if (args.length == 1) {
 
-            if (!p.hasPermission("economyplus.balance.others") && useperms) {
+            if (!p.hasPermission("economyplus.balance.others") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                 sender.sendMessage(plugin.getMessage("NoPerms"));
                 Utils.playErrorSound(sender);
                 return true;
             }
 
-            OfflinePlayer p2 = Bukkit.getServer().getOfflinePlayer(args[0]);
+            OfflinePlayer p2 = Bukkit.getOfflinePlayer(args[0]);
 
             if (p2 == sender) {
 

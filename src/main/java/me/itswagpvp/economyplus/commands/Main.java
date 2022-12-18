@@ -65,7 +65,7 @@ public class Main implements CommandExecutor {
                 sender.sendMessage("§f-> §7Version of the config: §e" + plugin.getConfig().getString("Version"));
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Database: §b" + plugin.getConfig().getString("Database.Type"));
-                sender.sendMessage("§f-> §7Storage-mode: §2" + plugin.getConfig().getString("Database.Mode", "NICKNAME"));
+                sender.sendMessage("§f-> §7Storage-mode: §2" + plugin.getConfig().getString("Database.Mode", "UUID"));
                 sender.sendMessage("§f-> §7Messages file: §2" + plugin.getConfig().getString("Language", "EN"));
                 sender.sendMessage("§a");
                 sender.sendMessage("§f-> §7Server software: §6" + Bukkit.getName());
@@ -159,8 +159,6 @@ public class Main implements CommandExecutor {
                     sender.sendMessage("§cYou have to set /ep convert <UUID/NICKNAME>");
                     return true;
                 }
-
-                Bukkit.broadcastMessage(String.valueOf(accounts));
 
                 if (accounts == -1) {
                     sender.sendMessage(ChatColor.RED + "Storage mode is already set to " + mode.toUpperCase());

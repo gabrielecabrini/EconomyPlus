@@ -26,7 +26,7 @@ public class Selector {
     public static Player stringToPlayer(String player) {
         Player p;
         if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            p = Bukkit.getPlayer(UUID.fromString(player));
+            p = Bukkit.getOfflinePlayer(UUID.fromString(player)).getPlayer();
         } else {
             p = Bukkit.getPlayer(player);
         }

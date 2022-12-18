@@ -1,13 +1,15 @@
 package me.itswagpvp.economyplus.misc;
 
+import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -19,10 +21,10 @@ public class TabCompleterLoader implements TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
         List<String> listDefault = Collections.singletonList("");
-        List<String> playerNames = Bukkit.getOnlinePlayers()
-                .stream()
-                .map(Player::getName)
-                .collect(Collectors.toList());
+        List<String> playerNames = new ArrayList<>();
+        for (String name : PlayerHandler.getUsernames()) {
+            playerNames.add(name);
+        }
 
         // /eco
         if (command.getName().equalsIgnoreCase("eco")) {

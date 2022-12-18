@@ -1,12 +1,13 @@
 package me.itswagpvp.economyplus.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+
+import org.bukkit.entity.Player;
+
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.Selector;
 import me.itswagpvp.economyplus.misc.Utils;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * This class will be registered through the register-method in the
@@ -57,7 +58,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return The name of the author as a String.
      */
     @Override
-    public @NotNull String getAuthor() {
+    public String getAuthor() {
         return plugin.getDescription().getAuthors().toString();
     }
 
@@ -71,7 +72,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return The identifier in {@code %<identifier>_<value>%} as String.
      */
     @Override
-    public @NotNull String getIdentifier() {
+    public String getIdentifier() {
         return "economyplus";
     }
 
@@ -84,7 +85,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return The version as a String.
      */
     @Override
-    public @NotNull String getVersion() {
+    public  String getVersion() {
         return plugin.getDescription().getVersion();
     }
 
@@ -99,7 +100,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
      * @return possibly-null String of the requested identifier.
      */
 
-    public String onPlaceholderRequest(Player player, @NotNull String identifier) {
+    public String onPlaceholderRequest(Player player, String identifier) {
 
         if (player == null) {
             return "";

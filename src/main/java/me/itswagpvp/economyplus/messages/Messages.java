@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
-import static me.itswagpvp.economyplus.EconomyPlus.log;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Messages {
@@ -40,11 +39,11 @@ public class Messages {
                             Files.copy(stream, new File(plugin.getDataFolder() + File.separator + "messages" + File.separator + file.getName()).toPath());
                         }
                     } else {
-                        log("&cInvalid file in plugin recourses while loading messages: " + file.getName());
+                        plugin.pluginLog("&cInvalid file in plugin recourses while loading messages: " + file.getName());
                     }
 
                 } catch (IOException e) {
-                    log("Failed to save " + file.getName() + " to: " + plugin.getDataFolder() + File.separator + "messages");
+                    plugin.pluginLog("Failed to save " + file.getName() + " to: " + plugin.getDataFolder() + File.separator + "messages");
                     e.printStackTrace();
                 }
 
