@@ -95,9 +95,10 @@ public class EconomyPlus extends JavaPlugin {
             return;
         }
 
-        // Config version is same as plugin version & Config Vailidater is disabled
+        // Config version is same as plugin version OR config updater is disabled
         double version = CONFIG_VERSION;
-        if (CONFIG_VERSION == PLUGIN_VERSION) {
+        if (CONFIG_VERSION == PLUGIN_VERSION || !getConfig().getBoolean("Updater.Config-Updater")) {
+            saveDefaultConfig();
             return;
         }
 
@@ -306,7 +307,7 @@ public class EconomyPlus extends JavaPlugin {
 
         boolean bank = plugin.getConfig().getBoolean("Bank.Enabled", true);
         boolean interest = plugin.getConfig().getBoolean("Bank.Interests.Enabled", true);
-        if (bank && interest) { new InterestsManager().startBankInterests(); } /* If bank and interest is enabled start the interest timer */
+        if (bank && interest) { new InterestsManager().startBankInterests(); } /* If bank and interest is enabled in config start the interest timer */
 
         PlayerHandler.loadUsernames();
 
