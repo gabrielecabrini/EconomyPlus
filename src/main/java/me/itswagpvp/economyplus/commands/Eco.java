@@ -22,7 +22,9 @@ public class Eco implements CommandExecutor {
         OfflinePlayer p = null;
 
         if (args.length >= 1) {
-            if ((!args[0].replaceAll("\\.", "").matches("^[a-zA-Z0-9]*$") || args[0].length() > 16) && plugin.getConfig().getBoolean("Invalid-Users.Username-Limit", true)) {
+            String msg = args[0].replaceAll("\\.", "").replaceAll("-", "");
+            msg = msg.replaceAll("_", "");
+            if ((!msg.matches("^[a-zA-Z0-9]*$") || args[0].length() > 16) && plugin.getConfig().getBoolean("Invalid-Users.Username-Limit", true)) {
                 sender.sendMessage(ChatColor.RED + "Invalid Username: " + args[0]);
                 Utils.playErrorSound(sender);
                 return false;
