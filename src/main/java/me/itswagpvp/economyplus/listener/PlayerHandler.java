@@ -96,6 +96,9 @@ public class PlayerHandler implements Listener {
 
         if (plugin.SAVE_NAMES) {
             FileConfiguration config = YamlConfiguration.loadConfiguration(getStorageFile());
+            if (config.getConfigurationSection("usernames") == null) {
+                return list;
+            }
             for (String value : config.getConfigurationSection("usernames").getKeys(false)) {
                 if (!plugin.getConfig().getBoolean("Invalid-Users.Modify-Balance", false)) {
                     if (Bukkit.getOfflinePlayer(UUID.fromString(value)).hasPlayedBefore()) {
