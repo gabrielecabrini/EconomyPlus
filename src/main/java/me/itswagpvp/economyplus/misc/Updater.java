@@ -97,8 +97,9 @@ public class Updater implements Listener {
 
                     line = line.replaceAll("\"", "");
                     line = line.replace(",zipball_url", "");
+
+                    // line may not be needed as we migrate to tags with just numbers and no letters like "V"
                     line = line.replaceAll("V", ""); //removes V in version if there is a V in the tag name
-                    line = line.replaceAll("v", ""); //removes V in version if there is a V in the tag name
 
                     latestGitVersion = Double.parseDouble(line);
 

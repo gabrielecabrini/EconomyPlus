@@ -3,7 +3,6 @@ package me.itswagpvp.economyplus.listener;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.vault.Economy;
 
-import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,14 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -53,9 +47,11 @@ public class PlayerHandler implements Listener {
 
     }
 
-    public static String getName(UUID uuid, boolean ifInvalidReturnUUID) {
+    public static String getName(String sid, boolean ifInvalidReturnUUID) {
 
-        OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+        UUID id = UUID.fromString(sid);
+
+        OfflinePlayer op = Bukkit.getOfflinePlayer(id);
 
         if (op.getName() != null) {
             return op.getName();
@@ -66,10 +62,11 @@ public class PlayerHandler implements Listener {
         // check save names
 
         // thinking about removing this and replacing it with something else somehow
+        // or just removing it entirely
         if (plugin.SAVE_NAMES) { // save names is enabled
             FileConfiguration config = YamlConfiguration.loadConfiguration(getStorageFile());
-            if (config.getString("usernames." + uuid) != null) { // check if name is stored
-                return config.getString("usernames." + uuid); // if so return it
+            if (config.getString("usernames." + id) != null) { // check if name is stored
+                return config.getString("usernames." + id); // if so return it
             }
         }
 
@@ -78,7 +75,7 @@ public class PlayerHandler implements Listener {
         // returnuuidifinvalid is true
         if (ifInvalidReturnUUID) {
             // will return uuid
-            return String.valueOf(uuid);
+            return String.valueOf(id);
         }
 
         // else return Invalid User

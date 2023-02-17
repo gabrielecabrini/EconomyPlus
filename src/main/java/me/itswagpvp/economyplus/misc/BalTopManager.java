@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 
 import java.util.*;
 
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
+
 public class BalTopManager {
 
     public List<PlayerData> balTop;
@@ -22,35 +24,39 @@ public class BalTopManager {
 
     private void loadFromDatabase() {
 
-        getBalTop().clear();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-        for (String playerName : EconomyPlus.getDBType().getList()) {
+            getBalTop().clear();
 
-            if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-                String convertedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerName)).getName();
-                if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + convertedPlayer)) {
-                    continue;
+            for (String playerName : EconomyPlus.getDBType().getList()) {
+
+                if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+                    String convertedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerName)).getName();
+                    if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + convertedPlayer)) {
+                        continue;
+                    }
+                } else {
+                    if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + playerName)) {
+                        continue;
+                    }
                 }
-            } else {
-                if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + playerName)) {
-                    continue;
+
+                double money;
+                if (CacheManager.getCache(1).get(playerName) == null) {
+                    money = 0;
+                } else {
+                    money = CacheManager.getCache(1).get(playerName);
                 }
+
+                PlayerData pData = new PlayerData(playerName, money);
+                getBalTop().add(pData);
+                getBalTopName().put(pData.getName(), pData);
+
             }
 
-            double money;
-            if (CacheManager.getCache(1).get(playerName) == null) {
-                money = 0;
-            } else {
-                money = CacheManager.getCache(1).get(playerName);
-            }
+            getBalTop().sort(new PlayerComparator());
 
-            PlayerData pData = new PlayerData(playerName, money);
-            getBalTop().add(pData);
-            getBalTopName().put(pData.getName(), pData);
-
-        }
-
-        getBalTop().sort(new PlayerComparator());
+        });
 
     }
 
@@ -90,10 +96,7 @@ public class BalTopManager {
 
         public String getName() {
             if (EconomyPlus.getStorageMode() != StorageMode.NICKNAME) {
-                if (Bukkit.getOfflinePlayer(UUID.fromString(name)).getName() != null) {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(name)).getName();
-                }
-                return PlayerHandler.getName(UUID.fromString(name), false);
+                return PlayerHandler.getName(name, false);
             }
             return name;
         }

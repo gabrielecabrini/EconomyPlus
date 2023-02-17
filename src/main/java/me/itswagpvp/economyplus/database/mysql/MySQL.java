@@ -52,38 +52,50 @@ public class MySQL {
     }
 
     public void createTable() {
-        String sql = "CREATE TABLE " + table + " ("
-                + "player VARCHAR(45) NOT NULL,"
-                + "moneys DOUBLE NOT NULL,"
-                + "bank DOUBLE NOT NULL,"
-                + "PRIMARY KEY (player))";
-        try {
 
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            if (e.toString().contains("Table '" + table + "' already exists")) {
-                return;
+            String sql = "CREATE TABLE " + table + " ("
+                    + "player VARCHAR(45) NOT NULL,"
+                    + "moneys DOUBLE NOT NULL,"
+                    + "bank DOUBLE NOT NULL,"
+                    + "PRIMARY KEY (player))";
+            try {
+
+                PreparedStatement stmt = connection.prepareStatement(sql);
+
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                if (e.toString().contains("Table '" + table + "' already exists")) {
+                    return;
+                }
+                e.printStackTrace();
             }
-            e.printStackTrace();
-        }
+
+        });
+
     }
 
     public void updateTable() {
-        String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
 
-        try {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            if (e.toString().contains("Duplicate column name 'bank'")) {
-                return;
+            try {
+
+                PreparedStatement stmt = connection.prepareStatement(sql);
+
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                if (e.toString().contains("Duplicate column name 'bank'")) {
+                    return;
+                }
+                e.printStackTrace();
             }
-            e.printStackTrace();
-        }
+
+        });
+
     }
 
     // Retrieve the balance of the player
@@ -126,6 +138,7 @@ public class MySQL {
 
     // Retrieve the bank of the player
     public double getBank(String player) {
+
         try (
                 PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
                 ResultSet rs = ps.executeQuery()
@@ -138,7 +151,8 @@ public class MySQL {
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
-        return 0.00;
+
+        return 0;
     }
 
     // Save the balance to the player's database
@@ -164,20 +178,26 @@ public class MySQL {
 
     // Get the list of the players saved
     public List<String> getList() {
-        List<String> list = new ArrayList<>();
-        try (
-                PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table);
-                ResultSet rs = ps.executeQuery()
-        ) {
 
-            while (rs.next()) {
-                list.add(rs.getString("player"));
+        List<String> list = new ArrayList<>();
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+
+            try (
+                    PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table);
+                    ResultSet rs = ps.executeQuery()
+            ) {
+
+                while (rs.next()) {
+                    list.add(rs.getString("player"));
+                }
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
 
-            return list;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        });
+
         return list;
     }
 
@@ -206,7 +226,7 @@ public class MySQL {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            String playerName = PlayerHandler.getName(user.getUniqueId(), true);
+            String playerName = PlayerHandler.getName(user.getUniqueId().toString(), true);
             if (playerName.contains("-")) {
                 playerName = Bukkit.getOfflinePlayer(user.getUniqueId()).getName();
             }
