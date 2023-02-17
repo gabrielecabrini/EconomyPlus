@@ -35,7 +35,7 @@ Updater:
   Plugin-Updater: true # Whether you want to enable the plugin updater feature.
   Notifications: true # You will receive notifications when you join if you have the permission (economyplus.update)
   Config-Updater: true # Enables the config to be updated automatically.
-  Check-GitHub: 1 # Amount of days before the server will check for release on GitHub. #0 will check github every start up
+  Check-GitHub: 1 # Amount of days before the server will check for release on GitHub. 0 will check github every start up
 
 # Plays a sound to the player to indicate success / error upon an action
 Sounds:
@@ -51,6 +51,7 @@ Invalid-Users:
   Save-Names: true # Attempts to prevent "Invalid User" by saving usernames.
   Modify-Balance: false # Modify balances of players who haven't joined.
   Username-Limit: true # Limits the username to 16 char length and non symbols. (Excludes . for geyser plugin) (UNSAFE IF FALSE)
+  Allow-Reset-All: false # allows you to set everyones balance to starting balance using /eco * reset and /eco @a reset
 
 Formatting:
   Use-Decimals: true

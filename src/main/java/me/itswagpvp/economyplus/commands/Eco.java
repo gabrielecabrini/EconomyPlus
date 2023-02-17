@@ -203,6 +203,12 @@ public class Eco implements CommandExecutor {
 
                 if (all) { // wild flag used (@a or *)
 
+                    if (!(plugin.getConfig().getBoolean("Invalid-Users.Allow-Reset-All"))) {
+                        sender.sendMessage(ChatColor.RED + "Resetting everyone's balance is disabled in config!");
+                        Utils.playErrorSound(sender);
+                        return true;
+                    }
+
                     for (OfflinePlayer op : Bukkit.getOfflinePlayers()) {
 
                         Economy eco = new Economy(op);
