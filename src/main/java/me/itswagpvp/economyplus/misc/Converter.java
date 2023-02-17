@@ -88,7 +88,7 @@ public class Converter {
 
                     plugin.getYMLData().set("Data." + user, null);
 
-                    String name = PlayerHandler.getName(UUID.fromString(user), true);
+                    String name = PlayerHandler.getName(user, true);
                     if (name.contains("-")) {
                         name = Bukkit.getOfflinePlayer(UUID.fromString(user)).getName();
                         if (name == null) {
@@ -107,7 +107,7 @@ public class Converter {
                     double money = new SQLite().getTokens(user);
                     double bank = new SQLite().getBank(user);
 
-                    String name = PlayerHandler.getName(UUID.fromString(user), true);
+                    String name = PlayerHandler.getName(user, true);
                     if (name.contains("-")) {
                         name = Bukkit.getOfflinePlayer(UUID.fromString(user)).getName();
                         if (name == null) {
