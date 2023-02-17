@@ -37,6 +37,9 @@ public class BalTop implements CommandExecutor {
 
             try {
                 page = Integer.parseInt(args[0]);
+                if (page < 1) {
+                    page = 1;
+                }
             } catch (Exception e) {
                 page = 1;
             }
