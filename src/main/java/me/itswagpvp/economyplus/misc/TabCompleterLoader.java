@@ -1,5 +1,8 @@
 package me.itswagpvp.economyplus.misc;
 
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.CacheManager;
+import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -14,6 +17,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static me.itswagpvp.economyplus.EconomyPlus.balTopManager;
 
 public class TabCompleterLoader implements TabCompleter {
     @Nullable
@@ -89,11 +94,35 @@ public class TabCompleterLoader implements TabCompleter {
 
         // /baltop
         if (command.getName().equalsIgnoreCase("baltop")) {
-            int i = (args.length);
-            if (i == 1) {
-                return Arrays.asList("1", "2", "3");
+
+            int i = args.length;
+
+            EconomyPlus.balTopManager = new BalTopManager();
+            new BalTopManager();
+            BalTopManager balTopManager = EconomyPlus.plugin.getBalTopManager();
+
+            double v = balTopManager.getBalTop().size();
+            v = v / 10; // gets total amount of pages balance top uses
+
+            int vi = Integer.parseInt(String.valueOf(v).split("\\.")[0]); // gets the int of v
+
+            if (v > vi) { // if v is greater than the int of v
+                // set v to v + 1
+                v = vi + 1;
             }
+
+            List<String> balTopPages = new ArrayList<>();
+
+            for (int l = 1; (l - 1) < v; l++) {
+                balTopPages.add(String.valueOf(l));
+            }
+
+            if (i == 1) {
+                return balTopPages;
+            }
+
             return listDefault;
+
         }
 
         // /bank
