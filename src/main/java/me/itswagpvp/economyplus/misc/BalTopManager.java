@@ -24,39 +24,35 @@ public class BalTopManager {
 
     private void loadFromDatabase() {
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        getBalTop().clear();
 
-            getBalTop().clear();
+        for (String playerName : EconomyPlus.getDBType().getList()) {
 
-            for (String playerName : EconomyPlus.getDBType().getList()) {
-
-                if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-                    String convertedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerName)).getName();
-                    if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + convertedPlayer)) {
-                        continue;
-                    }
-                } else {
-                    if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + playerName)) {
-                        continue;
-                    }
+            if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+                String convertedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerName)).getName();
+                if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + convertedPlayer)) {
+                    continue;
                 }
-
-                double money;
-                if (CacheManager.getCache(1).get(playerName) == null) {
-                    money = 0;
-                } else {
-                    money = CacheManager.getCache(1).get(playerName);
+            } else {
+                if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + playerName)) {
+                    continue;
                 }
-
-                PlayerData pData = new PlayerData(playerName, money);
-                getBalTop().add(pData);
-                getBalTopName().put(pData.getName(), pData);
-
             }
 
-            getBalTop().sort(new PlayerComparator());
+            double money;
+            if (CacheManager.getCache(1).get(playerName) == null) {
+                money = 0;
+            } else {
+                money = CacheManager.getCache(1).get(playerName);
+            }
 
-        });
+            PlayerData pData = new PlayerData(playerName, money);
+            getBalTop().add(pData);
+            getBalTopName().put(pData.getName(), pData);
+
+        }
+
+        getBalTop().sort(new PlayerComparator());
 
     }
 
