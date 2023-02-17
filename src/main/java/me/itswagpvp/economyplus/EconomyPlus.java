@@ -313,7 +313,7 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
 
-        if (pluginver >= pluginver) {
+        if (pluginver >= Updater.getLatestGitVersion()) {
             Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + pluginver + ")");
         }
 
