@@ -22,9 +22,7 @@ public class TabCompleterLoader implements TabCompleter {
 
         List<String> listDefault = Collections.singletonList("");
         List<String> playerNames = new ArrayList<>();
-        for (String name : PlayerHandler.getUsernames()) {
-            playerNames.add(name);
-        }
+        playerNames.addAll(PlayerHandler.getUsernames());
 
         // /eco
         if (command.getName().equalsIgnoreCase("eco")) {

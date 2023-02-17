@@ -1,6 +1,5 @@
 package me.itswagpvp.economyplus.commands;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,51 +10,72 @@ import org.bukkit.command.CommandSender;
 
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
+import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Eco implements CommandExecutor {
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         OfflinePlayer p = null;
 
+        boolean all = false;
+
         if (args.length >= 1) {
-            String msg = args[0].replaceAll("\\.", "").replaceAll("-", "");
-            msg = msg.replaceAll("_", "");
-            if ((!msg.matches("^[a-zA-Z0-9]*$") || args[0].length() > 16) && plugin.getConfig().getBoolean("Invalid-Users.Username-Limit", true)) {
-                sender.sendMessage(ChatColor.RED + "Invalid Username: " + args[0]);
-                Utils.playErrorSound(sender);
-                return false;
+
+            String name = args[0];
+
+            if ((name.equalsIgnoreCase("@a") || name.equalsIgnoreCase("*") && args.length == 2 && args[1].equalsIgnoreCase("reset"))) {
+                all = true;
             }
-            p = Bukkit.getOfflinePlayer(args[0]);
+
+            if ((!name.matches("^[a-zA-Z0-9]*$") || args[0].length() > 16) && plugin.getConfig().getBoolean("Invalid-Users.Username-Limit", true)) {
+
+                if (!(name.equalsIgnoreCase("@a") || name.equalsIgnoreCase("*"))) {
+                    sender.sendMessage(ChatColor.RED + "Invalid Username: " + name);
+                    Utils.playErrorSound(sender);
+                    return false;
+                }
+
+            }
+
+            if (!all) { // all flag wasn't used and args[0] is a player's username
+                p = Bukkit.getOfflinePlayer(args[0]);
+            }
+
         }
 
-        if (p == null) {
-            sender.sendMessage(plugin.getMessage("PlayerNotFound"));
-            return false;
-        }
+        if (!all) {
 
-        if (plugin.getConfig().getBoolean("Invalid-Users.Modify-Balance", false)) {
-            PlayerHandler.saveName(p.getUniqueId(), p.getName());
-        } else { // Modifying invalid users disabled in config.
-            if (!p.hasPlayedBefore() && !p.isOnline()) {
-                sender.sendMessage(ChatColor.RED + args[0] + " hasn't joined before.");
-                Utils.playErrorSound(sender);
+            if (p == null) {
+                sender.sendMessage(plugin.getMessage("PlayerNotFound"));
                 return false;
             }
+
+            if (plugin.getConfig().getBoolean("Invalid-Users.Modify-Balance", false)) {
+                PlayerHandler.saveName(p.getUniqueId(), p.getName());
+            } else { // Modifying invalid users is disabled in config.
+                if (!p.hasPlayedBefore() && !p.isOnline()) {
+                    // player hasn't joined before and isn't currently online
+                    sender.sendMessage(ChatColor.RED + args[0] + " hasn't joined before.");
+                    Utils.playErrorSound(sender);
+                    return false;
+                }
+            }
+
         }
 
         if (args.length == 3) {
 
             if (!(args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("give") || args[1].equalsIgnoreCase("take"))) {
-                sender.sendMessage(plugin.getMessage("InvalidArgs.Eco"));
-                Utils.playErrorSound(sender);
-                return false;
-            }
-
-            if (args[1].equalsIgnoreCase("reset") || args[2].startsWith("-")) {
                 sender.sendMessage(plugin.getMessage("InvalidArgs.Eco"));
                 Utils.playErrorSound(sender);
                 return false;
@@ -179,19 +199,47 @@ public class Eco implements CommandExecutor {
                     return true;
                 }
 
-                Economy eco = new Economy(p);
-                eco.setBalance(plugin.getConfig().getDouble("Starting-Balance"));
+                double starting = plugin.getConfig().getDouble("Starting-Balance"); // gets starting balance
 
-                if (plugin.isMessageEnabled("Money.Done")) {
-                    sender.sendMessage(plugin.getMessage("Money.Done"));
+                if (all) { // wild flag used (@a or *)
+
+                    for (OfflinePlayer op : Bukkit.getOfflinePlayers()) {
+
+                        Economy eco = new Economy(op);
+                        eco.setBalance(starting);
+
+                        if (op.getPlayer() != null && op.isOnline()) {
+                            op.getPlayer().sendMessage(plugin.getMessage("Money.Reset"));
+                            Utils.playErrorSound(op.getPlayer());
+                        }
+
+                    }
+
+                    if (plugin.isMessageEnabled("Money.Done")) {
+                        sender.sendMessage(ChatColor.GREEN + "You have just refreshed everyone's balances!");
+                    }
+
+                    Utils.playSuccessSound(sender);
+
                 }
 
-                if (p.getPlayer() != null) {
-                    p.getPlayer().sendMessage(plugin.getMessage("Money.Reset"));
-                    Utils.playErrorSound(p.getPlayer());
-                }
+                else {
 
-                Utils.playSuccessSound(sender);
+                    Economy eco = new Economy(p);
+                    eco.setBalance(starting);
+
+                    if (plugin.isMessageEnabled("Money.Done")) {
+                        sender.sendMessage(plugin.getMessage("Money.Done"));
+                    }
+
+                    if (p.getPlayer() != null) {
+                        p.getPlayer().sendMessage(plugin.getMessage("Money.Reset"));
+                        Utils.playErrorSound(p.getPlayer());
+                    }
+
+                    Utils.playSuccessSound(sender);
+
+                }
 
                 return true;
             }
@@ -208,4 +256,5 @@ public class Eco implements CommandExecutor {
         Utils.playErrorSound(sender);
         return true;
     }
+
 }

@@ -62,12 +62,15 @@ public class PlayerHandler implements Listener {
             }
         }
 
-        //IF USER IS INVALID
-        //returnuuidifinvalid is true will return uuid else return Invalid User
+        // IF USER IS INVALID
+
+        // returnuuidifinvalid is true
         if (returnuuidifinvalid) {
+            // will return uuid
             return String.valueOf(uuid);
         }
 
+        // else return Invalid User
         return "Invalid User";
     }
 
