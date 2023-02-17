@@ -3,6 +3,7 @@ package me.itswagpvp.economyplus.listener;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.vault.Economy;
 
+import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,9 +13,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -42,30 +48,35 @@ public class PlayerHandler implements Listener {
         }
 
         if (!p.hasPlayedBefore()) {
-            saveName(p.getUniqueId(), p.getName());
+            saveName(p);
         }
 
     }
 
-    public static String getName(UUID uuid, boolean returnuuidifinvalid) {
+    public static String getName(UUID uuid, boolean ifInvalidReturnUUID) {
 
-        if (!(Bukkit.getOfflinePlayer(uuid).getName() == null)) {
-            return Bukkit.getOfflinePlayer(uuid).getName();
+        OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+
+        if (op.getName() != null) {
+            return op.getName();
         }
 
-        if (plugin.SAVE_NAMES) {
+        // player hasn't played before
+
+        // check save names
+
+        // thinking about removing this and replacing it with something else somehow
+        if (plugin.SAVE_NAMES) { // save names is enabled
             FileConfiguration config = YamlConfiguration.loadConfiguration(getStorageFile());
-            if (!(config == null)) {
-                if (!(config.getString("usernames." + uuid) == null)) {
-                    return config.getString("usernames." + uuid);
-                }
+            if (config.getString("usernames." + uuid) != null) { // check if name is stored
+                return config.getString("usernames." + uuid); // if so return it
             }
         }
 
         // IF USER IS INVALID
 
         // returnuuidifinvalid is true
-        if (returnuuidifinvalid) {
+        if (ifInvalidReturnUUID) {
             // will return uuid
             return String.valueOf(uuid);
         }
@@ -74,7 +85,7 @@ public class PlayerHandler implements Listener {
         return "Invalid User";
     }
 
-    public static void saveName(UUID uuid, String name) {
+    public static void saveName(OfflinePlayer p) {
 
         if (!plugin.SAVE_NAMES) {
             return;
@@ -83,7 +94,7 @@ public class PlayerHandler implements Listener {
         File file = getStorageFile();
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        config.set("usernames." + uuid, name);
+        config.set("usernames." + p.getUniqueId(), p.getName());
 
         try {
             config.save(file);
@@ -93,6 +104,7 @@ public class PlayerHandler implements Listener {
 
     }
 
+    @Deprecated
     public static List<String> getUsernames() {
 
         List<String> list = new ArrayList<>();
@@ -157,16 +169,13 @@ public class PlayerHandler implements Listener {
 
     private static File getStorageFile() {
 
-        if (!plugin.SAVE_NAMES) {
-            return null;
-        }
-
         File file = new File(plugin.getDataFolder() + File.separator + "storage.yml");
+
         if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
 

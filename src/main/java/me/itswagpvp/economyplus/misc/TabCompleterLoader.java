@@ -26,8 +26,9 @@ public class TabCompleterLoader implements TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
         List<String> listDefault = Collections.singletonList("");
+
         List<String> playerNames = new ArrayList<>();
-        playerNames.addAll(PlayerHandler.getUsernames());
+        new BalTopManager().getBalTop().forEach(playerData -> playerNames.add(playerData.getName()));
 
         // /eco
         if (command.getName().equalsIgnoreCase("eco")) {

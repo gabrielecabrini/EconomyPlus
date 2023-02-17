@@ -48,10 +48,10 @@ Require-Basic-Permissions: true
 
 # Invalid Users
 Invalid-Users:
-  Save-Names: true # Attempts to prevent "Invalid User" by saving usernames.
-  Modify-Balance: false # Modify balances of players who haven't joined.
+  Save-Names: true # Attempts to prevent "Invalid User" by saving usernames and updating them each time someone rejoins.
+  Modify-Balance: false # Modify balances of players who haven't joined. # THIS IS NOT RECOMMENDED
   Username-Limit: true # Limits the username to 16 char length and non symbols. (Excludes . for geyser plugin) (UNSAFE IF FALSE)
-  Allow-Reset-All: false # allows you to set everyones balance to starting balance using /eco * reset and /eco @a reset
+  Allow-Reset-All: false # Allows you to set everyones balance to starting balance using /eco * reset and /eco @a reset
 
 Formatting:
   Use-Decimals: true

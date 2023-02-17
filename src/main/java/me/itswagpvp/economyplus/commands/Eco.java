@@ -21,9 +21,22 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Eco implements CommandExecutor {
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+        // permission
+        /*
+
+        if (args.length == 2) {
+
+        } else if (args.length == 3) {
+
+        } else {
+            // usage
+        }
+
+         */
+
 
         OfflinePlayer p = null;
 
@@ -61,7 +74,7 @@ public class Eco implements CommandExecutor {
             }
 
             if (plugin.getConfig().getBoolean("Invalid-Users.Modify-Balance", false)) {
-                PlayerHandler.saveName(p.getUniqueId(), p.getName());
+                PlayerHandler.saveName(p);
             } else { // Modifying invalid users is disabled in config.
                 if (!p.hasPlayedBefore() && !p.isOnline()) {
                     // player hasn't joined before and isn't currently online
@@ -187,9 +200,7 @@ public class Eco implements CommandExecutor {
 
             return true;
 
-        }
-
-        if (args.length == 2) {
+        } else if (args.length == 2) {
 
             if (args[1].equalsIgnoreCase("reset")) {
 
@@ -248,6 +259,7 @@ public class Eco implements CommandExecutor {
                 }
 
                 return true;
+
             }
 
         }

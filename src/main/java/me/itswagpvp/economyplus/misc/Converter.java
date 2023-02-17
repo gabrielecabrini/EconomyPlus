@@ -82,6 +82,7 @@ public class Converter {
         switch (EconomyPlus.getDBType()) {
             case YAML:
                 for (String user : plugin.getYMLData().getConfigurationSection("Data").getKeys(false)) {
+
                     double money = plugin.getYMLData().getDouble("Data." + user + ".tokens");
                     double bank = plugin.getYMLData().getDouble("Data." + user + ".bank");
 

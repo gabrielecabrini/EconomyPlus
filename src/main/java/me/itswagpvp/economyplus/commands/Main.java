@@ -21,6 +21,7 @@ public class Main implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+
         if (args.length == 0) {
             sender.sendMessage("§d§lEconomy§5§lPlus §7v" + plugin.getDescription().getVersion() + " made by §d_ItsWagPvP");
             sender.sendMessage("§7For help do /economyplus help");

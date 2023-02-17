@@ -21,6 +21,7 @@ public class BalTopManager {
     }
 
     private void loadFromDatabase() {
+
         getBalTop().clear();
 
         for (String playerName : EconomyPlus.getDBType().getList()) {
@@ -48,7 +49,9 @@ public class BalTopManager {
             getBalTopName().put(pData.getName(), pData);
 
         }
+
         getBalTop().sort(new PlayerComparator());
+
     }
 
     public List<PlayerData> getBalTop() {
