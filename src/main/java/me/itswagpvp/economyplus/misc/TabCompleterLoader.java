@@ -153,6 +153,7 @@ public class TabCompleterLoader implements TabCompleter {
         if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
             // check for invalid user?
             CacheManager.getCache(1).forEach((player,value) -> {
+                //debug
                 String name = Bukkit.getOfflinePlayer(UUID.fromString(player)).getName();
                 if (name != null) {
                     playerNames.add(Bukkit.getOfflinePlayer(UUID.fromString(player)).getName());
@@ -160,6 +161,7 @@ public class TabCompleterLoader implements TabCompleter {
             });
         } else {
             CacheManager.getCache(1).forEach((player,value) -> {
+                //debug
                 playerNames.add(player);
             });
         }
