@@ -2,61 +2,48 @@ package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
-import me.itswagpvp.economyplus.database.misc.DatabaseType;
-import me.itswagpvp.economyplus.listener.PlayerHandler;
+import me.itswagpvp.economyplus.database.misc.StorageMode;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static me.itswagpvp.economyplus.EconomyPlus.balTopManager;
+import java.util.*;
 
 public class TabCompleterLoader implements TabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        List<String> listDefault = Collections.singletonList("");
-
-        List<String> playerNames = new ArrayList<>();
-        new BalTopManager().getBalTop().forEach(playerData -> playerNames.add(playerData.getName()));
-
         // /eco
         if (command.getName().equalsIgnoreCase("eco")) {
-            int i = (args.length);
-            switch (i) {
+
+            switch (args.length) {
                 case 1: {
-                    return playerNames;
+                    return getPlayerNames();
                 }
                 case 2: {
                     return Arrays.asList("give", "set", "take", "reset");
                 }
                 case 3: {
 
-                    if (args[1].equals("reset")) {
-                        return listDefault;
+                    if (args[1].equalsIgnoreCase("reset")) {
+                        return Collections.singletonList("");
                     }
 
                     return Arrays.asList("0", "100", "1000");
                 }
                 default:
-                    return listDefault;
+                    return Collections.singletonList("");
             }
+
         }
 
         // EconomyPlus main command TabCompleter
         if (command.getName().equalsIgnoreCase("economyplus")) {
-            int i = (args.length);
-            switch (i) {
+            switch (args.length) {
                 case 1:
                     return Arrays.asList("help", "debug", "reload", "hologram", "update", "convert", "exclude");
                 case 2:
@@ -64,24 +51,22 @@ public class TabCompleterLoader implements TabCompleter {
                         Arrays.asList("UUID", "NICKNAME");
                     }
             }
-            return listDefault;
+            return Collections.singletonList("");
         }
 
         // /bal
         if (command.getName().equalsIgnoreCase("bal")) {
-            int i = (args.length);
-            if (i == 1) {
-                return playerNames;
+            if (args.length == 1) {
+                return getPlayerNames();
             }
-            return listDefault;
+            return Collections.singletonList("");
         }
 
         // /pay
         if (command.getName().equalsIgnoreCase("pay")) {
-            int i = (args.length);
-            switch (i) {
+            switch (args.length) {
                 case 1: {
-                    return playerNames;
+                    return getPlayerNames();
                 }
 
                 case 2: {
@@ -89,40 +74,24 @@ public class TabCompleterLoader implements TabCompleter {
                 }
 
                 default:
-                    return listDefault;
+                    return Collections.singletonList("");
             }
         }
 
         // /baltop
         if (command.getName().equalsIgnoreCase("baltop")) {
 
-            int i = args.length;
+            if (args.length == 1) {
 
-            EconomyPlus.balTopManager = new BalTopManager();
-            new BalTopManager();
-            BalTopManager balTopManager = EconomyPlus.plugin.getBalTopManager();
+                List<String> tab = new ArrayList<>();
+                for(int i=1;i<BalTopManager.getPages();i++){
+                    tab.add(String.valueOf(i));
+                }
 
-            double v = balTopManager.getBalTop().size();
-            v = v / 10; // gets total amount of pages balance top uses
-
-            int vi = Integer.parseInt(String.valueOf(v).split("\\.")[0]); // gets the int of v
-
-            if (v > vi) { // if v is greater than the int of v
-                // set v to v + 1
-                v = vi + 1;
+                return tab;
             }
 
-            List<String> balTopPages = new ArrayList<>();
-
-            for (int l = 1; (l - 1) < v; l++) {
-                balTopPages.add(String.valueOf(l));
-            }
-
-            if (i == 1) {
-                return balTopPages;
-            }
-
-            return listDefault;
+            return Collections.singletonList("");
 
         }
 
@@ -143,10 +112,10 @@ public class TabCompleterLoader implements TabCompleter {
 
                 case 3: {
                     if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("get")) {
-                        return playerNames;
+                        return getPlayerNames();
                     }
 
-                    return listDefault;
+                    return Collections.singletonList("");
                 }
 
                 case 4: {
@@ -154,15 +123,15 @@ public class TabCompleterLoader implements TabCompleter {
                         return Arrays.asList("0", "10", "100");
                     }
 
-                    return listDefault;
+                    return Collections.singletonList("");
                 }
 
                 case 5: {
                     if (args[1].equalsIgnoreCase("set")) {
-                        return playerNames;
+                        return getPlayerNames();
                     }
 
-                    return listDefault;
+                    return Collections.singletonList("");
                 }
 
                 case 6: {
@@ -172,10 +141,29 @@ public class TabCompleterLoader implements TabCompleter {
                 }
 
                 default:
-                    return listDefault;
+                    return Collections.singletonList("");
             }
         }
 
-        return listDefault;
+        return Collections.singletonList("");
     }
+
+    private static List<String> getPlayerNames() {
+        List<String> playerNames = new ArrayList<>();
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            // check for invalid user?
+            CacheManager.getCache(1).forEach((player,value) -> {
+                String name = Bukkit.getOfflinePlayer(UUID.fromString(player)).getName();
+                if (name != null) {
+                    playerNames.add(Bukkit.getOfflinePlayer(UUID.fromString(player)).getName());
+                }
+            });
+        } else {
+            CacheManager.getCache(1).forEach((player,value) -> {
+                playerNames.add(player);
+            });
+        }
+        return playerNames;
+    }
+
 }

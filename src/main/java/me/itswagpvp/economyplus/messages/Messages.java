@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.messages;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -8,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +24,11 @@ public class Messages {
 
     public static void load() {
 
+        // loop through all files in recourses folder if it has 2 chars and capitalize treat it as a language file
+
+        //File dir = new File();
+        //File[] directoryListing = dir.listFiles();
+
         for (String name : list) {
 
             File file = new File(path, name + ".yml");
@@ -30,11 +37,11 @@ public class Messages {
 
                 file.getParentFile().mkdirs();
 
-                InputStream stream = EconomyPlus.getPlugin(EconomyPlus.class).getResource(file.getName());
+                InputStream stream = plugin.getResource(file.getName());
 
                 try {
 
-                    if (!(stream == null)) {
+                    if (stream != null) {
                         if (!(new File(plugin.getDataFolder() + File.separator + "messages" + File.separator + file.getName()).exists())) {
                             Files.copy(stream, new File(plugin.getDataFolder() + File.separator + "messages" + File.separator + file.getName()).toPath());
                         }

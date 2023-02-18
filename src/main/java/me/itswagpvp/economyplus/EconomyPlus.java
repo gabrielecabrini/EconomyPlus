@@ -55,6 +55,9 @@ public class EconomyPlus extends JavaPlugin {
     private static DatabaseType dbType = DatabaseType.UNDEFINED; // Database
 
     private static StorageMode storageMode = StorageMode.UNDEFINED; // Storage Type (UUID,Nickname)
+
+    public static boolean bankEnabled = false;
+
     long before; // Plugin loading time
 
     String vault = ""; // Vault message
@@ -236,12 +239,14 @@ public class EconomyPlus extends JavaPlugin {
 
         loadPlaceholderAPI();
 
-        double configver = Double.parseDouble(getConfig().getString("Version")); // Configuration Version
-        double pluginver = Double.parseDouble(getDescription().getVersion()); // Plugin Version
+        // store whether bank is enabled or not in the variable
+        if (getConfig().getBoolean("Bank.Enabled")) {
+            bankEnabled = true;
+        }
 
         Bukkit.getConsoleSender().sendMessage("§8+------------------------------------+");
         Bukkit.getConsoleSender().sendMessage("             §dEconomy§5Plus");
-        Bukkit.getConsoleSender().sendMessage("             §aEnabled §d" + pluginver);
+        Bukkit.getConsoleSender().sendMessage("             §aEnabled §d" + PLUGIN_VERSION);
         Bukkit.getConsoleSender().sendMessage("§8");
 
         Bukkit.getConsoleSender().sendMessage("§f-> §cLoading core:");
@@ -284,18 +289,18 @@ public class EconomyPlus extends JavaPlugin {
             configUpdate = null;
         }
 
-        if (configver != pluginver) { /* Config is not updated */
+        if (CONFIG_VERSION != PLUGIN_VERSION) { /* Config is not updated */
 
             int outdated; /* Amount of version the plugin is outdated or over updatedby */
 
             Bukkit.getConsoleSender().sendMessage("§f-> §eYour config.yml is outdated!");
 
-            if (configver > pluginver) { //ahead versions (could auto fix maybe but prob not?)
-                outdated = Integer.parseInt(String.valueOf(Math.round((configver - pluginver) / 0.1)).replace(".0", ""));
-                Bukkit.getConsoleSender().sendMessage("   - §fConfig: " + "§c" + configver + " (" + outdated + " versions ahead" + ")");
+            if (CONFIG_VERSION > PLUGIN_VERSION) { //ahead versions (could auto fix maybe but prob not?)
+                outdated = Integer.parseInt(String.valueOf(Math.round((CONFIG_VERSION - PLUGIN_VERSION) / 0.1)).replace(".0", ""));
+                Bukkit.getConsoleSender().sendMessage("   - §fConfig: " + "§c" + CONFIG_VERSION + " (" + outdated + " versions ahead" + ")");
             } else { //behind versions (outdated)
-                outdated = Integer.parseInt(String.valueOf(Math.round((pluginver - configver) / 0.1)).replace(".0", ""));
-                Bukkit.getConsoleSender().sendMessage("   - §fConfig: " + "§c" + configver + " (" + outdated + " versions behind" + ")");
+                outdated = Integer.parseInt(String.valueOf(Math.round((PLUGIN_VERSION - CONFIG_VERSION) / 0.1)).replace(".0", ""));
+                Bukkit.getConsoleSender().sendMessage("   - §fConfig: " + "§c" + CONFIG_VERSION + " (" + outdated + " versions behind" + ")");
             }
 
             Bukkit.getConsoleSender().sendMessage("   - §fPlugin: " + "§d" + getDescription().getVersion());
@@ -313,8 +318,8 @@ public class EconomyPlus extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
 
-        if (pluginver >= Updater.getLatestGitVersion()) {
-            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + pluginver + ")");
+        if (PLUGIN_VERSION >= Updater.getLatestGitVersion()) {
+            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + PLUGIN_VERSION + ")");
         }
 
     }
@@ -408,12 +413,11 @@ public class EconomyPlus extends JavaPlugin {
 
     private void enableDatabase() {
         // Load the cache for the database - Vault API
+        new CacheManager().cacheDatabase();
         if (dbType == DatabaseType.MySQL) {
-            new CacheManager().cacheOnlineDatabase();
             long period = getConfig().getLong("Database.Cache.MySQL", 10) * 20;
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> new CacheManager().cacheOnlineDatabase(), 120, period);
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> new CacheManager().cacheDatabase(), 120, period);
         } else {
-            new CacheManager().cacheLocalDatabase();
             new CacheManager().startAutoSave();
         }
 

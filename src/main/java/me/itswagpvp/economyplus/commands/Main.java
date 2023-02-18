@@ -29,12 +29,10 @@ public class Main implements CommandExecutor {
         }
 
         if (args.length == 1) {
+
             if (args[0].equalsIgnoreCase("reload")) {
-                if (!sender.hasPermission("economyplus.reload")) {
 
-                    sender.sendMessage(plugin.getMessage("NoPerms"));
-
-                    Utils.playErrorSound(sender);
+                if (!Utils.hasPerm(sender, "economyplus.reload")) {
                     return true;
                 }
 
@@ -97,8 +95,7 @@ public class Main implements CommandExecutor {
 
                 Player p = (Player) sender;
 
-                if (!p.hasPermission("economyplus.hologram")) {
-                    p.sendMessage(plugin.getMessage("NoPerms"));
+                if (!Utils.hasPerm(p, "economyplus.hologram")) {
                     return true;
                 }
 
@@ -125,9 +122,7 @@ public class Main implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("update")) {
 
-                if (!sender.hasPermission("economyplus.update")) {
-                    sender.sendMessage(plugin.getMessage("NoPerms"));
-                    Utils.playErrorSound(sender);
+                if (!Utils.hasPerm(sender, "economyplus.update")) {
                     return true;
                 }
 

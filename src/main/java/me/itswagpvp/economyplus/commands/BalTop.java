@@ -18,8 +18,7 @@ public class BalTop implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!sender.hasPermission("economyplus.baltop") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-            sender.sendMessage(plugin.getMessage("NoPerms"));
+        if (!Utils.hasPerm(sender, "economyplus.baltop") && plugin.REQUIRE_BASIC_PERMISSIONS) {
             return true;
         }
 

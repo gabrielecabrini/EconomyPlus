@@ -6,9 +6,12 @@ import me.itswagpvp.economyplus.database.misc.StorageMode;
 
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 
+import static me.itswagpvp.economyplus.EconomyPlus.balTopManager;
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class BalTopManager {
@@ -22,9 +25,37 @@ public class BalTopManager {
         loadFromDatabase();
     }
 
+    public static int getPages() {
+
+        double size = CacheManager.getCache(1).size();
+        size = size / 10; // gets total amount of pages balance top uses
+
+        int pages = Integer.parseInt(String.valueOf(size).split("\\.")[0]); // gets the int of size
+
+        if (size > pages) { // if total size is greater than the amount of pages (decimal value)
+            pages = pages + 1; // add one to pages
+        }
+
+        return pages;
+    }
+
     private void loadFromDatabase() {
 
         getBalTop().clear();
+
+        CacheManager.getCache(1).forEach((player, money) -> {
+
+            //if (config.getBoolean("BalTop.Exclude." + player)) {
+            //    continue;
+            //}
+
+            PlayerData pData = new PlayerData(player, money);
+            getBalTop().add(pData);
+            getBalTopName().put(pData.getName(), pData);
+
+        });
+
+        /*
 
         for (String playerName : EconomyPlus.getDBType().getList()) {
 
@@ -51,6 +82,8 @@ public class BalTopManager {
             getBalTopName().put(pData.getName(), pData);
 
         }
+
+         */
 
         getBalTop().sort(new PlayerComparator());
 

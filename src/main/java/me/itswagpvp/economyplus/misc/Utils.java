@@ -19,6 +19,19 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 
 public class Utils {
 
+    // No Perms
+    public static boolean hasPerm(CommandSender sender, String permission) {
+
+        if (sender.hasPermission(permission)) {
+            return true;
+        }
+
+        sender.sendMessage(plugin.getMessage("NoPerms"));
+        Utils.playErrorSound(sender);
+
+        return false;
+    }
+
     // Error sound played to player
     public static void playErrorSound(CommandSender sender) {
 
@@ -39,6 +52,7 @@ public class Utils {
             plugin.pluginLog("[EconomyPlus] &7Error on the &cplayErrorSound&7! Check your config!");
             e.printStackTrace();
         }
+
     }
 
     // Success sound played to player

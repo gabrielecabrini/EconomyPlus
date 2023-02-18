@@ -56,9 +56,7 @@ public class Bal implements CommandExecutor {
 
         if (args.length == 0) {
 
-            if (!p.hasPermission("economyplus.balance") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-                sender.sendMessage(plugin.getMessage("NoPerms"));
-                Utils.playErrorSound(sender);
+            if (!Utils.hasPerm(p, "economyplus.balance") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                 return true;
             }
 
@@ -75,9 +73,7 @@ public class Bal implements CommandExecutor {
 
         if (args.length == 1) {
 
-            if (!p.hasPermission("economyplus.balance.others") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-                sender.sendMessage(plugin.getMessage("NoPerms"));
-                Utils.playErrorSound(sender);
+            if (!Utils.hasPerm(p, "economyplus.balance.others") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                 return true;
             }
 

@@ -24,9 +24,7 @@ public class PayToggle implements CommandExecutor {
 
         Player p = (Player) sender;
 
-        if (!p.hasPermission("economyplus.paytoggle") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-            p.sendMessage(plugin.getMessage("NoPerms"));
-            Utils.playErrorSound(p);
+        if (!Utils.hasPerm(p, "economyplus.paytoggle") && plugin.REQUIRE_BASIC_PERMISSIONS) {
             return true;
         }
 

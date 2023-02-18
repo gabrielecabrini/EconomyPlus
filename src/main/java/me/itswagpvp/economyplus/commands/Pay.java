@@ -25,9 +25,7 @@ public class Pay implements CommandExecutor {
 
         Player p = (Player) sender;
 
-        if (!p.hasPermission("economyplus.pay") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-            p.sendMessage(plugin.getMessage("NoPerms"));
-            Utils.playErrorSound(p);
+        if (!Utils.hasPerm(p, "economyplus.pay") && plugin.REQUIRE_BASIC_PERMISSIONS) {
             return true;
         }
 

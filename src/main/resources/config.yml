@@ -46,13 +46,6 @@ Sounds:
 # Require permissions for commands that aren't administrative?
 Require-Basic-Permissions: true
 
-# Invalid Users
-Invalid-Users:
-  Save-Names: true # Attempts to prevent "Invalid User" by saving usernames and updating them each time someone rejoins.
-  Modify-Balance: false # Modify balances of players who haven't joined. # THIS IS NOT RECOMMENDED
-  Username-Limit: true # Limits the username to 16 char length and non symbols. (Excludes . for geyser plugin) (UNSAFE IF FALSE)
-  Allow-Reset-All: false # Allows you to set everyones balance to starting balance using /eco * reset and /eco @a reset
-
 Formatting:
   Use-Decimals: true
   Have-Excessive-Zeros: false # 12 = 12.00
@@ -75,6 +68,11 @@ Starting-Balance: 0
 
 # Set a user bank on join
 Starting-Bank-Balance: 0
+
+# Reset All
+Reset-All:
+  Flags: false # Allows you to use @a or * when resetting balances.
+  Console-Only: true # Only works in console
 
 # Baltop configuration
 Baltop:

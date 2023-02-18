@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.database;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import org.bukkit.Bukkit;
 
@@ -28,61 +29,56 @@ public class CacheManager {
         }
     }
 
-    // Stores the db (YAML, H2) into the cache
-    public void cacheLocalDatabase() {
+    // Cache database
+    public void cacheDatabase() {
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+
             int num = 0;
+
             for (String player : EconomyPlus.getDBType().getList()) {
+
                 try {
-                    num++;
                     cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
-                    cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
+                    if (EconomyPlus.bankEnabled) {
+                        cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
+                    }
+                    num++;
                 } catch (Exception e) {
                     EconomyPlus.getDBType().removePlayer(player);
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing local database: " + e.getMessage());
+                    if (EconomyPlus.getDBType() == DatabaseType.MySQL) {
+                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing MySQL: " + e.getMessage());
+                    } else {
+                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing local database: " + e.getMessage());
+                    }
                 }
+
             }
 
             if (EconomyPlus.debugMode) {
                 Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num + " accounts...");
             }
+
         });
-    }
 
-    // Stores the db (MySQL) into the cache
-    public void cacheOnlineDatabase() {
-
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            int num = 0;
-
-            for (String player : EconomyPlus.getDBType().getList()) {
-                try {
-                    cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
-                    cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
-                    num++;
-                } catch (Exception e) {
-                    EconomyPlus.getDBType().removePlayer(player);
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing MySQL: " + e.getMessage());
-                }
-            }
-
-
-            if (EconomyPlus.debugMode) {
-                Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num + " accounts...");
-            }
-        });
     }
 
     // Started only with H2 and YAML
     public void startAutoSave() {
+
         long refreshRate = plugin.getConfig().getLong("Database.Cache.Auto-Save", 300) * 20L;
 
         if (EconomyPlus.getDBType() != DatabaseType.MySQL) {
+
             Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, () -> {
+
                 if (EconomyPlus.debugMode) Bukkit.getConsoleSender().sendMessage(
                         "[EconomyPlus-Debug] Caching accounts...");
-                cacheLocalDatabase();
+
+                cacheDatabase();
+
             }, 300L, refreshRate);
+
         }
     }
 

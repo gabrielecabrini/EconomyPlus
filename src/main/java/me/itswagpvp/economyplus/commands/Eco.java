@@ -24,20 +24,6 @@ public class Eco implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        // permission
-        /*
-
-        if (args.length == 2) {
-
-        } else if (args.length == 3) {
-
-        } else {
-            // usage
-        }
-
-         */
-
-
         OfflinePlayer p = null;
 
         boolean all = false;
@@ -48,16 +34,6 @@ public class Eco implements CommandExecutor {
 
             if ((name.equalsIgnoreCase("@a") || name.equalsIgnoreCase("*") && args.length == 2 && args[1].equalsIgnoreCase("reset"))) {
                 all = true;
-            }
-
-            if ((!name.matches("^[a-zA-Z0-9]*$") || args[0].length() > 16) && plugin.getConfig().getBoolean("Invalid-Users.Username-Limit", true)) {
-
-                if (!(name.equalsIgnoreCase("@a") || name.equalsIgnoreCase("*"))) {
-                    sender.sendMessage(ChatColor.RED + "Invalid Username: " + name);
-                    Utils.playErrorSound(sender);
-                    return false;
-                }
-
             }
 
             if (!all) { // all flag wasn't used and args[0] is a player's username
@@ -109,9 +85,7 @@ public class Eco implements CommandExecutor {
 
             if (args[1].equalsIgnoreCase("set")) {
 
-                if (!sender.hasPermission("economyplus.eco.set")) {
-                    sender.sendMessage(plugin.getMessage("NoPerms"));
-                    Utils.playErrorSound(sender);
+                if (!Utils.hasPerm(sender, "economyplus.eco.set")) {
                     return true;
                 }
 
@@ -137,9 +111,7 @@ public class Eco implements CommandExecutor {
 
             } else if (args[1].equalsIgnoreCase("take")) {
 
-                if (!sender.hasPermission("economyplus.eco.take")) {
-                    sender.sendMessage(plugin.getMessage("NoPerms"));
-                    Utils.playErrorSound(sender);
+                if (!Utils.hasPerm(sender, "economyplus.eco.take")) {
                     return true;
                 }
 
@@ -169,9 +141,7 @@ public class Eco implements CommandExecutor {
 
                 return true;
             } else if (args[1].equalsIgnoreCase("give")) {
-                if (!sender.hasPermission("economyplus.eco.give")) {
-                    sender.sendMessage(plugin.getMessage("NoPerms"));
-                    Utils.playErrorSound(sender);
+                if (!Utils.hasPerm(sender, "economyplus.eco.give")) {
                     return true;
                 }
 
@@ -204,9 +174,7 @@ public class Eco implements CommandExecutor {
 
             if (args[1].equalsIgnoreCase("reset")) {
 
-                if (!sender.hasPermission("economyplus.eco.reset")) {
-                    sender.sendMessage(plugin.getMessage("NoPerms"));
-                    Utils.playErrorSound(sender);
+                if (!Utils.hasPerm(sender, "economyplus.eco.reset")) {
                     return true;
                 }
 
@@ -264,9 +232,7 @@ public class Eco implements CommandExecutor {
 
         }
 
-        if (!sender.hasPermission("economyplus.eco.reset") || !sender.hasPermission("economyplus.eco.give") || !sender.hasPermission("economyplus.eco.take") || !sender.hasPermission("economyplus.eco.set")) {
-            sender.sendMessage(plugin.getMessage("NoPerms"));
-            Utils.playErrorSound(sender);
+        if (!Utils.hasPerm(sender, "economyplus.eco.reset") || !Utils.hasPerm(sender, "economyplus.eco.give") || !Utils.hasPerm(sender, "economyplus.eco.take") || !Utils.hasPerm(sender, "economyplus.eco.set")) {
             return true;
         }
 

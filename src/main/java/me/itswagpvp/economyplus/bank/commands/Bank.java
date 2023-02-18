@@ -33,8 +33,7 @@ public class Bank implements CommandExecutor {
 
         if (args.length == 0) {
 
-            if (!p.hasPermission("economyplus.bank.view") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-                p.sendMessage(plugin.getMessage("NoPerms"));
+            if (!Utils.hasPerm(p, "economyplus.bank.view") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                 return true;
             }
 
@@ -56,8 +55,7 @@ public class Bank implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("withdraw")) {
 
-                if (!p.hasPermission("economyplus.bank.withdraw") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-                    p.sendMessage(plugin.getMessage("NoPerms"));
+                if (!Utils.hasPerm(p, "economyplus.bank.withdraw") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                     return true;
                 }
 
@@ -88,8 +86,7 @@ public class Bank implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("deposit")) {
 
-                if (!p.hasPermission("economyplus.bank.deposit") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-                    p.sendMessage(plugin.getMessage("NoPerms"));
+                if (!Utils.hasPerm(p, "economyplus.bank.deposit") && plugin.REQUIRE_BASIC_PERMISSIONS) {
                     return true;
                 }
 
@@ -127,9 +124,7 @@ public class Bank implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("admin")) {
 
-                if (!p.hasPermission("economyplus.bank.admin")) {
-                    p.sendMessage(plugin.getMessage("NoPerms"));
-                    Utils.playErrorSound(p);
+                if (!Utils.hasPerm(p, "economyplus.bank.admin")) {
                     return true;
                 }
 
@@ -166,9 +161,10 @@ public class Bank implements CommandExecutor {
         }
 
         if (args.length == 4) {
+
             if (args[0].equalsIgnoreCase("admin")) {
-                if (!p.hasPermission("economyplus.bank.admin")) {
-                    p.sendMessage(plugin.getMessage("NoPerms"));
+
+                if (!Utils.hasPerm(p, "economyplus.bank.admin")) {
                     return true;
                 }
 
