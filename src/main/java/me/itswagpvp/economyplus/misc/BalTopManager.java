@@ -5,7 +5,9 @@ import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 
+import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
+import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,39 +53,72 @@ public class BalTopManager {
         }
 
         // sort mysql db in order
-
         // sort db lite in order
+        /*
+        if (EconomyPlus.getDBType() == DatabaseType.MySQL || EconomyPlus.getDBType() ==  DatabaseType.H2) {
 
-        for (Map.Entry<String, Double> value: CacheManager.getCache(1).entrySet()) { // loop through cache manager if db type is not mysql
+            for (String user : MySQL.getOrderedList()) {
 
-            String name = value.getKey();
+                String name = user;
+                if (useUUID) {
+                    name = PlayerHandler.getName(name, false);
+                }
 
-            // purge check
-            if (useUUID && name.equalsIgnoreCase("Invalid User")) {
-                if (plugin.purgeInvalid) {
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
-                    EconomyPlus.getDBType().removePlayer(name);
-                    CacheManager.getCache(1).remove(name);
+                // purge check
+                if (useUUID && name.equalsIgnoreCase("Invalid User")) {
+                    if (plugin.purgeInvalid) {
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
+                        EconomyPlus.getDBType().removePlayer(name);
+                        CacheManager.getCache(1).remove(name);
+                        continue;
+                    }
+                }
+
+                // exclude check
+                if (config.getBoolean("BalTop.Exclude." + name)) {
+                    continue;
+                } else if (config.getBoolean("BalTop.Exclude." + name)) {
                     continue;
                 }
+
+                // add to baltop
+                PlayerData pData = new PlayerData(name, );
+                getBalTop().add(pData);
+                getBalTopName().put(pData.getName(), pData);
+
             }
 
-            // exclude check
-            if (config.getBoolean("BalTop.Exclude." + name)) {
-                continue;
-            } else if (config.getBoolean("BalTop.Exclude." + name)) {
-                continue;
+        } else { */
+
+            for (Map.Entry<String, Double> value: CacheManager.getCache(1).entrySet()) { // loop through cache manager if db type is not mysql
+
+                String name = value.getKey();
+
+                // purge check
+                if (useUUID && name.equalsIgnoreCase("Invalid User")) {
+                    if (plugin.purgeInvalid) {
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
+                        EconomyPlus.getDBType().removePlayer(name);
+                        CacheManager.getCache(1).remove(name);
+                        continue;
+                    }
+                }
+
+                // exclude check
+                if (config.getBoolean("BalTop.Exclude." + name)) {
+                    continue;
+                } else if (config.getBoolean("BalTop.Exclude." + name)) {
+                    continue;
+                }
+
+                // add to baltop sorting
+                PlayerData pData = new PlayerData(name, value.getValue());
+                getBalTop().add(pData);
+                getBalTopName().put(pData.getName(), pData);
+
             }
 
-            // add to baltop sorting
-            PlayerData pData = new PlayerData(name, value.getValue());
-            getBalTop().add(pData);
-            getBalTopName().put(pData.getName(), pData);
-
-        }
-
-        // only do this if it wasn't mysql db
-        getBalTop().sort(new PlayerComparator());
+            getBalTop().sort(new PlayerComparator());
 
     }
 

@@ -8,7 +8,9 @@ import org.bukkit.OfflinePlayer;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -188,6 +190,29 @@ public class MySQL {
 
         return list;
     }
+
+    /*
+
+    public TreeMap<String, Double> getOrderedList() { ?? GET ORDERED LIST
+
+        List<String> list = new ArrayList<>();
+
+        try (
+                PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table + " ORDER BY moneys");
+                ResultSet rs = ps.executeQuery()
+        ) {
+            while (rs.next()) {
+                list.add(rs.getString("player"));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
+    }
+
+     */
 
     // Create a player account
     public boolean createPlayer(String player) {
