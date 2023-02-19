@@ -76,6 +76,9 @@ Reset-All:
 
 Purge-Invalid: false # Remove invalid users automatically?
 
+Set-Invalid: true # Able to set player's balances that have never joined before
+Save-Usernames: true # Save usernames? (Attempts to prevent "Invalid User" issues)
+
 # Baltop configuration
 Baltop:
   Chat:

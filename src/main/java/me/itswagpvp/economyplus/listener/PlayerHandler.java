@@ -101,37 +101,6 @@ public class PlayerHandler implements Listener {
 
     }
 
-    @Deprecated
-    public static List<String> getUsernames() {
-
-        List<String> list = new ArrayList<>();
-
-        if (plugin.SAVE_NAMES) {
-
-            FileConfiguration config = YamlConfiguration.loadConfiguration(getStorageFile());
-
-            if (config.getConfigurationSection("usernames") == null) {
-                return list;
-            }
-
-            for (String value : config.getConfigurationSection("usernames").getKeys(false)) {
-                if (!plugin.getConfig().getBoolean("Invalid-Users.Modify-Balance", false)) {
-                    if (Bukkit.getOfflinePlayer(UUID.fromString(value)).hasPlayedBefore()) {
-                        list.add(config.getString("usernames." + value));
-                    }
-                } else {
-                    list.add(config.getString("usernames." + value));
-                }
-            }
-        } else {
-            for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
-                list.add(p.getName());
-            }
-        }
-
-        return list;
-    }
-
     public static void loadUsernames() {
 
         if (!plugin.SAVE_NAMES) {
@@ -146,15 +115,6 @@ public class PlayerHandler implements Listener {
                 config.set("usernames." + p.getUniqueId(), p.getName());
             }
         }
-
-        /*for (String value : config.getConfigurationSection("usernames").getKeys(false)) { //loop through usernames if user doesn't have account remove it from list, Will remove it from tab list to.
-            OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(value));
-            Economy eco = new Economy(p);
-            Bukkit.getConsoleSender().sendMessage(PlayerHandler.getName(UUID.fromString(value), false) + " : " + eco.hasAccount(p));
-            if (eco.) {
-                config.set("usernames." + value, null);
-            }
-        }*/
 
         try {
             config.save(file);

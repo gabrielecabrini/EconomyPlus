@@ -38,7 +38,8 @@ public class EconomyPlus extends JavaPlugin {
     public boolean REQUIRE_BASIC_PERMISSIONS = getConfig().getBoolean("Require-Basic-Permissions", true);
 
     public boolean PLUGIN_UPDATER = getConfig().getBoolean("Updater.Plugin-Updater", true);
-    public boolean SAVE_NAMES = getConfig().getBoolean("Invalid-Users.Save-Names", true);
+    public boolean SAVE_NAMES = getConfig().getBoolean("Save-Usernames", true);
+    public boolean SET_INVALID = getConfig().getBoolean("Set-Invalid", true);
     public static double PLUGIN_VERSION;
     public static double CONFIG_VERSION;
 
