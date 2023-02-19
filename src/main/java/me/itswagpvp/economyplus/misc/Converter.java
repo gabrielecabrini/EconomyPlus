@@ -39,6 +39,8 @@ public class Converter {
                     plugin.getYMLData().set("Data." + p.getUniqueId() + ".bank", bank);
                     plugin.saveYMLConfig();
 
+                    PlayerHandler.saveName(p.getUniqueId(), user);
+
                     accounts++;
 
                 }
@@ -47,6 +49,7 @@ public class Converter {
                 for (String user : new MySQL().getList()) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(user);
                     new MySQL().changeUser(p, "UUID");
+                    PlayerHandler.saveName(p.getUniqueId(), user);
                     accounts++;
                 }
                 break;
@@ -61,6 +64,7 @@ public class Converter {
                     new SQLite().setTokens(String.valueOf(p.getUniqueId()), money);
                     new SQLite().setBank(String.valueOf(p.getUniqueId()), bank);
 
+                    PlayerHandler.saveName(p.getUniqueId(), user);
                     accounts++;
 
                 }
@@ -89,15 +93,14 @@ public class Converter {
                     plugin.getYMLData().set("Data." + user, null);
 
                     String name = PlayerHandler.getName(user, true);
-                    if (name.contains("-")) {
-                        name = Bukkit.getOfflinePlayer(UUID.fromString(user)).getName();
-                        if (name == null) {
-                            break;
-                        }
+                    if (name.equalsIgnoreCase(user)) { // invalid user while converting
+                        continue;
                     }
+
                     plugin.getYMLData().set("Data." + name + ".tokens", money);
                     plugin.getYMLData().set("Data." + name + ".bank", bank);
                     plugin.saveYMLConfig();
+
                     accounts++;
                 }
                 break;

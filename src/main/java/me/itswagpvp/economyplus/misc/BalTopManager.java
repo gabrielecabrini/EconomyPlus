@@ -38,17 +38,9 @@ public class BalTopManager {
         return pages;
     }
 
-    static boolean cooldown = false; // temp debug cooldown
-    private void loadFromDatabase() { // gets executed twice on call of the method fix later
+    private void loadFromDatabase() {
 
-        if (cooldown) {
-            return;
-        }
-
-        cooldown = true;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            cooldown = false;
-        }, 20);
+        Bukkit.broadcastMessage("called baltop");
 
         getBalTop().clear();
 
@@ -62,6 +54,7 @@ public class BalTopManager {
         for (Map.Entry<String, Double> value: CacheManager.getCache(1).entrySet()) {
 
             String name = value.getKey();
+            Bukkit.broadcastMessage("Value: " + name);
 
             // purge check
             if (useUUID && name.equalsIgnoreCase("Invalid User")) {

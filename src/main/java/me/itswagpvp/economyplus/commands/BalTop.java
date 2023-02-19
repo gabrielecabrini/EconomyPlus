@@ -26,9 +26,7 @@ public class BalTop implements CommandExecutor {
 
             List<String> header = plugin.getConfig().getStringList("Baltop.Chat.Header");
 
-            EconomyPlus.balTopManager = new BalTopManager();
-            new BalTopManager();
-            BalTopManager balTopManager = EconomyPlus.plugin.getBalTopManager();
+            BalTopManager balTopManager = plugin.getBalTopManager();
 
             Utils utilities = new Utils();
 

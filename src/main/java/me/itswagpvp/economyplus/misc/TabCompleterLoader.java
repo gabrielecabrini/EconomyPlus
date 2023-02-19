@@ -18,6 +18,7 @@ import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 import static me.itswagpvp.economyplus.misc.BalTopManager.getPages;
 
 public class TabCompleterLoader implements TabCompleter {
+
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {

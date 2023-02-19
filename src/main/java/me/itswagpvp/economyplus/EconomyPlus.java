@@ -564,8 +564,8 @@ public class EconomyPlus extends JavaPlugin {
 
         if (balTopManager == null) {
             balTopManager = new BalTopManager();
-            new BalTopManager();
         }
+
         return balTopManager;
     }
 
