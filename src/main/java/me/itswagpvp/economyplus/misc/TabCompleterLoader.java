@@ -3,7 +3,9 @@ package me.itswagpvp.economyplus.misc;
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
+import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -11,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static me.itswagpvp.economyplus.misc.BalTopManager.getPages;
 
 public class TabCompleterLoader implements TabCompleter {
     @Nullable
@@ -84,7 +88,7 @@ public class TabCompleterLoader implements TabCompleter {
             if (args.length == 1) {
 
                 List<String> tab = new ArrayList<>();
-                for(int i=1;i<BalTopManager.getPages();i++){
+                for(int i = 1; i<= getPages(); i++){
                     tab.add(String.valueOf(i));
                 }
 
@@ -154,15 +158,22 @@ public class TabCompleterLoader implements TabCompleter {
             // check for invalid user?
             CacheManager.getCache(1).forEach((player,value) -> {
                 //debug
-                String name = Bukkit.getOfflinePlayer(UUID.fromString(player)).getName();
-                if (name != null) {
-                    playerNames.add(Bukkit.getOfflinePlayer(UUID.fromString(player)).getName());
+                String name = PlayerHandler.getName(player, true);
+                if (!name.equalsIgnoreCase(player)) {
+                    playerNames.add(name);
+                } else {
+                    // invalid user
+                    if (EconomyPlus.purgeInvalid) {
+                        EconomyPlus.getDBType().removePlayer(player);
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + player);
+                    }
                 }
             });
         } else {
             CacheManager.getCache(1).forEach((player,value) -> {
                 //debug
                 playerNames.add(player);
+                Bukkit.broadcastMessage("NICKNAME: " + player);
             });
         }
         return playerNames;
