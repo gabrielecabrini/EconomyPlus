@@ -1,13 +1,15 @@
 package me.itswagpvp.economyplus.database;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import me.itswagpvp.economyplus.bank.commands.Bank;
 import me.itswagpvp.economyplus.database.misc.DatabaseType;
+import me.itswagpvp.economyplus.database.misc.StorageMode;
+import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
+import static me.itswagpvp.economyplus.EconomyPlus.purgeInvalid;
 
 public class CacheManager {
 
@@ -35,10 +37,19 @@ public class CacheManager {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             int num = 0;
+            int purged = 0;
 
             for (String player : EconomyPlus.getDBType().getList()) {
 
                 try {
+                    if (purgeInvalid) {
+                        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+                            if (PlayerHandler.getName(player, true).equalsIgnoreCase(player)) {
+                                EconomyPlus.getDBType().removePlayer(player);
+                                purged++;
+                            }
+                        }
+                    }
                     cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
                     if (EconomyPlus.bankEnabled) {
                         cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
@@ -57,6 +68,9 @@ public class CacheManager {
 
             if (EconomyPlus.debugMode) {
                 Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num + " accounts...");
+                if (purged != 0) {
+                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Purged " + purged + " invalid accounts!");
+                }
             }
 
         });
@@ -72,8 +86,13 @@ public class CacheManager {
 
             Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, () -> {
 
-                if (EconomyPlus.debugMode) Bukkit.getConsoleSender().sendMessage(
-                        "[EconomyPlus-Debug] Caching accounts...");
+                if (EconomyPlus.debugMode) {
+                    if (EconomyPlus.purgeInvalid) {
+                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus-Debug] Caching and removing invalid accounts...");
+                    } else {
+                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus-Debug] Caching accounts...");
+                    }
+                }
 
                 cacheDatabase();
 
