@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 import static me.itswagpvp.economyplus.misc.BalTopManager.getPages;
 
 public class TabCompleterLoader implements TabCompleter {
@@ -163,8 +164,9 @@ public class TabCompleterLoader implements TabCompleter {
                     playerNames.add(name);
                 } else {
                     // invalid user
-                    if (EconomyPlus.purgeInvalid) {
+                    if (plugin.purgeInvalid) { // has a exception when removing player and tab executing
                         EconomyPlus.getDBType().removePlayer(player);
+                        CacheManager.getCache(1).remove(player);
                         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + player);
                     }
                 }

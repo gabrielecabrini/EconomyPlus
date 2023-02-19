@@ -1,7 +1,6 @@
 package me.itswagpvp.economyplus.database.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,20 +56,17 @@ public class SQLite extends Database {
     @Override
     public void load() {
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        connection = getSQLiteConnection();
+        try {
+            Statement s = connection.createStatement();
+            s.executeUpdate(SQLiteCreateTokensTable);
+            s.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
 
-            connection = getSQLiteConnection();
-            try {
-                Statement s = connection.createStatement();
-                s.executeUpdate(SQLiteCreateTokensTable);
-                s.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return;
-            }
-            initialize();
-
-        });
+        initialize();
 
     }
 }

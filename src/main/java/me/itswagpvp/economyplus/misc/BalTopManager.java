@@ -7,6 +7,7 @@ import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 
@@ -37,63 +38,56 @@ public class BalTopManager {
         return pages;
     }
 
-    private void loadFromDatabase() {
+    static boolean cooldown = false; // temp debug cooldown
+    private void loadFromDatabase() { // gets executed twice on call of the method fix later
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        if (cooldown) {
+            return;
+        }
 
-            getBalTop().clear();
+        cooldown = true;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            cooldown = false;
+        }, 20);
 
-            if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+        getBalTop().clear();
 
-                for (Map.Entry<String, Double> value: CacheManager.getCache(1).entrySet()) {
+        FileConfiguration config = new StorageManager().getStorageConfig();
 
-                    String name = PlayerHandler.getName(value.getKey(), false);
+        boolean useUUID = false;
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            useUUID = true;
+        }
 
-                    // purge check
-                    if (purgeInvalid) {
-                        if (name.equalsIgnoreCase("Invalid User")) {
-                            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + value.getKey());
-                            EconomyPlus.getDBType().removePlayer(value.getKey());
-                            CacheManager.getCache(1).remove(value.getKey());
-                            continue;
-                        }
-                    }
+        for (Map.Entry<String, Double> value: CacheManager.getCache(1).entrySet()) {
 
-                    // exclude check
-                    if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + value.getKey())) {
-                        continue;
-                    } else if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + name)) {
-                        continue;
-                    }
+            String name = value.getKey();
 
-                    // add to baltop sorting
-                    PlayerData pData = new PlayerData(value.getKey(), value.getValue());
-                    getBalTop().add(pData);
-                    getBalTopName().put(pData.getName(), pData);
-
+            // purge check
+            if (useUUID && name.equalsIgnoreCase("Invalid User")) {
+                if (plugin.purgeInvalid) {
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + value.getKey());
+                    EconomyPlus.getDBType().removePlayer(value.getKey());
+                    CacheManager.getCache(1).remove(value.getKey());
+                    continue;
                 }
-
-            } else { // use nicknames
-
-                for (Map.Entry<String, Double> value: CacheManager.getCache(1).entrySet()) {
-
-                    // exclude check
-                    if (new StorageManager().getStorageConfig().getBoolean("BalTop.Exclude." + value.getKey())) {
-                        continue;
-                    }
-
-                    // add to baltop sorting
-                    PlayerData pData = new PlayerData(value.getKey(), value.getValue());
-                    getBalTop().add(pData);
-                    getBalTopName().put(pData.getName(), pData);
-
-                }
-
             }
 
-            getBalTop().sort(new PlayerComparator());
+            // exclude check
+            if (config.getBoolean("BalTop.Exclude." + value.getKey())) {
+                continue;
+            } else if (config.getBoolean("BalTop.Exclude." + name)) {
+                continue;
+            }
 
-        });
+            // add to baltop sorting
+            PlayerData pData = new PlayerData(name, value.getValue());
+            getBalTop().add(pData);
+            getBalTopName().put(pData.getName(), pData);
+
+        }
+
+        getBalTop().sort(new PlayerComparator());
 
     }
 

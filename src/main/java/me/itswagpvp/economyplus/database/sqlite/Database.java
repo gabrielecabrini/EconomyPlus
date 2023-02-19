@@ -24,48 +24,40 @@ public abstract class Database {
 
     public void initialize() {
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        connection = getSQLiteConnection();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
+            ResultSet rs = ps.executeQuery();
 
-            connection = getSQLiteConnection();
-            try {
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
-                ResultSet rs = ps.executeQuery();
+            updateTable();
 
-                updateTable();
+            close(ps, rs);
 
-                close(ps, rs);
-
-            } catch (SQLException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
-            }
-
-        });
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
+        }
 
     }
 
     public void updateTable() {
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
 
-            String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
+        try {
 
-            try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
 
-                PreparedStatement stmt = connection.prepareStatement(sql);
-
-                stmt.executeUpdate();
-            } catch (SQLException e) {
-                if (e.toString().contains("Duplicate column name 'bank'")) {
-                    return;
-                }
-
-                if (e.toString().contains("duplicate column name: bank")) {
-                    return;
-                }
-                e.printStackTrace();
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            if (e.toString().contains("Duplicate column name 'bank'")) {
+                return;
             }
 
-        });
+            if (e.toString().contains("duplicate column name: bank")) {
+                return;
+            }
+            e.printStackTrace();
+        }
 
     }
 

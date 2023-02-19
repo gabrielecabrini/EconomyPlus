@@ -53,48 +53,40 @@ public class MySQL {
 
     public void createTable() {
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        String sql = "CREATE TABLE " + table + " ("
+                + "player VARCHAR(45) NOT NULL,"
+                + "moneys DOUBLE NOT NULL,"
+                + "bank DOUBLE NOT NULL,"
+                + "PRIMARY KEY (player))";
+        try {
 
-            String sql = "CREATE TABLE " + table + " ("
-                    + "player VARCHAR(45) NOT NULL,"
-                    + "moneys DOUBLE NOT NULL,"
-                    + "bank DOUBLE NOT NULL,"
-                    + "PRIMARY KEY (player))";
-            try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
 
-                PreparedStatement stmt = connection.prepareStatement(sql);
-
-                stmt.executeUpdate();
-            } catch (SQLException e) {
-                if (e.toString().contains("Table '" + table + "' already exists")) {
-                    return;
-                }
-                e.printStackTrace();
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            if (e.toString().contains("Table '" + table + "' already exists")) {
+                return;
             }
-
-        });
+            e.printStackTrace();
+        }
 
     }
 
     public void updateTable() {
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
 
-            String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
+        try {
 
-            try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
 
-                PreparedStatement stmt = connection.prepareStatement(sql);
-
-                stmt.executeUpdate();
-            } catch (SQLException e) {
-                if (e.toString().contains("Duplicate column name 'bank'")) {
-                    return;
-                }
-                e.printStackTrace();
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            if (e.toString().contains("Duplicate column name 'bank'")) {
+                return;
             }
-
-        });
+            e.printStackTrace();
+        }
 
     }
 
@@ -181,22 +173,17 @@ public class MySQL {
 
         List<String> list = new ArrayList<>();
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-
-            try (
-                    PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table);
-                    ResultSet rs = ps.executeQuery()
-            ) {
-
-                while (rs.next()) {
-                    list.add(rs.getString("player"));
-                }
-
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+        try (
+                PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table);
+                ResultSet rs = ps.executeQuery()
+        ) {
+            while (rs.next()) {
+                list.add(rs.getString("player"));
             }
 
-        });
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         return list;
     }

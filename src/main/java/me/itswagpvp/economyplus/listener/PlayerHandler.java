@@ -15,8 +15,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -41,9 +39,7 @@ public class PlayerHandler implements Listener {
             eco.setBank(plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00D));
         }
 
-        if (!p.hasPlayedBefore()) {
-            saveName(p);
-        }
+        saveName(p.getUniqueId(), p.getName());
 
     }
 
@@ -82,16 +78,21 @@ public class PlayerHandler implements Listener {
         return "Invalid User";
     }
 
-    public static void saveName(OfflinePlayer p) {
+    public static void saveName(UUID id, String name) {
 
         if (!plugin.SAVE_NAMES) {
             return;
         }
 
+        // check if name is legit if we can pull it
+        if (Bukkit.getOfflinePlayer(id).getName() != null) {
+            name = Bukkit.getOfflinePlayer(id).getName();
+        }
+
         File file = getStorageFile();
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        config.set("usernames." + p.getUniqueId(), p.getName());
+        config.set("usernames." + id, name);
 
         try {
             config.save(file);

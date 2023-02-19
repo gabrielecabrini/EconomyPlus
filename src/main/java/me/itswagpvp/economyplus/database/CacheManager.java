@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import java.util.HashMap;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
-import static me.itswagpvp.economyplus.EconomyPlus.purgeInvalid;
 
 public class CacheManager {
 
@@ -34,46 +33,41 @@ public class CacheManager {
     // Cache database
     public void cacheDatabase() {
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        int num = 0;
+        int purged = 0;
 
-            int num = 0;
-            int purged = 0;
-
-            for (String player : EconomyPlus.getDBType().getList()) {
-
-                try {
-                    if (purgeInvalid) {
-                        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-                            if (PlayerHandler.getName(player, true).equalsIgnoreCase(player)) {
-                                EconomyPlus.getDBType().removePlayer(player);
-                                purged++;
-                            }
+        for (String player : EconomyPlus.getDBType().getList()) {
+            try {
+                if (plugin.purgeInvalid) {
+                    if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+                        if (PlayerHandler.getName(player, true).equalsIgnoreCase(player)) {
+                            EconomyPlus.getDBType().removePlayer(player);
+                            purged++;
                         }
                     }
-                    cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
-                    if (EconomyPlus.bankEnabled) {
-                        cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
-                    }
-                    num++;
-                } catch (Exception e) {
-                    EconomyPlus.getDBType().removePlayer(player);
-                    if (EconomyPlus.getDBType() == DatabaseType.MySQL) {
-                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing MySQL: " + e.getMessage());
-                    } else {
-                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing local database: " + e.getMessage());
-                    }
                 }
-
-            }
-
-            if (EconomyPlus.debugMode) {
-                Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num + " accounts...");
-                if (purged != 0) {
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Purged " + purged + " invalid accounts!");
+                cachedPlayersMoneys.put(player, EconomyPlus.getDBType().getToken(player));
+                if (EconomyPlus.bankEnabled) {
+                    cachedPlayersBanks.put(player, EconomyPlus.getDBType().getBank(player));
+                }
+                num++;
+            } catch (Exception e) {
+                EconomyPlus.getDBType().removePlayer(player);
+                if (EconomyPlus.getDBType() == DatabaseType.MySQL) {
+                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing MySQL: " + e.getMessage());
+                } else {
+                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing local database: " + e.getMessage());
                 }
             }
 
-        });
+        }
+
+        if (EconomyPlus.debugMode) {
+            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num + " accounts...");
+            if (purged != 0) {
+                Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Purged " + purged + " invalid accounts!");
+            }
+        }
 
     }
 
@@ -87,7 +81,7 @@ public class CacheManager {
             Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, () -> {
 
                 if (EconomyPlus.debugMode) {
-                    if (EconomyPlus.purgeInvalid) {
+                    if (plugin.purgeInvalid) {
                         Bukkit.getConsoleSender().sendMessage("[EconomyPlus-Debug] Caching and removing invalid accounts...");
                     } else {
                         Bukkit.getConsoleSender().sendMessage("[EconomyPlus-Debug] Caching accounts...");

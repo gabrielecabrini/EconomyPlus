@@ -80,7 +80,7 @@ public class Eco implements CommandExecutor {
                     if (!(p.hasPlayedBefore() || p.isOnline())) {
 
                         if (plugin.SET_INVALID) {
-                            PlayerHandler.saveName(p);
+                            PlayerHandler.saveName(p.getUniqueId(), args[0]);
                         } else {
                             // player hasn't joined before and isn't currently online
                             sender.sendMessage(ChatColor.RED + args[0] + " hasn't joined before.");

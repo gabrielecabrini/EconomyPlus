@@ -39,7 +39,7 @@ public class EconomyPlus extends JavaPlugin {
 
     public boolean PLUGIN_UPDATER = getConfig().getBoolean("Updater.Plugin-Updater", true);
     public boolean SAVE_NAMES = getConfig().getBoolean("Save-Usernames", true);
-    public boolean SET_INVALID = getConfig().getBoolean("Set-Invalid", true);
+    public boolean SET_INVALID = getConfig().getBoolean("Set-Invalid", false);
     public static double PLUGIN_VERSION;
     public static double CONFIG_VERSION;
 
@@ -47,7 +47,7 @@ public class EconomyPlus extends JavaPlugin {
 
     public static String lang = "EN"; // Language
 
-    public static boolean purgeInvalid = false;
+    public boolean purgeInvalid = getConfig().getBoolean("Purge-Invalid", false);
 
     public static BalTopManager balTopManager; // BalTop
 
@@ -127,6 +127,7 @@ public class EconomyPlus extends JavaPlugin {
 
         // delete config and create new one
         file.delete();
+
         saveDefaultConfig();
         reloadConfig();
 
@@ -237,10 +238,14 @@ public class EconomyPlus extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
 
+        before = System.currentTimeMillis() - before;
+
     }
 
     @Override
     public void onEnable() {
+
+        long ebefore = System.currentTimeMillis();
 
         loadPlaceholderAPI();
 
@@ -321,7 +326,9 @@ public class EconomyPlus extends JavaPlugin {
 
         PlayerHandler.loadUsernames();
 
-        Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (System.currentTimeMillis() - before) + "ms §8]-------------+");
+        ebefore = System.currentTimeMillis() - ebefore;
+
+        Bukkit.getConsoleSender().sendMessage("§8+---------------[§a " + (before + ebefore) + "ms §8]-------------+");
 
         if (PLUGIN_VERSION >= Updater.getLatestGitVersion()) {
             Bukkit.getConsoleSender().sendMessage("[EconomyPlus] You are up to date! §d(v" + PLUGIN_VERSION + ")");

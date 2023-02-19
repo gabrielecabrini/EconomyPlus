@@ -78,45 +78,40 @@ public class Updater implements Listener {
             }
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        try {
 
-            try {
+            URL url = new URL("https://api.github.com/repos/ItsWagPvP/EconomyPlus/tags");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-                URL url = new URL("https://api.github.com/repos/ItsWagPvP/EconomyPlus/tags");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-                InputStream inputStream = connection.getInputStream();
+            String line;
+            while ((line = br.readLine()) != null) {
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+                if (line.contains("name")) {
 
-                String line;
-                while ((line = br.readLine()) != null) {
+                    line = line.split(":")[1];
 
-                    if (line.contains("name")) {
+                    line = line.replaceAll("\"", "");
+                    line = line.replace(",zipball_url", "");
 
-                        line = line.split(":")[1];
+                    // line may not be needed as we migrate to tags with just numbers and no letters like "V"
+                    line = line.replaceAll("V", ""); //removes V in version if there is a V in the tag name
 
-                        line = line.replaceAll("\"", "");
-                        line = line.replace(",zipball_url", "");
-
-                        // line may not be needed as we migrate to tags with just numbers and no letters like "V"
-                        line = line.replaceAll("V", ""); //removes V in version if there is a V in the tag name
-
-                        latestGitVersion = Double.parseDouble(line);
-
-                    }
+                    latestGitVersion = Double.parseDouble(line);
 
                 }
 
-                connection.disconnect();
-                inputStream.close();
-                br.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
-        });
+            connection.disconnect();
+            inputStream.close();
+            br.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (!(days == 0)) {
             config.set("git-version", latestGitVersion);
