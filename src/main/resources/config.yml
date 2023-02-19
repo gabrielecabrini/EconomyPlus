@@ -74,6 +74,8 @@ Reset-All:
   Flags: false # Allows you to use @a or * when resetting balances.
   Console-Only: true # Only works in console
 
+Purge-Invalid: false # Remove invalid users automatically?
+
 # Baltop configuration
 Baltop:
   Chat:
