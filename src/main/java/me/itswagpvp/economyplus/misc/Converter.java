@@ -40,7 +40,7 @@ public class Converter {
                     plugin.getYMLData().set("Data." + p.getUniqueId() + ".bank", bank);
                     plugin.saveYMLConfig();
 
-                    PlayerHandler.saveName(p.getUniqueId(), user);
+                    PlayerHandler.saveName(user, p.getUniqueId());
 
                     if (CacheManager.getCache(1).containsKey(user)) {
                         CacheManager.getCache(1).remove(user);
@@ -74,7 +74,7 @@ public class Converter {
                     new SQLite().setTokens(String.valueOf(p.getUniqueId()), money);
                     new SQLite().setBank(String.valueOf(p.getUniqueId()), bank);
 
-                    PlayerHandler.saveName(p.getUniqueId(), user);
+                    PlayerHandler.saveName(user, p.getUniqueId());
                     if (CacheManager.getCache(1).containsKey(user)) {
                         CacheManager.getCache(1).remove(user);
                         CacheManager.getCache(1).put(p.getUniqueId().toString(), money);

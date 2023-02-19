@@ -1,5 +1,8 @@
 package me.itswagpvp.economyplus.listener;
 
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.CacheManager;
+import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.misc.Updater;
 import me.itswagpvp.economyplus.vault.Economy;
 
@@ -15,6 +18,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -39,7 +45,9 @@ public class PlayerHandler implements Listener {
             eco.setBank(plugin.getConfig().getDouble("Starting-Bank-Balance", 0.00D));
         }
 
-        saveName(p.getUniqueId(), p.getName());
+        CacheManager.usernames.put(p.getName(), p.getUniqueId().toString());
+
+        saveName(p.getName(), p.getUniqueId());
 
     }
 
@@ -57,8 +65,6 @@ public class PlayerHandler implements Listener {
 
         // check save names
 
-        // thinking about removing this and replacing it with something else somehow
-        // or just removing it entirely
         if (plugin.SAVE_NAMES) { // save names is enabled
             FileConfiguration config = YamlConfiguration.loadConfiguration(getStorageFile());
             if (config.getString("usernames." + id) != null) { // check if name is stored
@@ -78,11 +84,13 @@ public class PlayerHandler implements Listener {
         return "Invalid User";
     }
 
-    public static void saveName(UUID id, String name) {
+    public static void saveName(String name, UUID id) {
 
         if (!plugin.SAVE_NAMES) {
             return;
         }
+
+        CacheManager.usernames.put(name, id.toString());
 
         // check if name is legit if we can pull it
         if (Bukkit.getOfflinePlayer(id).getName() != null) {
@@ -138,6 +146,29 @@ public class PlayerHandler implements Listener {
         }
 
         return file;
+    }
+
+    // replacement for some Bukkit.getOfflinePlayer(username) which causes lag due to it using network mojang api
+    public static OfflinePlayer hasAccount(String username) {
+
+        for (Map.Entry<String, String> entry : CacheManager.usernames.entrySet()) {
+            if (username.equalsIgnoreCase(entry.getKey())) {
+                return Bukkit.getOfflinePlayer(UUID.fromString(entry.getValue()));
+            }
+        }
+
+        return null;
+
+    }
+
+    public static OfflinePlayer hasAccount(UUID id) {
+
+        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            return Bukkit.getOfflinePlayer(id);
+        }
+
+        return null;
+
     }
 
 }

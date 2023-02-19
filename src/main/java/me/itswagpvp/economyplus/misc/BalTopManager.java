@@ -2,6 +2,7 @@ package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
+import me.itswagpvp.economyplus.database.misc.DatabaseType;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 
 import me.itswagpvp.economyplus.listener.PlayerHandler;
@@ -40,8 +41,6 @@ public class BalTopManager {
 
     private void loadFromDatabase() {
 
-        Bukkit.broadcastMessage("called baltop");
-
         getBalTop().clear();
 
         FileConfiguration config = new StorageManager().getStorageConfig();
@@ -51,23 +50,26 @@ public class BalTopManager {
             useUUID = true;
         }
 
-        for (Map.Entry<String, Double> value: CacheManager.getCache(1).entrySet()) {
+        // sort mysql db in order
+
+        // sort db lite in order
+
+        for (Map.Entry<String, Double> value: CacheManager.getCache(1).entrySet()) { // loop through cache manager if db type is not mysql
 
             String name = value.getKey();
-            Bukkit.broadcastMessage("Value: " + name);
 
             // purge check
             if (useUUID && name.equalsIgnoreCase("Invalid User")) {
                 if (plugin.purgeInvalid) {
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + value.getKey());
-                    EconomyPlus.getDBType().removePlayer(value.getKey());
-                    CacheManager.getCache(1).remove(value.getKey());
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
+                    EconomyPlus.getDBType().removePlayer(name);
+                    CacheManager.getCache(1).remove(name);
                     continue;
                 }
             }
 
             // exclude check
-            if (config.getBoolean("BalTop.Exclude." + value.getKey())) {
+            if (config.getBoolean("BalTop.Exclude." + name)) {
                 continue;
             } else if (config.getBoolean("BalTop.Exclude." + name)) {
                 continue;
@@ -80,6 +82,7 @@ public class BalTopManager {
 
         }
 
+        // only do this if it wasn't mysql db
         getBalTop().sort(new PlayerComparator());
 
     }

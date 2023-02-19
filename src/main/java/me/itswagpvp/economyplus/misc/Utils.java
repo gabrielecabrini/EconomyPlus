@@ -92,9 +92,6 @@ public class Utils {
             plugin.saveDefaultConfig();
             plugin.reloadConfig();
 
-            EconomyPlus.balTopManager = new BalTopManager();
-            new BalTopManager();
-
             new StorageManager().createStorageConfig();
 
             Messages.load();

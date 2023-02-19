@@ -155,31 +155,11 @@ public class TabCompleterLoader implements TabCompleter {
     }
 
     private static List<String> getPlayerNames() {
-        List<String> playerNames = new ArrayList<>();
-        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
-            // check for invalid user?
-            CacheManager.getCache(1).forEach((player,value) -> {
-                //debug
-                String name = PlayerHandler.getName(player, true);
-                if (!name.equalsIgnoreCase(player)) {
-                    playerNames.add(name);
-                } else {
-                    // invalid user
-                    if (plugin.purgeInvalid) { // has a exception when removing player and tab executing
-                        EconomyPlus.getDBType().removePlayer(player);
-                        CacheManager.getCache(1).remove(player);
-                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + player);
-                    }
-                }
-            });
-        } else {
-            CacheManager.getCache(1).forEach((player,value) -> {
-                //debug
-                playerNames.add(player);
-                Bukkit.broadcastMessage("NICKNAME: " + player);
-            });
+        List<String> usernames = new ArrayList<>();
+        for (Map.Entry<String, String> entry : CacheManager.usernames.entrySet()) {
+            usernames.add(entry.getKey());
         }
-        return playerNames;
+        return usernames;
     }
 
 }

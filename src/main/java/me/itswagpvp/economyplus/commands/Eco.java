@@ -1,5 +1,7 @@
 package me.itswagpvp.economyplus.commands;
 
+import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,7 +14,10 @@ import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
+import static me.itswagpvp.economyplus.listener.PlayerHandler.hasAccount;
 
 public class Eco implements CommandExecutor {
 
@@ -53,16 +58,15 @@ public class Eco implements CommandExecutor {
                         return true;
                     }
 
-                    for (OfflinePlayer op : Bukkit.getOfflinePlayers()) {
-
-                        Economy eco = new Economy(op);
-                        eco.setBalance(starting);
-
-                        if (op.getPlayer() != null && op.isOnline()) {
-                            op.getPlayer().sendMessage(plugin.getMessage("Money.Reset"));
-                            Utils.playErrorSound(op.getPlayer());
+                    // change cache and economy bal, get economy profile and set it to starting bal?
+                    for (String s : EconomyPlus.getDBType().getList()) {
+                        if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+                            Economy eco = new Economy(Bukkit.getOfflinePlayer(UUID.fromString(s)));
+                            eco.setBalance(starting);
+                        } else {
+                            Economy eco = new Economy(Bukkit.getOfflinePlayer(s));
+                            eco.setBalance(starting);
                         }
-
                     }
 
                     if (plugin.isMessageEnabled("Money.Done")) {
@@ -75,15 +79,21 @@ public class Eco implements CommandExecutor {
 
                     // isn't using * or @a
 
+                    if (args[0].equalsIgnoreCase("@a") || args[0].equalsIgnoreCase("*")) {
+                        sender.sendMessage(ChatColor.RED + "You cannot use * or @a as a name!");
+                        Utils.playErrorSound(sender);
+                        return true;
+                    }
+
                     p = Bukkit.getOfflinePlayer(args[0]);
 
                     if (!(p.hasPlayedBefore() || p.isOnline())) {
 
                         if (plugin.SET_INVALID) {
-                            PlayerHandler.saveName(p.getUniqueId(), args[0]);
+                            PlayerHandler.saveName(args[0], p.getUniqueId());
                         } else {
                             // player hasn't joined before and isn't currently online
-                            sender.sendMessage(ChatColor.RED + args[0] + " hasn't joined before.");
+                            sender.sendMessage(plugin.getMessage("PlayerNotFound"));
                             Utils.playErrorSound(sender);
                             return true;
                         }
@@ -122,6 +132,26 @@ public class Eco implements CommandExecutor {
                 return false;
             }
 
+            if (args[0].equalsIgnoreCase("@a") || args[0].equalsIgnoreCase("*")) {
+                sender.sendMessage(ChatColor.RED + "You cannot use * or @a as a name!");
+                Utils.playErrorSound(sender);
+                return true;
+            }
+
+            OfflinePlayer p = hasAccount(args[0]);
+
+            if (p == null) {
+                if (plugin.SET_INVALID) {
+                    p = Bukkit.getOfflinePlayer(args[0]); // will cause considerable lag using network io (for save names and offline players)
+                    PlayerHandler.saveName(args[0], p.getUniqueId());
+                } else {
+                    // player hasn't joined before and isn't currently online
+                    sender.sendMessage(plugin.getMessage("PlayerNotFound"));
+                    Utils.playErrorSound(sender);
+                    return true;
+                }
+            }
+
             String arg = args[2].replace(",", ".");
 
             double value;
@@ -131,8 +161,6 @@ public class Eco implements CommandExecutor {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid number!"));
                 return true;
             }
-
-            OfflinePlayer p = Bukkit.getOfflinePlayer(args[0]);
 
             Economy money = new Economy(p);
             Utils utility = new Utils();

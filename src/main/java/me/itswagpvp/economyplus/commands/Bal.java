@@ -1,18 +1,23 @@
 package me.itswagpvp.economyplus.commands;
 
+import me.itswagpvp.economyplus.database.CacheManager;
+import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.misc.Utils;
 import me.itswagpvp.economyplus.vault.Economy;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
+import static me.itswagpvp.economyplus.listener.PlayerHandler.getName;
+import static me.itswagpvp.economyplus.listener.PlayerHandler.hasAccount;
 
 public class Bal implements CommandExecutor {
 
@@ -26,12 +31,14 @@ public class Bal implements CommandExecutor {
                 return true;
             }
 
-            OfflinePlayer p2 = Bukkit.getOfflinePlayer(args[0]);
+            OfflinePlayer p2 = hasAccount(args[0]);
 
             if (p2 == null) {
                 sender.sendMessage(plugin.getMessage("PlayerNotFound"));
                 return true;
             }
+
+            String name = getName(p2.getUniqueId().toString(), false);
 
             if (p2 == sender) {
 
@@ -45,7 +52,7 @@ public class Bal implements CommandExecutor {
             sender.sendMessage(plugin.getMessage("Balance.Others")
                     .replaceAll("%money%", "" + new Utils().format(otherEco.getBalance()))
                     .replaceAll("%money_formatted%", "" + new Utils().fixMoney(otherEco.getBalance()))
-                    .replaceAll("%player%", "" + p2.getName()));
+                    .replaceAll("%player%", "" + name));
 
             Utils.playSuccessSound(sender);
 
@@ -77,9 +84,16 @@ public class Bal implements CommandExecutor {
                 return true;
             }
 
-            OfflinePlayer p2 = Bukkit.getOfflinePlayer(args[0]);
+            OfflinePlayer p2 = hasAccount(args[0]);
 
-            if (p2 == sender) {
+            if (p2 == null) {
+                sender.sendMessage(plugin.getMessage("PlayerNotFound"));
+                return true;
+            }
+
+            String name = getName(p2.getUniqueId().toString(), false);
+
+            if (p2 == sender) { // player mentioned is the sender
 
                 Economy selfEco = new Economy(p);
 
@@ -97,7 +111,7 @@ public class Bal implements CommandExecutor {
             sender.sendMessage(plugin.getMessage("Balance.Others")
                     .replaceAll("%money%", "" + new Utils().format(otherEco.getBalance()))
                     .replaceAll("%money_formatted%", "" + new Utils().fixMoney(otherEco.getBalance()))
-                    .replaceAll("%player%", "" + p2.getName()));
+                    .replaceAll("%player%", "" + name));
 
             Utils.playSuccessSound(sender);
 

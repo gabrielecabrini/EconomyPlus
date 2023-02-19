@@ -37,7 +37,6 @@ public class HolographicDisplays {
 
         List<String> header = plugin.getConfig().getStringList("Baltop.Hologram.Header");
 
-        EconomyPlus.balTopManager = new BalTopManager();
         BalTopManager balTopManager = plugin.getBalTopManager();
 
         Utils utilities = new Utils();
@@ -69,7 +68,7 @@ public class HolographicDisplays {
 
     public void refreshHologram() {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            EconomyPlus.balTopManager = new BalTopManager();
+
             BalTopManager balTopManager = plugin.getBalTopManager();
 
             Utils utilities = new Utils();

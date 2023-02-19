@@ -424,13 +424,7 @@ public class EconomyPlus extends JavaPlugin {
     private void enableDatabase() {
         // Load the cache for the database - Vault API
         new CacheManager().cacheDatabase();
-        if (dbType == DatabaseType.MySQL) {
-            long period = getConfig().getLong("Database.Cache.MySQL", 10) * 20;
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> new CacheManager().cacheDatabase(), 120, period);
-        } else {
-            new CacheManager().startAutoSave();
-        }
-
+        new CacheManager().startAutoSave();
         Bukkit.getConsoleSender().sendMessage("     - §fCaching accounts...");
     }
 

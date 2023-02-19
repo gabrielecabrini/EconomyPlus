@@ -71,13 +71,13 @@ Starting-Bank-Balance: 0
 
 # Reset All
 Reset-All:
-  Flags: false # Allows you to use @a or * when resetting balances.
-  Console-Only: true # Only works in console
+  Flags: true # Allows you to use @a or * when resetting balances.
+  Console-Only: true # Command only works in console
 
 Purge-Invalid: false # Remove invalid users automatically?
 
 # Able to set people who have never played before balances
-Set-Invalid: false # If you don't have Save-Usernames true with this enabled it may cause Invalid Users!
+Set-Invalid: true # Save-Usernames must be enabled if your using this! It will prevent "Invalid User" and purging of invalid accounts!
 Save-Usernames: true # Save usernames? (Attempts to prevent "Invalid User" issues)
 
 # Baltop configuration

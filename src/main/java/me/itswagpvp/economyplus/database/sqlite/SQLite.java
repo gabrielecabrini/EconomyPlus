@@ -46,7 +46,7 @@ public class SQLite extends Database {
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "SQLite exception on initialize", ex);
         } catch (ClassNotFoundException ex) {
-            plugin.getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it. Put it in /lib folder.");
+            plugin.getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it and put it in /lib folder.");
         }
 
         return null;
