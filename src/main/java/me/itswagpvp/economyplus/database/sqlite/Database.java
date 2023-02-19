@@ -23,38 +23,50 @@ public abstract class Database {
     public abstract void load();
 
     public void initialize() {
-        connection = getSQLiteConnection();
-        try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
-            ResultSet rs = ps.executeQuery();
 
-            updateTable();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            close(ps, rs);
+            connection = getSQLiteConnection();
+            try {
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
+                ResultSet rs = ps.executeQuery();
 
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
-        }
+                updateTable();
+
+                close(ps, rs);
+
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
+            }
+
+        });
+
     }
 
     public void updateTable() {
-        String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
 
-        try {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            String sql = "ALTER TABLE " + table + " ADD COLUMN bank DOUBLE";
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            if (e.toString().contains("Duplicate column name 'bank'")) {
-                return;
+            try {
+
+                PreparedStatement stmt = connection.prepareStatement(sql);
+
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                if (e.toString().contains("Duplicate column name 'bank'")) {
+                    return;
+                }
+
+                if (e.toString().contains("duplicate column name: bank")) {
+                    return;
+                }
+                e.printStackTrace();
             }
 
-            if (e.toString().contains("duplicate column name: bank")) {
-                return;
-            }
-            e.printStackTrace();
-        }
+        });
+
     }
 
     // Retrieve the balance of the player
@@ -77,7 +89,9 @@ public abstract class Database {
 
     // Save the balance to the player's database
     public void setTokens(String player, double tokens) {
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+
             Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
@@ -93,11 +107,14 @@ public abstract class Database {
             } catch (SQLException ex) {
                 plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
+
         });
+
     }
 
     // Retrieve the bank of the player
     public double getBank(String player) {
+
         Connection conn = getSQLiteConnection();
         try (
                 PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = '" + player + "';");
@@ -111,12 +128,15 @@ public abstract class Database {
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
+
         return 0.00;
     }
 
     // Save the balance to the player's database
     public void setBank(String player, double tokens) {
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+
             Connection conn = getSQLiteConnection();
             try (
                     PreparedStatement ps = conn.prepareStatement("REPLACE INTO " + table + " (player,moneys,bank) VALUES(?,?,?)")
@@ -132,7 +152,9 @@ public abstract class Database {
             } catch (SQLException ex) {
                 plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
             }
+
         });
+
     }
 
     // Gets the list of the players in the database

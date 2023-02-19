@@ -78,42 +78,45 @@ public class Updater implements Listener {
             }
         }
 
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-        try {
+            try {
 
-            URL url = new URL("https://api.github.com/repos/ItsWagPvP/EconomyPlus/tags");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                URL url = new URL("https://api.github.com/repos/ItsWagPvP/EconomyPlus/tags");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            InputStream inputStream = connection.getInputStream();
+                InputStream inputStream = connection.getInputStream();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-            String line;
-            while ((line = br.readLine()) != null) {
+                String line;
+                while ((line = br.readLine()) != null) {
 
-                if (line.contains("name")) {
+                    if (line.contains("name")) {
 
-                    line = line.split(":")[1];
+                        line = line.split(":")[1];
 
-                    line = line.replaceAll("\"", "");
-                    line = line.replace(",zipball_url", "");
+                        line = line.replaceAll("\"", "");
+                        line = line.replace(",zipball_url", "");
 
-                    // line may not be needed as we migrate to tags with just numbers and no letters like "V"
-                    line = line.replaceAll("V", ""); //removes V in version if there is a V in the tag name
+                        // line may not be needed as we migrate to tags with just numbers and no letters like "V"
+                        line = line.replaceAll("V", ""); //removes V in version if there is a V in the tag name
 
-                    latestGitVersion = Double.parseDouble(line);
+                        latestGitVersion = Double.parseDouble(line);
+
+                    }
 
                 }
 
+                connection.disconnect();
+                inputStream.close();
+                br.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            connection.disconnect();
-            inputStream.close();
-            br.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
 
         if (!(days == 0)) {
             config.set("git-version", latestGitVersion);
@@ -195,22 +198,26 @@ public class Updater implements Listener {
             return;
         }
 
-        try {
-            URL website = new URL("https://github.com/ItsWagPvP/EconomyPlus/releases/download/V" + getLatestGitVersion() + "/EconomyPlus.jar");
-            HttpURLConnection con = (HttpURLConnection) website.openConnection();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            ReadableByteChannel rbc = Channels.newChannel(con.getInputStream());
-            FileOutputStream fos = new FileOutputStream(pluginsPath + "EconomyPlus.jar");
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            con.disconnect();
-            rbc.close();
-            fos.close();
-            p.sendMessage("§aDone! §c§nIt is recommended you restart your server now for the plugin to update.");
-            alreadyDownloaded = true;
-        } catch (Exception e) {
-            p.sendMessage("§cAn error occurred while trying to download the newest version. Check console for more info");
-            e.printStackTrace();
-        }
+            try {
+                URL website = new URL("https://github.com/ItsWagPvP/EconomyPlus/releases/download/V" + getLatestGitVersion() + "/EconomyPlus.jar");
+                HttpURLConnection con = (HttpURLConnection) website.openConnection();
+
+                ReadableByteChannel rbc = Channels.newChannel(con.getInputStream());
+                FileOutputStream fos = new FileOutputStream(pluginsPath + "EconomyPlus.jar");
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                con.disconnect();
+                rbc.close();
+                fos.close();
+                p.sendMessage("§aDone! §c§nIt is recommended you restart your server now for the plugin to update.");
+                alreadyDownloaded = true;
+            } catch (Exception e) {
+                p.sendMessage("§cAn error occurred while trying to download the newest version. Check console for more info");
+                e.printStackTrace();
+            }
+
+        });
 
     }
 

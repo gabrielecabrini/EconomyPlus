@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.database.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class SQLite extends Database {
 
     // Creates the SQL database file
     public Connection getSQLiteConnection() {
+
         File dataFolder = new File(EconomyPlus.plugin.getDataFolder(), dbname + ".db");
         if (!dataFolder.exists()) {
             try {
@@ -37,6 +39,7 @@ public class SQLite extends Database {
                 plugin.getLogger().log(Level.SEVERE, "File write error: " + dbname + ".db");
             }
         }
+
         try {
             if (connection != null && !connection.isClosed()) return connection;
             Class.forName("org.sqlite.JDBC");
@@ -46,21 +49,28 @@ public class SQLite extends Database {
         } catch (ClassNotFoundException ex) {
             plugin.getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it. Put it in /lib folder.");
         }
+
         return null;
     }
 
     // Creates the table and tokens
     @Override
     public void load() {
-        connection = getSQLiteConnection();
-        try {
-            Statement s = connection.createStatement();
-            s.executeUpdate(SQLiteCreateTokensTable);
-            s.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
-        initialize();
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+
+            connection = getSQLiteConnection();
+            try {
+                Statement s = connection.createStatement();
+                s.executeUpdate(SQLiteCreateTokensTable);
+                s.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return;
+            }
+            initialize();
+
+        });
+
     }
 }
