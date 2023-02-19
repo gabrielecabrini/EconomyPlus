@@ -46,6 +46,8 @@ public class EconomyPlus extends JavaPlugin {
 
     public static String lang = "EN"; // Language
 
+    public static boolean purgeInvalid = false;
+
     public static BalTopManager balTopManager; // BalTop
 
     public static boolean debugMode; // Debug mode
@@ -202,6 +204,8 @@ public class EconomyPlus extends JavaPlugin {
         before = System.currentTimeMillis();
 
         plugin = this;
+
+        purgeInvalid = getConfig().getBoolean("Purge-Invalid", false);
 
         PLUGIN_VERSION = Double.parseDouble(getDescription().getVersion());
         CONFIG_VERSION = getConfig().getDouble("Version", PLUGIN_VERSION);
