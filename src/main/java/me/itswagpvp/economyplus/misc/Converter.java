@@ -1,6 +1,7 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.CacheManager;
 import me.itswagpvp.economyplus.database.misc.StorageMode;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
 import me.itswagpvp.economyplus.database.sqlite.SQLite;
@@ -41,6 +42,16 @@ public class Converter {
 
                     PlayerHandler.saveName(p.getUniqueId(), user);
 
+                    if (CacheManager.getCache(1).containsKey(user)) {
+                        CacheManager.getCache(1).remove(user);
+                        CacheManager.getCache(1).put(p.getUniqueId().toString(), money);
+                    }
+
+                    if (CacheManager.getCache(2).containsKey(user)) {
+                        CacheManager.getCache(2).remove(user);
+                        CacheManager.getCache(2).put(p.getUniqueId().toString(), bank);
+                    }
+
                     accounts++;
 
                 }
@@ -49,7 +60,6 @@ public class Converter {
                 for (String user : new MySQL().getList()) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(user);
                     new MySQL().changeUser(p, "UUID");
-                    PlayerHandler.saveName(p.getUniqueId(), user);
                     accounts++;
                 }
                 break;
@@ -65,6 +75,15 @@ public class Converter {
                     new SQLite().setBank(String.valueOf(p.getUniqueId()), bank);
 
                     PlayerHandler.saveName(p.getUniqueId(), user);
+                    if (CacheManager.getCache(1).containsKey(user)) {
+                        CacheManager.getCache(1).remove(user);
+                        CacheManager.getCache(1).put(p.getUniqueId().toString(), money);
+                    }
+
+                    if (CacheManager.getCache(2).containsKey(user)) {
+                        CacheManager.getCache(2).remove(user);
+                        CacheManager.getCache(2).put(p.getUniqueId().toString(), bank);
+                    }
                     accounts++;
 
                 }
@@ -101,6 +120,16 @@ public class Converter {
                     plugin.getYMLData().set("Data." + name + ".bank", bank);
                     plugin.saveYMLConfig();
 
+                    if (CacheManager.getCache(1).containsKey(user)) {
+                        CacheManager.getCache(1).remove(user);
+                        CacheManager.getCache(1).put(name, money);
+                    }
+
+                    if (CacheManager.getCache(2).containsKey(user)) {
+                        CacheManager.getCache(2).remove(user);
+                        CacheManager.getCache(2).put(name, bank);
+                    }
+
                     accounts++;
                 }
                 break;
@@ -121,6 +150,17 @@ public class Converter {
                     new SQLite().removeUser(user);
                     new SQLite().setTokens(name, money);
                     new SQLite().setBank(name, bank);
+
+                    if (CacheManager.getCache(1).containsKey(user)) {
+                        CacheManager.getCache(1).remove(user);
+                        CacheManager.getCache(1).put(name, money);
+                    }
+
+                    if (CacheManager.getCache(2).containsKey(user)) {
+                        CacheManager.getCache(2).remove(user);
+                        CacheManager.getCache(2).put(name, bank);
+                    }
+
                     accounts++;
 
                 }

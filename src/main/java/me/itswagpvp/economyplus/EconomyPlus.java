@@ -49,8 +49,6 @@ public class EconomyPlus extends JavaPlugin {
 
     public boolean purgeInvalid = getConfig().getBoolean("Purge-Invalid", false);
 
-    public static BalTopManager balTopManager; // BalTop
-
     public static boolean debugMode; // Debug mode
 
     public static FileConfiguration ymlConfig;
@@ -561,12 +559,7 @@ public class EconomyPlus extends JavaPlugin {
     }
 
     public BalTopManager getBalTopManager() {
-
-        if (balTopManager == null) {
-            balTopManager = new BalTopManager();
-        }
-
-        return balTopManager;
+        return new BalTopManager();
     }
 
     // Controls if there's Vault installed
