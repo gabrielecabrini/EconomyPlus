@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -70,23 +72,25 @@ public class SQLite extends Database {
 
     }
 
-    public static List<String> getOrderedList() {
+    public static NavigableMap<String, Double> getOrderedList() {
 
-        List<String> list = new ArrayList<>();
+        connection = new SQLite().getSQLiteConnection();
+
+        TreeMap<String, Double> map = new TreeMap<>();
 
         try (
                 PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + new SQLite().table + " ORDER BY moneys");
                 ResultSet rs = ps.executeQuery()
         ) {
             while (rs.next()) {
-                list.add(rs.getString("player"));
+                map.put(rs.getString("player"), rs.getDouble(1));
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        return list;
+        return map.descendingMap();
     }
 
 }

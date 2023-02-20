@@ -58,19 +58,18 @@ public class BalTopManager {
         if (EconomyPlus.getDBType() == DatabaseType.MySQL) {
 
             int i = 1;
-            for (String user : MySQL.getOrderedList()) {
+            for (Map.Entry<String, Double> user : MySQL.getOrderedList().entrySet()) {
 
-                String name = user;
+                String name = user.getKey();
                 if (useUUID) {
                     name = PlayerHandler.getName(name, false);
-                }
-
-                // purge check
-                if (useUUID && name.equalsIgnoreCase("Invalid User")) {
+                    // purge check
                     if (plugin.purgeInvalid) {
-                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
-                        EconomyPlus.getDBType().removePlayer(name);
-                        CacheManager.getCache(1).remove(name);
+                        if (name.equalsIgnoreCase("Invalid User")) {
+                            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
+                            EconomyPlus.getDBType().removePlayer(name);
+                            CacheManager.getCache(1).remove(name);
+                        }
                     }
                 }
 
@@ -82,27 +81,31 @@ public class BalTopManager {
                 }
 
                 Bukkit.broadcastMessage("user: " + name);
+                Bukkit.broadcastMessage("value: " + user.getValue());
                 i++;
 
                 // add to baltop
+                PlayerData pData = new PlayerData(user.getKey(), user.getValue());
+                getBalTop().add(pData);
+                getBalTopName().put(pData.getName(), pData);
+
             }
 
         } else if (EconomyPlus.getDBType() == DatabaseType.H2) {
 
             int i = 1;
-            for (String user : SQLite.getOrderedList()) {
+            for (Map.Entry<String, Double> user : SQLite.getOrderedList().entrySet()) {
 
-                String name = user;
+                String name = user.getKey();
                 if (useUUID) {
                     name = PlayerHandler.getName(name, false);
-                }
-
-                // purge check
-                if (useUUID && name.equalsIgnoreCase("Invalid User")) {
+                    // purge check
                     if (plugin.purgeInvalid) {
-                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
-                        EconomyPlus.getDBType().removePlayer(name);
-                        CacheManager.getCache(1).remove(name);
+                        if (name.equalsIgnoreCase("Invalid User")) {
+                            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
+                            EconomyPlus.getDBType().removePlayer(name);
+                            CacheManager.getCache(1).remove(name);
+                        }
                     }
                 }
 
@@ -114,9 +117,14 @@ public class BalTopManager {
                 }
 
                 Bukkit.broadcastMessage("user: " + name);
+                Bukkit.broadcastMessage("value: " + user.getValue());
                 i++;
 
                 // add to baltop
+                PlayerData pData = new PlayerData(user.getKey(), user.getValue());
+                getBalTop().add(pData);
+                getBalTopName().put(pData.getName(), pData);
+
             }
 
         } else {
@@ -142,16 +150,17 @@ public class BalTopManager {
                     continue;
                 }
 
-                // add to baltop sorting
+                // add to baltop
                 PlayerData pData = new PlayerData(name, value.getValue());
                 getBalTop().add(pData);
                 getBalTopName().put(pData.getName(), pData);
 
+                // sort baltop
+                getBalTop().sort(new PlayerComparator());
+
             }
 
         }
-
-        getBalTop().sort(new PlayerComparator());
 
     }
 

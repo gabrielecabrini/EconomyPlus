@@ -1,14 +1,14 @@
 package me.itswagpvp.economyplus.database.mysql;
 
 import me.itswagpvp.economyplus.database.CacheManager;
+import me.itswagpvp.economyplus.database.sqlite.SQLite;
 import me.itswagpvp.economyplus.listener.PlayerHandler;
 import me.itswagpvp.economyplus.vault.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -189,23 +189,27 @@ public class MySQL {
         return list;
     }
 
-    public static List<String> getOrderedList() {
+    public static NavigableMap<String, Double> getOrderedList() {
 
-        List<String> list = new ArrayList<>();
+        // update db
+
+        TreeMap<String, Double> map = new TreeMap<>();
 
         try (
                 PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + new MySQL().table + " ORDER BY moneys");
                 ResultSet rs = ps.executeQuery()
         ) {
             while (rs.next()) {
-                list.add(rs.getString("player"));
+                map.put(rs.getString("player"), rs.getDouble(1));
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        return list;
+        // reverse map order
+
+        return map.descendingMap();
     }
 
     // Create a player account
