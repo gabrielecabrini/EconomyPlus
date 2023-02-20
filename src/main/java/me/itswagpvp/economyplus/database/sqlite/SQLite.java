@@ -1,13 +1,13 @@
 package me.itswagpvp.economyplus.database.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
+import me.itswagpvp.economyplus.database.mysql.MySQL;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -69,4 +69,24 @@ public class SQLite extends Database {
         initialize();
 
     }
+
+    public static List<String> getOrderedList() {
+
+        List<String> list = new ArrayList<>();
+
+        try (
+                PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + new SQLite().table + " ORDER BY moneys");
+                ResultSet rs = ps.executeQuery()
+        ) {
+            while (rs.next()) {
+                list.add(rs.getString("player"));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
+    }
+
 }

@@ -16,7 +16,7 @@ public abstract class Database {
 
     // The name of the table we created back in SQLite class.
     public String table = "data";
-    Connection connection;
+    static Connection connection;
 
     public abstract Connection getSQLiteConnection();
 
