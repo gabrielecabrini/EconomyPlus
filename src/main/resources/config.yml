@@ -77,7 +77,7 @@ Reset-All:
 Purge-Invalid: false # Remove invalid users automatically?
 
 # Able to set people who have never played before balances
-Set-Invalid: true # Save-Usernames must be enabled if your using this! It will prevent "Invalid User" and purging of invalid accounts!
+Set-Invalid: false # Save-Usernames must be enabled if your using this! It will prevent "Invalid User" and purging of invalid accounts!
 Save-Usernames: true # Save usernames? (Attempts to prevent "Invalid User" issues)
 
 # Baltop configuration
