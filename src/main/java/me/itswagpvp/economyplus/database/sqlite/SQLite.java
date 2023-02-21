@@ -2,14 +2,13 @@ package me.itswagpvp.economyplus.database.sqlite;
 
 import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.mysql.MySQL;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
@@ -72,14 +71,12 @@ public class SQLite extends Database {
 
     }
 
-    public static NavigableMap<String, Double> getOrderedList() {
+    public static LinkedHashMap<String, Double> getOrderedList() {
 
-        connection = new SQLite().getSQLiteConnection();
-
-        TreeMap<String, Double> map = new TreeMap<>();
+        LinkedHashMap<String, Double> map = new LinkedHashMap<>();
 
         try (
-                PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + new SQLite().table + " ORDER BY moneys");
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + new SQLite().table + " ORDER BY moneys DESC");
                 ResultSet rs = ps.executeQuery()
         ) {
             while (rs.next()) {
@@ -90,7 +87,7 @@ public class SQLite extends Database {
             throwables.printStackTrace();
         }
 
-        return map.descendingMap();
+        return map;
     }
 
 }

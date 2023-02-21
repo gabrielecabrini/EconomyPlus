@@ -189,14 +189,12 @@ public class MySQL {
         return list;
     }
 
-    public static NavigableMap<String, Double> getOrderedList() {
+    public static LinkedHashMap<String, Double> getOrderedList() {
 
-        // update db
-
-        TreeMap<String, Double> map = new TreeMap<>();
+        LinkedHashMap<String, Double> map = new LinkedHashMap<>();
 
         try (
-                PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + new MySQL().table + " ORDER BY moneys");
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + new MySQL().table + " ORDER BY moneys DESC");
                 ResultSet rs = ps.executeQuery()
         ) {
             while (rs.next()) {
@@ -207,9 +205,7 @@ public class MySQL {
             throwables.printStackTrace();
         }
 
-        // reverse map order
-
-        return map.descendingMap();
+        return map;
     }
 
     // Create a player account

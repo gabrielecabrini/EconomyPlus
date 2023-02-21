@@ -80,10 +80,6 @@ public class BalTopManager {
                     continue;
                 }
 
-                Bukkit.broadcastMessage("user: " + name);
-                Bukkit.broadcastMessage("value: " + user.getValue());
-                i++;
-
                 // add to baltop
                 PlayerData pData = new PlayerData(user.getKey(), user.getValue());
                 getBalTop().add(pData);
@@ -93,7 +89,6 @@ public class BalTopManager {
 
         } else if (EconomyPlus.getDBType() == DatabaseType.H2) {
 
-            int i = 1;
             for (Map.Entry<String, Double> user : SQLite.getOrderedList().entrySet()) {
 
                 String name = user.getKey();
@@ -115,10 +110,6 @@ public class BalTopManager {
                 } else if (config.getBoolean("BalTop.Exclude." + name)) {
                     continue;
                 }
-
-                Bukkit.broadcastMessage("user: " + name);
-                Bukkit.broadcastMessage("value: " + user.getValue());
-                i++;
 
                 // add to baltop
                 PlayerData pData = new PlayerData(user.getKey(), user.getValue());
