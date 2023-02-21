@@ -200,7 +200,7 @@ public class MySQL {
                 ResultSet rs = ps.executeQuery()
         ) {
             while (rs.next()) {
-                map.put(rs.getString("player"), rs.getDouble(1));
+                map.put(rs.getString("player"), rs.getDouble(2));
             }
 
         } catch (SQLException throwables) {
