@@ -64,6 +64,11 @@ public class BalTop implements CommandExecutor {
                         .replaceAll("%money_formatted%", "" + utilities.fixMoney(money)));
             }
 
+            // add option for interactive arrows?
+
+            // add option to show player's personal position on baltop?
+
+
         });
 
         return true;
