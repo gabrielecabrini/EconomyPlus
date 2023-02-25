@@ -55,6 +55,8 @@ public class BalTopManager {
 
         // sort mysql db in order
         // sort db lite in order
+
+        // run these asynchronously?
         if (EconomyPlus.getDBType() == DatabaseType.MySQL) {
 
             int i = 1;

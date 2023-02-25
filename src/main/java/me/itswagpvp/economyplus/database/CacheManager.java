@@ -39,79 +39,81 @@ public class CacheManager {
     // Cache database
     public void cacheDatabase() {
 
-        int num = 0;
-        int purged = 0;
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-        for (String uuid : EconomyPlus.getDBType().getList()) {
+            int num = 0;
+            int purged = 0;
 
-            try {
-                String name;
-                if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+            for (String uuid : EconomyPlus.getDBType().getList()) {
 
-                    name = PlayerHandler.getName(uuid, true);
-                    if (plugin.purgeInvalid) {
-                        if (name.equalsIgnoreCase(uuid)) {
-                            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
-                            EconomyPlus.getDBType().removePlayer(uuid);
-                            CacheManager.getCache(1).remove(uuid);
-                            purged++;
-                            continue;
+                try {
+                    String name;
+                    if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
+
+                        name = PlayerHandler.getName(uuid, true);
+                        if (plugin.purgeInvalid) {
+                            if (name.equalsIgnoreCase(uuid)) {
+                                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
+                                EconomyPlus.getDBType().removePlayer(uuid);
+                                CacheManager.getCache(1).remove(uuid);
+                                purged++;
+                                continue;
+                            }
                         }
-                    }
 
-                    // add username
-                    if (!(usernames.containsKey(name))) {
-                        usernames.put(name, uuid);
-                    }
-
-                } else { // nickname mode
-                    name = uuid;
-                    if (plugin.purgeInvalid) {
-                        if (uuid.length() >= 36) { // is a uuid
-                            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
-                            EconomyPlus.getDBType().removePlayer(name);
-                            CacheManager.getCache(1).remove(name);
-                            purged++;
-                            continue;
+                        // add username
+                        if (!(usernames.containsKey(name))) {
+                            usernames.put(name, uuid);
                         }
+
+                    } else { // nickname mode
+                        name = uuid;
+                        if (plugin.purgeInvalid) {
+                            if (uuid.length() >= 36) { // is a uuid
+                                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EconomyPlus] Removed invalid account: " + name);
+                                EconomyPlus.getDBType().removePlayer(name);
+                                CacheManager.getCache(1).remove(name);
+                                purged++;
+                                continue;
+                            }
+                        }
+
+                        // add username
+                        if (!(usernames.containsKey(name))) {
+                            usernames.put(name, "");
+                        }
+
                     }
 
-                    // add username
-                    if (!(usernames.containsKey(name))) {
-                        usernames.put(name, "");
+                    cachedPlayersMoneys.put(uuid, EconomyPlus.getDBType().getToken(uuid));
+                    if (EconomyPlus.bankEnabled) {
+                        cachedPlayersBanks.put(uuid, EconomyPlus.getDBType().getBank(uuid));
                     }
 
+                    num++;
+
+                } catch (Exception e) {
+                    EconomyPlus.getDBType().removePlayer(uuid);
+                    if (EconomyPlus.getDBType() == DatabaseType.MySQL) {
+                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing MySQL: " + e.getMessage());
+                    } else {
+                        Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing local database: " + e.getMessage());
+                    }
                 }
 
-                cachedPlayersMoneys.put(uuid, EconomyPlus.getDBType().getToken(uuid));
-                if (EconomyPlus.bankEnabled) {
-                    cachedPlayersBanks.put(uuid, EconomyPlus.getDBType().getBank(uuid));
-                }
+            }
 
-                num++;
-
-            } catch (Exception e) {
-                EconomyPlus.getDBType().removePlayer(uuid);
-                if (EconomyPlus.getDBType() == DatabaseType.MySQL) {
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing MySQL: " + e.getMessage());
-                } else {
-                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Encountered an error while refreshing local database: " + e.getMessage());
+            if (EconomyPlus.debugMode) {
+                Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num + " accounts...");
+                if (purged != 0) {
+                    Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Purged " + purged + " invalid accounts!");
                 }
             }
 
-        }
-
-        if (EconomyPlus.debugMode) {
-            Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Finished the cache thread for " + num + " accounts...");
-            if (purged != 0) {
-                Bukkit.getConsoleSender().sendMessage("[EconomyPlus] Purged " + purged + " invalid accounts!");
-            }
-        }
+        });
 
     }
 
-    // Started only with H2 and YAML
-    //
     public void startAutoSave() {
 
         long refreshRate = plugin.getConfig().getLong("Database.Cache.Auto-Save", 300) * 20L;
@@ -119,7 +121,7 @@ public class CacheManager {
             refreshRate = plugin.getConfig().getLong("Database.Cache.MySQL", 10) * 20;
         }
 
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, () -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
 
             if (EconomyPlus.debugMode) {
                 if (plugin.purgeInvalid) {
