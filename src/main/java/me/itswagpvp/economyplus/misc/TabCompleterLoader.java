@@ -1,11 +1,6 @@
 package me.itswagpvp.economyplus.misc;
 
-import me.itswagpvp.economyplus.EconomyPlus;
 import me.itswagpvp.economyplus.database.CacheManager;
-import me.itswagpvp.economyplus.database.misc.StorageMode;
-import me.itswagpvp.economyplus.listener.PlayerHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -14,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 import static me.itswagpvp.economyplus.misc.BalTopManager.getPages;
 
 public class TabCompleterLoader implements TabCompleter {
