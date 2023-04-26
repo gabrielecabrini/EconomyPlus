@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class Selector {
+
     public static String playerToString(OfflinePlayer player) {
         switch (EconomyPlus.getStorageMode()) {
             case NICKNAME:
@@ -24,7 +25,9 @@ public class Selector {
      * @since 3.6
      **/
     public static Player stringToPlayer(String player) {
+
         Player p;
+
         if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
             p = Bukkit.getOfflinePlayer(UUID.fromString(player)).getPlayer();
         } else {
@@ -36,6 +39,7 @@ public class Selector {
 
     @Deprecated
     public static OfflinePlayer stringToOfflinePlayer(String player) {
+
         OfflinePlayer p;
         if (EconomyPlus.getStorageMode() == StorageMode.UUID) {
             p = Bukkit.getOfflinePlayer(UUID.fromString(player));

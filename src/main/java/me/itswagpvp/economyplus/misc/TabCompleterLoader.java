@@ -1,11 +1,12 @@
 package me.itswagpvp.economyplus.misc;
 
 import me.itswagpvp.economyplus.database.CacheManager;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -13,73 +14,66 @@ import static me.itswagpvp.economyplus.misc.BalTopManager.getPages;
 
 public class TabCompleterLoader implements TabCompleter {
 
-    @Nullable
+    // EconomyPlus main command TabCompleter
+
+    // ?
+    // StringUtil.copyPartialMatches(args[1], twoArgList, completions);
+    // Collections.sort(completions);
+
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-        // /eco
-        if (command.getName().equalsIgnoreCase("eco")) {
+        if (label.equalsIgnoreCase("eco")) {
 
-            switch (args.length) {
-                case 1: {
-                    return getPlayerNames();
-                }
-                case 2: {
-                    return Arrays.asList("give", "set", "take", "reset");
-                }
-                case 3: {
-
-                    if (args[1].equalsIgnoreCase("reset")) {
-                        return Collections.singletonList("");
-                    }
-
-                    return Arrays.asList("0", "100", "1000");
-                }
-                default:
-                    return Collections.singletonList("");
-            }
-
-        }
-
-        // EconomyPlus main command TabCompleter
-        if (command.getName().equalsIgnoreCase("economyplus")) {
-            switch (args.length) {
-                case 1:
-                    return Arrays.asList("help", "debug", "reload", "hologram", "update", "convert", "exclude");
-                case 2:
-                    if (args[1].equalsIgnoreCase("convert")) {
-                        Arrays.asList("UUID", "NICKNAME");
-                    }
-            }
-            return Collections.singletonList("");
-        }
-
-        // /bal
-        if (command.getName().equalsIgnoreCase("bal")) {
             if (args.length == 1) {
                 return getPlayerNames();
             }
-            return Collections.singletonList("");
-        }
 
-        // /pay
-        if (command.getName().equalsIgnoreCase("pay")) {
-            switch (args.length) {
-                case 1: {
-                    return getPlayerNames();
-                }
-
-                case 2: {
-                    return Arrays.asList("10", "100", "1000");
-                }
-
-                default:
-                    return Collections.singletonList("");
+            else if (args.length == 2) {
+                return Arrays.asList("give", "set", "take", "reset");
             }
+
+            else if (args.length == 3 && !args[1].equalsIgnoreCase("reset")) {
+                return Arrays.asList("0", "100", "1000");
+            }
+
         }
 
-        // /baltop
-        if (command.getName().equalsIgnoreCase("baltop")) {
+        else if (label.equalsIgnoreCase("economyplus")) {
+
+            if (args.length == 1) {
+                return Arrays.asList("help", "debug", "reload", "hologram", "update", "convert", "exclude");
+            }
+
+            else if (args.length == 2) {
+                if (args[1].equalsIgnoreCase("convert")) {
+                    Arrays.asList("UUID", "NICKNAME");
+                }
+            }
+
+        }
+
+        else if (label.equalsIgnoreCase("bal")) {
+
+            if (args.length == 1) {
+                return getPlayerNames();
+            }
+
+        }
+
+        else if (label.equalsIgnoreCase("pay")) {
+
+            if (args.length == 1) {
+                return getPlayerNames();
+            }
+
+            else if (args.length == 2) {
+                return Arrays.asList("10", "100", "1000");
+            }
+
+        }
+
+        else if (label.equalsIgnoreCase("baltop")) {
 
             if (args.length == 1) {
 
@@ -91,69 +85,57 @@ public class TabCompleterLoader implements TabCompleter {
                 return tab;
             }
 
-            return Collections.singletonList("");
-
         }
 
-        // /bank
-        if (command.getName().equalsIgnoreCase("bank")) {
-            int i = (args.length);
-            switch (i) {
-                case 1: {
-                    return Arrays.asList("deposit", "withdraw", "admin");
-                }
-                case 2: {
-                    if (args[0].equalsIgnoreCase("admin")) {
-                        return Arrays.asList("set", "get");
-                    }
+        else if (label.equalsIgnoreCase("bank")) {
 
-                    return Arrays.asList("10", "100", "1000");
-                }
-
-                case 3: {
-                    if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("get")) {
-                        return getPlayerNames();
-                    }
-
-                    return Collections.singletonList("");
-                }
-
-                case 4: {
-                    if (args[1].equalsIgnoreCase("set")) {
-                        return Arrays.asList("0", "10", "100");
-                    }
-
-                    return Collections.singletonList("");
-                }
-
-                case 5: {
-                    if (args[1].equalsIgnoreCase("set")) {
-                        return getPlayerNames();
-                    }
-
-                    return Collections.singletonList("");
-                }
-
-                case 6: {
-                    if (args[1].equalsIgnoreCase("set")) {
-                        return Arrays.asList("0", "10", "100");
-                    }
-                }
-
-                default:
-                    return Collections.singletonList("");
+            if (args.length == 1) {
+                return Arrays.asList("deposit", "withdraw", "admin");
             }
+
+            else if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("admin")) {
+                    return Arrays.asList("set", "get");
+                }
+
+                return Arrays.asList("10", "100", "1000");
+            }
+
+            else if (args.length == 3) {
+                if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("get")) {
+                    return getPlayerNames();
+                }
+            }
+
+            else if (args.length == 4 && args[1].equalsIgnoreCase("set")) {
+                return Arrays.asList("0", "10", "100");
+            }
+
+            else if (args.length == 5 && args[1].equalsIgnoreCase("set")) {
+                return getPlayerNames();
+            }
+
+            else if (args.length == 6 && args[1].equalsIgnoreCase("set")) {
+                return Arrays.asList("0", "10", "100");
+            }
+
         }
 
         return Collections.singletonList("");
     }
 
     private static List<String> getPlayerNames() {
+
         List<String> usernames = new ArrayList<>();
-        for (Map.Entry<String, String> entry : CacheManager.usernames.entrySet()) {
-            usernames.add(entry.getKey());
+
+        for (OfflinePlayer op : Bukkit.getOfflinePlayers()) {
+            usernames.add(op.getName());
         }
+
+        // check if there is any extra players not in playerdata comparing db?
+
         return usernames;
+
     }
 
 }

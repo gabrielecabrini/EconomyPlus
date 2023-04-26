@@ -24,12 +24,22 @@ public class Bal implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof ConsoleCommandSender) {
+        if (!Utils.hasPerm(sender, "economyplus.balance") && plugin.REQUIRE_BASIC_PERMISSIONS) {
+            return true;
+        }
 
-            if (args.length != 1) {
-                sender.sendMessage(plugin.getMessage("InvalidArgs.Balance"));
-                return true;
+        if (sender instanceof ConsoleCommandSender && args.length != 1) {
+            sender.sendMessage(plugin.getMessage("InvalidArgs.Balance"));
+            return false;
+        }
+
+        if (args.length == 0) {
+
+            if (sender instanceof ConsoleCommandSender) {
+
             }
+
+        }
 
             OfflinePlayer p2 = hasAccount(args[0]);
 
@@ -62,10 +72,6 @@ public class Bal implements CommandExecutor {
         Player p = (Player) sender;
 
         if (args.length == 0) {
-
-            if (!Utils.hasPerm(p, "economyplus.balance") && plugin.REQUIRE_BASIC_PERMISSIONS) {
-                return true;
-            }
 
             Economy selfEco = new Economy(p);
 

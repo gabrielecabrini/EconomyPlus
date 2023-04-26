@@ -41,15 +41,13 @@ public class MySQL {
 
     // Close the database connection if not null
     public void closeConnection() {
+
         try {
-            if (connection != null && !connection.isClosed()) {
-
-                connection.close();
-            }
-
+            if (connection != null && !connection.isClosed()) connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void createTable() {
@@ -64,11 +62,15 @@ public class MySQL {
             PreparedStatement stmt = connection.prepareStatement(sql);
 
             stmt.executeUpdate();
+
         } catch (SQLException e) {
+
             if (e.toString().contains("Table '" + table + "' already exists")) {
                 return;
             }
+
             e.printStackTrace();
+
         }
 
     }
@@ -178,12 +180,13 @@ public class MySQL {
                 PreparedStatement ps = connection.prepareStatement("SELECT player FROM " + table);
                 ResultSet rs = ps.executeQuery()
         ) {
+
             while (rs.next()) {
                 list.add(rs.getString("player"));
             }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return list;
