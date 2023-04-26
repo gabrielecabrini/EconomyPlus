@@ -7,11 +7,7 @@ import me.itswagpvp.economyplus.listener.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 import static me.itswagpvp.economyplus.EconomyPlus.plugin;
 

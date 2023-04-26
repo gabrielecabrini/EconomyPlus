@@ -41,11 +41,10 @@ public class MySQL {
 
     // Close the database connection if not null
     public void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
 
-                connection.close();
-            }
+        try {
+
+            if (connection != null && !connection.isClosed()) connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
