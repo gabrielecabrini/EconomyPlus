@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -68,8 +69,9 @@ public class Messages {
     public static List<String> getLanguages() { // returns a list of file names that don't contain a / in the path
 
         // loop through all files in recourses folder
-        // if it has 2 chars as the name (excluding .yml)
-        // treat it as a language file
+
+        // exclude config.yml, data.yml, plugin.yml and storage.yml
+        List<String> exclude = Arrays.asList("config.yml", "data.yml", "plugin.yml", "storage.yml");
 
         List<String> list = new ArrayList<>();
 
@@ -86,6 +88,13 @@ public class Messages {
                 String name = entry.getName();
                 if (!name.contains("/") && name.contains(".yml") && name.length() == 6) {
                     list.add(name);
+                }
+            }
+
+            // excludes files that aren't language files
+            for (String entry : exclude) {
+                if (exclude.contains(entry)) {
+                    list.remove(entry);
                 }
             }
 
